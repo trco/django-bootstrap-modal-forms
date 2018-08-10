@@ -22,20 +22,18 @@ Installation
 
 3. Include Bootstrap, jQuery and jquery.bootstrap.modal.forms.js on every page where you would like to set up the AJAX driven Django forms in Bootstrap modal.
 
-IMPORTANT: Adjust Bootstrap and jQuery file paths to match yours, but include jquery.bootstrap.modal.forms.js exactly as in code bellow. 
+IMPORTANT: Adjust Bootstrap and jQuery file paths to match yours, but include jquery.bootstrap.modal.forms.js exactly as in code bellow.
 
 .. code-block:: html+django
 
     <head>
-        ...
-        <link rel="stylesheet" href="{% static "assets/css/bootstrap.css" %}">
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
     </head>
 
     <body>
-        ...
-        <script src="{% static "assets/js/bootstrap.js" %}"></script>
-        <script src="{% static "assets/js/jquery.js" %}"></script>
-        <script src="{% static "js/jquery.bootstrap.modal.forms.js" %}"></script>
+        <script src="{% static 'assets/js/bootstrap.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.js' %}"></script>
+        <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     </body>
 
 Usage
@@ -49,7 +47,7 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
 .. code-block:: python
 
     forms.py
-    
+
     from django import forms
     from .models import Test
 
@@ -64,10 +62,10 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
 .. code-block:: html
 
     test/create_test.html
-    
+
     <form method="post" action="{% url 'test:create_test' %}">
       {% csrf_token %}
-      
+
      <div class="modal-header">
         <h5 class="modal-title">Create a new test</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -91,7 +89,7 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary" formnovalidate="formnovalidate">Create</button>
       </div>
-    
+
     </form>
 
 - Define form's html and save it as Django template.
@@ -108,12 +106,12 @@ Define a class-based view that processes the form defined in #1 and uses the tem
 .. code-block:: python
 
     views.py
-    
+
     from django.shortcuts import render
     from django.views.generic.edit import CreateView
-    
+
     from .forms import TestForm
-    
+
     class TestFormView(CreateView):
         template_name = 'test/create_test.html'
         form_class = TestForm
@@ -127,9 +125,9 @@ Define URL for the view in #3.
 .. code-block:: python
 
     from django.urls import path
-    
+
     from . import views
-    
+
     app_name = 'test'
     urlpatterns = [
         path('', views.index, name='index'),
@@ -148,17 +146,17 @@ Define the Bootstrap modal window and trigger element.
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-        
+
         </div>
       </div>
     </div>
-    
+
     <button type="button" class="btn btn-primary" id="createTest">
       <span class="fa fa-plus fa-sm"></span>
       New Test
     </button>
 
-- Same modal window can be used for multiple modalForms in single template (see #6). 
+- Same modal window can be used for multiple modalForms in single template (see #6).
 - Form's html from #2 is loaded within ``<div class="modal-content"></div>``.
 - Trigger element (in this example button) selected with id selector is used for instantiation of modalForm (see #6).
 - Any element can be trigger element as long as modalForm is bound to it.
@@ -176,11 +174,11 @@ If you want to create **more modalForms in single template using the same modal 
 
     <script type="text/javascript">
     $(document).ready(function() {
-        
+
         $("#createTest").modalForm({
             formURL: "/test/create_test/"
         });
-    
+
     });
     </script>
 
@@ -224,4 +222,3 @@ License
 =======
 
 This project is licensed under the MIT License.
-
