@@ -1,3 +1,4 @@
 include LICENSE
-include README.md
+include README.rst
+include CHANGELOG.rst
 recursive-include bootstrap_modal_forms/static *
