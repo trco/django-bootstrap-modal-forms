@@ -101,13 +101,15 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
 3. Class-based view
 *******************
 
-Define a class-based view that processes the form defined in #1 and uses the template defined in #2.
+Define a class-based view TestFormView that processes the form defined in #1 and uses the template defined in #2. Define also the success_url for TestFormView and separate SuccessView with your own success.html.
 
 .. code-block:: python
 
     views.py
 
     from django.shortcuts import render
+    from django.urls import reverse_lazy
+    from django.views.generic.base import TemplateView
     from django.views.generic.edit import CreateView
 
     from .forms import TestForm
@@ -115,12 +117,15 @@ Define a class-based view that processes the form defined in #1 and uses the tem
     class TestFormView(CreateView):
         template_name = 'test/create_test.html'
         form_class = TestForm
-        success_url = '/'
+        success_url = reverse_lazy('test:success_view')
+
+    class SuccessView(TemplateView):
+        template_name = "test/success.html"
 
 4. URL for the view
 *******************
 
-Define URL for the view in #3.
+Define URL for the views in #3.
 
 .. code-block:: python
 
@@ -132,6 +137,7 @@ Define URL for the view in #3.
     urlpatterns = [
         path('', views.index, name='index'),
         path('test/create_test/', views.TestFormView.as_view(), name='create_test')
+        path('test/success/', views.SuccessView.as_view(), name='success_view')
     ]
 
 5. Bootstrap modal and trigger element
@@ -164,9 +170,11 @@ Define the Bootstrap modal window and trigger element.
 6. modalForm
 ************
 
-Add script to the template from #5 and bind the modalForm to the trigger element. Set URL defined in #3 as formURL property of modalForm.
+Add script to the template from #5 and bind the modalForm to the trigger element. Set TestFormView URL defined in #4 as formURL and SuccessView URL as successURL properties of modalForm.
 
-If you want to create **more modalForms in single template using the same modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new modalForm with unique URL to it.
+If you want to create **more modalForms in single template using the same modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new modalForm with unique URLs to it.
+
+IMPORTANT: Default values for ``modalID``, ``modalContent``, ``modalForm`` and ``errorClass`` are used in this example, while ``formURL`` and ``successURL`` are customized. If you customize any other option adjust the code of the above examples accordingly.
 
 .. code-block:: html
 
@@ -176,7 +184,8 @@ If you want to create **more modalForms in single template using the same modal 
     $(document).ready(function() {
 
         $("#createTest").modalForm({
-            formURL: "/test/create_test/"
+            formURL: "{% url 'test:create_test' %}",
+            successURL: "{% url 'test:success_view' %}"
         });
 
     });
@@ -184,8 +193,6 @@ If you want to create **more modalForms in single template using the same modal 
 
 Options
 =======
-
-IMPORTANT: All the code in the examples above uses default options. If you customize any option adjust the code of the examples accordingly.
 
 modalID
   Sets the custom id of the modal. ``Default: "#modal"``
@@ -197,7 +204,10 @@ modalForm
   Sets the custom form selector. ``Default: ".modal-content form"``
 
 formURL
-  Sets the unique id of the modal. ``Default: null``
+  Sets the url of the form's view and html. ``Default: null``
+
+successURL
+  Sets the url for redirection after successful form submission. ``Default: "/"``
 
 errorClass
   Sets the custom errorClass for the form fields. ``Default: ".invalid"``
@@ -209,9 +219,8 @@ How it works
 1. Click event on trigger element opens modal with ``modalID``
 2. Form at ``formURL`` is appended to the element with ``modalContent`` class
 3. On submit the form is POSTed via AJAX request to ``formURL``
-
-- If the form is invalid it's updated with the errors
-- If the form is valid the view redirects to defined ``success_url`` (see #3)
+4. **Unsuccessful POST request** returns errors, which are shown under form fields in modal
+5. **Successful POST request** redirects to ``successURL``
 
 Contribute
 ==========
