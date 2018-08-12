@@ -1,6 +1,6 @@
 /*
 django-bootstrap-modal-forms
-version : 1.1.0
+version : 1.2.0
 Copyright (c) 2018 Uros Trstenjak
 https://github.com/trco/django-bootstrap-modal-forms
 */
@@ -11,6 +11,7 @@ https://github.com/trco/django-bootstrap-modal-forms
     var newForm = function (modalID, modalContent, modalForm, formURL, successURL, errorClass) {
         $(modalContent).load(formURL, function () {
             $(modalID).modal('toggle');
+            $(modalForm).attr('action', formURL);
             ajaxSubmit(modalID, modalContent, modalForm, successURL, errorClass);
         });
     };
