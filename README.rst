@@ -54,16 +54,16 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
     class TestForm(forms.ModelForm):
         class Meta:
             model = Test
-            fields = ['test_field_1', 'test_field_2', ]
+            fields = ['test_one', 'test_two', ]
 
 2. Form's html
 **************
 
 .. code-block:: html
 
-    test/create_test.html
+    test/test.html
 
-    <form method="post" action="{% url 'test:create_test' %}">
+    <form method="post" action="">
       {% csrf_token %}
 
      <div class="modal-header">
@@ -94,9 +94,9 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
 
 - Define form's html and save it as Django template.
 - Bootstrap 4 modal elements are used in this example.
-- Form should POST to url defined in #4.
+- Form will POST to ``formURL`` defined in #6.
 - Add "invalid" class or custom errorClass to the elements that wrap the fields.
-- "invalid" class acts as a flag for the fields having errors after the form has been POSTed.
+- ``invalid`` class acts as a flag for the fields having errors after the form has been POSTed.
 
 3. Class-based view
 *******************
@@ -110,12 +110,18 @@ Define a class-based view TestFormView that processes the form defined in #1 and
     from django.shortcuts import render
     from django.urls import reverse_lazy
     from django.views.generic.base import TemplateView
-    from django.views.generic.edit import CreateView
+    from django.views.generic.edit import CreateView, UpdateView
 
     from .forms import TestForm
 
-    class TestFormView(CreateView):
-        template_name = 'test/create_test.html'
+    class TestCreateView(CreateView):
+        template_name = 'test/test.html'
+        form_class = TestForm
+        success_url = reverse_lazy('test:success_view')
+
+    class TestUpdateView(CreateView):
+        model = Test
+        template_name = 'test/test.html'
         form_class = TestForm
         success_url = reverse_lazy('test:success_view')
 
@@ -136,16 +142,17 @@ Define URL for the views in #3.
     app_name = 'test'
     urlpatterns = [
         path('', views.index, name='index'),
-        path('test/create_test/', views.TestFormView.as_view(), name='create_test')
+        path('test/create-test/', views.TestCreateView.as_view(), name='create_test')
+        path('test/update-test/<int:pk>', views.TestUpdateView.as_view(), name='update_test')
         path('test/success/', views.SuccessView.as_view(), name='success_view')
     ]
 
 5. Bootstrap modal and trigger element
 **************************************
 
-Define the Bootstrap modal window and trigger element.
+Define the Bootstrap modal window and trigger elements.
 
-.. code-block:: html
+.. code-block:: html+django
 
     test/index.html
 
@@ -157,22 +164,33 @@ Define the Bootstrap modal window and trigger element.
       </div>
     </div>
 
-    <button type="button" class="btn btn-primary" id="createTest">
+    <!-- Create test button -->
+    <button type="button" class="create-test btn btn-primary">
       <span class="fa fa-plus fa-sm"></span>
-      New Test
+      Create
     </button>
 
+    <!-- Update test buttons -->
+    {% for test in test_queryset %}
+      <button type="button" class="update-test btn btn-primary" data-id="test.id">
+        <span class="fa fa-plus fa-sm"></span>
+        Update
+      </button>
+    {% endfor %}
+
 - Same modal window can be used for multiple modalForms in single template (see #6).
-- Form's html from #2 is loaded within ``<div class="modal-content"></div>``.
-- Trigger element (in this example button) selected with id selector is used for instantiation of modalForm (see #6).
+- Form's html from #2 is loaded within ``<div class="modal-content"></div>`` and action attribute of the form is set to ``formURL`` set in #6.
+- Trigger element (in this example buttons) selected with class selector is used for instantiation of ``modalForm`` in #6.
 - Any element can be trigger element as long as modalForm is bound to it.
+
+IMPORTANT: See the difference between buttons triggering Create and Update. Extra ``data-id`` attribute should be set for Update buttons to allow dynamic construction of appropriate ``formURLs`` in #6.
 
 6. modalForm
 ************
 
-Add script to the template from #5 and bind the modalForm to the trigger element. Set TestFormView URL defined in #4 as formURL and SuccessView URL as successURL properties of modalForm.
+Add script to the template from #5 and bind the ``modalForm`` to the trigger elements. Set TestCreateView and TestUpdateView URLs defined in #4 as ``formURL`` and SuccessView URL as ``successURL`` properties of ``modalForm``.
 
-If you want to create **more modalForms in single template using the same modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new modalForm with unique URLs to it.
+If you want to create **more modalForms in single template using the same modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new ``modalForm`` with unique URLs to it.
 
 IMPORTANT: Default values for ``modalID``, ``modalContent``, ``modalForm`` and ``errorClass`` are used in this example, while ``formURL`` and ``successURL`` are customized. If you customize any other option adjust the code of the above examples accordingly.
 
@@ -183,9 +201,18 @@ IMPORTANT: Default values for ``modalID``, ``modalContent``, ``modalForm`` and `
     <script type="text/javascript">
     $(document).ready(function() {
 
-        $("#createTest").modalForm({
+        $(".create-test").modalForm({
             formURL: "{% url 'test:create_test' %}",
             successURL: "{% url 'test:success_view' %}"
+        });
+
+        // Bind modalForm to each Update button and set formURL to unique url
+        // via data-id from #5
+        $(".update-test").each(function () {
+          $(this).modalForm({
+            formURL: "{% url 'test:update_test' $(this).data('id') %}",
+            successURL: "{% url 'test:success_view' %}"
+          });
         });
 
     });
