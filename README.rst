@@ -34,6 +34,8 @@ IMPORTANT: Adjust Bootstrap and jQuery file paths to match yours, but include jq
         <script src="{% static 'assets/js/bootstrap.js' %}"></script>
         <script src="{% static 'assets/js/jquery.js' %}"></script>
         <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+        <!-- You can alternatively load the minified version -->
+        <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     </body>
 
 Usage
@@ -119,7 +121,7 @@ Define a class-based view TestFormView that processes the form defined in #1 and
         form_class = TestForm
         success_url = reverse_lazy('test:success_view')
 
-    class TestUpdateView(CreateView):
+    class TestUpdateView(UpdateView):
         model = Test
         template_name = 'test/test.html'
         form_class = TestForm

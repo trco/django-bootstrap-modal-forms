@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.2.1 (2018-08-14)
+==================
+
+- fix formURL setup after invalid form submission returns errors via Ajax
+- update README.rst
+
 1.2.0 (2018-08-12)
 ==================
 
