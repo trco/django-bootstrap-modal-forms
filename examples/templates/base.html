@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    {% block stylesheets %}
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+      <!-- DataTables CSS -->
+      <link rel="stylesheet" href="{% static 'assets/css/datatables.bootstrap4.min.css' %}">
+      <!-- Font awesome CSS -->
+      <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+      <!-- Custom CSS -->
+      <style media="screen">
+        .invalid {
+          color: #dc3545;
+          font-size: 80%;
+        }
+      </style>
+    {% endblock stylesheets %}
+
+    <title>django-bootstrap-modal-forms</title>
+  </head>
+
+  <body>
+
+    <!-- Includes -->
+    {% include "_header.html" %}
+    {% include "_modal.html" %}
+
+    {% block content %}{% endblock content %}
+
+    <!-- JavaScript -->
+    {% block scripts %}
+      <script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
+      <script src="{% static 'assets/js/popper.min.js' %}"></script>
+      <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+      <!-- DataTables JS -->
+      <script src="{% static 'assets/js/jquery.datatables.min.js' %}"></script>
+      <script src="{% static 'assets/js/datatables.bootstrap4.min.js' %}"></script>
+      <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+      <!-- Log in & Sign up buttons -->
+      <script type="text/javascript">
+        $(".login-btn").modalForm({formURL: "{% url 'login' %}", successURL: "/"});
+        $(".signup-btn").modalForm({formURL: "{% url 'signup' %}", successURL: "/"});
+      </script>
+    {% endblock scripts %}
+
+    {% block extrascripts %}{% endblock extrascripts %}
+
+  </body>
+
+</html>

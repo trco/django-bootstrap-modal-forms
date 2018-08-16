@@ -1,0 +1,57 @@
+{% load static %}
+
+<!-- Header -->
+<header>
+  <!-- Messages -->
+  <div>
+    {% if messages %}
+      {% for message in messages %}
+        <div style="border-radius:0;" {% if message.tags %} class="alert alert-icon alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert" {% endif %}>
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  <!-- End Messages -->
+  <!-- Navbar -->
+  <!-- Important: columns can be used directly in navbar since it is d-flex -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <h2>
+            <a class="nav-link" href="/">django-bootstrap-modal-forms
+              <span class="sr-only">(current)</span></a>
+          </h2>
+        </li>
+        <li class="nav-item">
+          <a href="https://github.com/trco/django-bootstrap-modal-forms" class="nav-link" target="_blank" aria-label="GitHub"><img src="{% static 'assets/pics/github_icon.png' %}" height="30px" alt="" class="img-rounded center-block"></a>
+        </li>
+      </ul>
+      <span class="">
+        Created by Uroš Trstenjak
+      </span>
+      {% if user.is_anonymous %}
+        <span class="ml-auto mr-3">
+          <button class="login-btn btn btn-primary" role="button">Log in</button>
+          <button class="signup-btn btn btn-success" role="button">Sign up</button>
+        </span>
+      {% else %}
+        <span class="ml-auto mr-3">
+          Your are logged in as
+          <strong>{{ user }}</strong>.
+        </span>
+        <a href="{% url 'logout' %}" class="logout-btn btn btn-danger" role="button">Log out</a>
+      {% endif %}
+    </div>
+
+  </nav>
+  <!-- End Navbar -->
+</header>
+<!-- End Header -->
