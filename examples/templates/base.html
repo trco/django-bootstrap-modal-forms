@@ -11,10 +11,8 @@
     {% block stylesheets %}
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-      <!-- DataTables CSS -->
-      <link rel="stylesheet" href="{% static 'assets/css/datatables.bootstrap4.min.css' %}">
       <!-- Font awesome CSS -->
-      <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
       <!-- Custom CSS -->
       <style media="screen">
         .invalid {
@@ -40,10 +38,6 @@
       <script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
       <script src="{% static 'assets/js/popper.min.js' %}"></script>
       <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-      <!-- DataTables JS -->
-      <script src="{% static 'assets/js/jquery.datatables.min.js' %}"></script>
-      <script src="{% static 'assets/js/datatables.bootstrap4.min.js' %}"></script>
-      <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
       <!-- Log in & Sign up buttons -->
       <script type="text/javascript">
         $(".login-btn").modalForm({formURL: "{% url 'login' %}", successURL: "/"});

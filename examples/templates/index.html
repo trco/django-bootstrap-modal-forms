@@ -4,25 +4,100 @@
 
   <div class="container">
     <div class="row">
-      <div class="">
+      <div class="col">
+        <h4>
+          <strong>1. Signup form</strong>
+        </h4>
+        <p>Sign up via Bootstrap modal.</p>
+        <h4>
+          <strong>2. Login form</strong>
+        </h4>
+        <p>Log in via Bootstrap modal. Sign up first.</p>
+        <h4>
+          <strong>3. CRUD actions</strong>
+        </h4>
+        <p>Create, Read, Update and Delete books in Bootstrap modal.</p>
 
-        <dl>
-          <dt>1. Signup form</dt>
-          <dd>Check Signup form by clicking Sign up button in navbar.</dd>
-          <dt>2. Login form</dt>
-          <dd>Check Login form by clicking Log in button in navbar. First create a User account through Signup form.</dd>
-          <dt>3. CRUD forms</dt>
-          <dd>Under construction.</dd>
-          <dt>4. CRUD forms</dt>
-          <dd>Under construction.</dd>
-          <dt>5. Search forms</dt>
-          <dd>Under construction.</dd>
-          <dt>6. Filter forms</dt>
-          <dd>Under construction.</dd>
-        </dl>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <button class="create-book btn btn-primary" type="button" name="button">
+              <span class="fa fa-plus mr-2"></span>Create book</button>
+          </div>
+          <div class="col-12 mb-3">
+            {% if books %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-center" scope="col">#</th>
+                    <th class="text-center" scope="col">Title</th>
+                    <th class="text-center" scope="col">Author</th>
+                    <th class="text-center" scope="col">Type</th>
+                    <th class="text-center" scope="col">Publication date</th>
+                    <th class="text-center" scope="col">Pages</th>
+                    <th class="text-center" scope="col">Price in €</th>
+                    <th class="text-center" scope="col">Read / Update / Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for book in books %}
+                    <tr>
+                      <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                      <td class="text-center">{{ book.title }}</td>
+                      <td class="text-center">{{ book.author }}</td>
+                      <td class="text-center">{{ book.get_book_type_display }}</td>
+                      <td class="text-center">{{ book.publication_date }}</td>
+                      <td class="text-center">{{ book.pages }}</td>
+                      <td class="text-center">{{ book.price }}</td>
+                      <td class="text-center">
+                        <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'read_book' book.pk %}">
+                          <span class="fa fa-eye"></span>
+                        </button>
+                        <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'update_book' book.pk %}">
+                          <span class="fa fa-pencil"></span>
+                        </button>
+                        <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'delete_book' book.pk %}">
+                          <span class="fa fa-trash" aria-label="Delete"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p class="text-primary">No books added yet.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <h4>
+          <strong>4. Search forms</strong>
+        </h4>
+        <p class="text-secondary">Under construction.</p>
+
+        <h4>
+          <strong>5. Filter forms</strong>
+        </h4>
+        <p class="text-secondary">Under construction.</p>
 
       </div>
     </div>
   </div>
 
 {% endblock content %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+    $(function () {
+      $(".create-book").modalForm({formURL: "{% url 'create_book' %}", successURL: "/"});
+
+      $(".update-book").each(function () {
+        $(this).modalForm({formURL: $(this).data('id'), successURL: "/"});
+      });
+
+      $(".delete-book").each(function () {
+        $(this).modalForm({formURL: $(this).data('id'), successURL: "/"});
+      });
+
+    });
+  </script>
+{% endblock extrascripts %}
