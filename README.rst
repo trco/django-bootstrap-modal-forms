@@ -79,7 +79,7 @@ Define either Django Form or ModelForm. django-bootstrap-modal-forms works with 
         {% for field in form %}
           <div class="form-group{% if field.errors %} invalid{% endif %}">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {% field %}
+            {{ field }}
             {% for error in field.errors %}
               <p class="help-block">{{ error }}</p>
             {% endfor %}
@@ -174,7 +174,7 @@ Define the Bootstrap modal window and trigger elements.
 
     <!-- Update test buttons -->
     {% for test in test_queryset %}
-      <button type="button" class="update-test btn btn-primary" data-id="test.id">
+      <button type="button" class="update-test btn btn-primary" data-id="{% url 'test:update_test' test.pk %}">
         <span class="fa fa-plus fa-sm"></span>
         Update
       </button>
@@ -185,7 +185,7 @@ Define the Bootstrap modal window and trigger elements.
 - Trigger element (in this example buttons) selected with class selector is used for instantiation of ``modalForm`` in #6.
 - Any element can be trigger element as long as modalForm is bound to it.
 
-IMPORTANT: See the difference between buttons triggering Create and Update. Extra ``data-id`` attribute should be set for Update buttons to allow dynamic construction of appropriate ``formURLs`` in #6.
+IMPORTANT: See the difference between buttons triggering Create and Update. The dynamically generated URL with pk argument of the object to be updated should be set as ``data-id`` attribute of each Update button in ``for loop``. This ``data-id`` URL should than be retrieved and set as ``formURL`` for ``modalForm`` bound to each Update button in #6.
 
 6. modalForm
 ************
@@ -209,10 +209,10 @@ IMPORTANT: Default values for ``modalID``, ``modalContent``, ``modalForm`` and `
         });
 
         // Bind modalForm to each Update button and set formURL to unique url
-        // via data-id from #5
+        // passed via data-id in #5
         $(".update-test").each(function () {
           $(this).modalForm({
-            formURL: "{% url 'test:update_test' $(this).data('id') %}",
+            formURL: $(this).data('id'),
             successURL: "{% url 'test:success_view' %}"
           });
         });
