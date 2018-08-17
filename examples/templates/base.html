@@ -38,6 +38,8 @@
       <script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
       <script src="{% static 'assets/js/popper.min.js' %}"></script>
       <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+      <!-- You can alternatively load the minified version -->
+      <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
       <!-- Log in & Sign up buttons -->
       <script type="text/javascript">
         $(".login-btn").modalForm({formURL: "{% url 'login' %}", successURL: "/"});
