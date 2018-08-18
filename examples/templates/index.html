@@ -2,17 +2,37 @@
 
 {% block content %}
 
-  <div class="container">
+  <div class="container mt-3">
     <div class="row">
       <div class="col">
+        <p class="text-primary">A jQuery plugin for creating AJAX driven Django forms in Bootstrap modal.</p>
         <h4>
           <strong>1. Signup form</strong>
         </h4>
         <p>Sign up via Bootstrap modal.</p>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <button class="signup-btn btn btn-primary" type="button" name="button">Sign up</button>
+          </div>
+        </div>
         <h4>
           <strong>2. Login form</strong>
         </h4>
         <p>Log in via Bootstrap modal. Sign up first.</p>
+        <div class="row">
+          <div class="col-12 mb-3">
+            {% if not user.is_anonymous %}
+              <span>
+                Your are logged in as
+                <strong>{{ user }}</strong>.
+              </span>
+              <a href="{% url 'logout' %}" class="logout-btn btn btn-danger" role="button">Log out</a>
+            {% else %}
+              <button class="login-btn btn btn-primary" type="button" name="button">Log in</button>
+            {% endif %}
+          </div>
+
+        </div>
         <h4>
           <strong>3. CRUD actions</strong>
         </h4>
@@ -88,12 +108,19 @@
 {% block extrascripts %}
   <script type="text/javascript">
     $(function () {
+      // Log in & Sign up buttons
+      $(".login-btn").modalForm({formURL: "{% url 'login' %}", successURL: "/"});
+      $(".signup-btn").modalForm({formURL: "{% url 'signup' %}", successURL: "/"});
+
+      // Create book button
       $(".create-book").modalForm({formURL: "{% url 'create_book' %}", successURL: "/"});
 
+      // Update book buttons
       $(".update-book").each(function () {
         $(this).modalForm({formURL: $(this).data('id'), successURL: "/"});
       });
 
+      // Delete book buttons
       $(".delete-book").each(function () {
         $(this).modalForm({formURL: $(this).data('id'), successURL: "/"});
       });
