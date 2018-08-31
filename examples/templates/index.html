@@ -2,6 +2,8 @@
 
 {% block content %}
 
+  {% include "_modal.html" %}
+
   <div class="container mt-3">
     <div class="row">
       <div class="col">
@@ -54,7 +56,7 @@
                     <th class="text-center" scope="col">Type</th>
                     <th class="text-center" scope="col">Publication date</th>
                     <th class="text-center" scope="col">Pages</th>
-                    <th class="text-center" scope="col">Price in €</th>
+                    <th class="text-center" scope="col">Price (€)</th>
                     <th class="text-center" scope="col">Read / Update / Delete</th>
                   </tr>
                 </thead>
@@ -69,15 +71,16 @@
                       <td class="text-center">{{ book.pages }}</td>
                       <td class="text-center">{{ book.price }}</td>
                       <td class="text-center">
-                        <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'read_book' book.pk %}">
+                        <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'read_book' book.pk %}">
                           <span class="fa fa-eye"></span>
                         </button>
                         <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'update_book' book.pk %}">
                           <span class="fa fa-pencil"></span>
                         </button>
                         <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'delete_book' book.pk %}">
-                          <span class="fa fa-trash" aria-label="Delete"></span>
+                          <span class="fa fa-trash"></span>
                         </button>
+                        <!--<button type="button" class="delete-book btn btn-sm btn-danger" data-toggle="modal" data-target="#modal" data-id="{% url 'delete_book' book.pk %}"> <span class="fa fa-trash" aria-label="Delete"></span> </button>-->
                       </td>
                     </tr>
                   {% endfor %}
@@ -89,16 +92,6 @@
           </div>
         </div>
 
-        <h4>
-          <strong>4. Search forms</strong>
-        </h4>
-        <p class="text-secondary">Under construction.</p>
-
-        <h4>
-          <strong>5. Filter forms</strong>
-        </h4>
-        <p class="text-secondary">Under construction.</p>
-
       </div>
     </div>
   </div>
@@ -109,20 +102,25 @@
   <script type="text/javascript">
     $(function () {
       // Log in & Sign up buttons
-      $(".login-btn").modalForm({formURL: "{% url 'login' %}", successURL: "/"});
-      $(".signup-btn").modalForm({formURL: "{% url 'signup' %}", successURL: "/"});
+      $(".login-btn").modalForm({formURL: "{% url 'accounts:login' %}"});
+      $(".signup-btn").modalForm({formURL: "{% url 'accounts:signup' %}"});
 
       // Create book button
-      $(".create-book").modalForm({formURL: "{% url 'create_book' %}", successURL: "/"});
+      $(".create-book").modalForm({formURL: "{% url 'create_book' %}"});
 
       // Update book buttons
       $(".update-book").each(function () {
-        $(this).modalForm({formURL: $(this).data('id'), successURL: "/"});
+        $(this).modalForm({formURL: $(this).data('id')});
+      });
+
+      // Read book buttons
+      $(".read-book").each(function () {
+        $(this).modalForm({formURL: $(this).data('id')});
       });
 
       // Delete book buttons
       $(".delete-book").each(function () {
-        $(this).modalForm({formURL: $(this).data('id'), successURL: "/"});
+        $(this).modalForm({formURL: $(this).data('id')});
       });
 
     });

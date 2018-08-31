@@ -19,6 +19,15 @@
           color: #dc3545;
           font-size: 80%;
         }
+        body {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+        .footer {
+          margin: auto 0 0;
+          height: 56px;
+        }
       </style>
     {% endblock stylesheets %}
 
@@ -29,7 +38,6 @@
 
     <!-- Includes -->
     {% include "_header.html" %}
-    {% include "_modal.html" %}
 
     {% block content %}{% endblock content %}
 
@@ -42,7 +50,7 @@
       <script src="{% static 'assets/js/popper.min.js' %}"></script>
       <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
       <!-- You can alternatively load the minified version -->
-      <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+      <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     {% endblock scripts %}
 
     {% block extrascripts %}{% endblock extrascripts %}
