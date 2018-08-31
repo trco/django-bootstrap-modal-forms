@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.3.0 (2018-08-31)
+==================
+
+- support Django messages framework
+- fix redirection to success_url
+- update README.rst
+
 1.2.1 (2018-08-14)
 ==================
 
@@ -12,7 +19,7 @@ Changelog
 ==================
 
 - update formURL setup to support a dynamic setup of form's action attribute
-- support for Django UpdateView
+- support Django UpdateView
 - update README.rst
 
 1.1.0 (2018-08-11)
