@@ -5,7 +5,7 @@ Django Bootstrap Modal Forms
 A jQuery plugin for creating AJAX driven Django forms in Bootstrap modal.
 
 
-.. contents:: Table of contents
+.. contents:: **Table of contents**
    :local:
 
 Installation
