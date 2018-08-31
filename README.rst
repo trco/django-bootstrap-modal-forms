@@ -4,10 +4,6 @@ Django Bootstrap Modal Forms
 
 A jQuery plugin for creating AJAX driven Django forms in Bootstrap modal.
 
-
-.. contents:: **Table of contents**
-   :local:
-
 Installation
 ============
 
@@ -91,9 +87,9 @@ Define form's html and save it as Django template.
 
 - Bootstrap 4 modal elements are used in this example.
 - Button triggering the submission should have type attribute set to ``"button"`` and not ``"submit"``.
-- Add ``class="submit-btn"`` or custom ``submitBtn`` class (see `Options`_) to this button.
-- Form will POST to ``formURL`` defined in `Point #6`_.
-- Add ``class="invalid"`` or custom ``errorClass`` (see `Options`_) to the elements that wrap the fields.
+- Add ``class="submit-btn"`` or custom ``submitBtn`` class (see paragraph **Options**) to this button.
+- Form will POST to ``formURL`` defined in #6.
+- Add ``class="invalid"`` or custom ``errorClass`` (see paragraph **Options**) to the elements that wrap the fields.
 - ``class="invalid"`` acts as a flag for the fields having errors after the form has been POSTed.
 
 .. code-block:: html
@@ -155,7 +151,7 @@ Define a class-based view BookCreateView and inherit from built-in ``PassRequest
 4. URL for the view
 *******************
 
-Define URL for the view in `Point #3`.
+Define URL for the view in #3.
 
 .. code-block:: python
 
@@ -172,10 +168,10 @@ Define URL for the view in `Point #3`.
 
 Define the Bootstrap modal window and html element triggering modal opening.
 
-- Same modal window can be used for multiple ``modalForms`` in single template (see `Point #6`_).
-- Trigger element (in this example button with ``create-book`` class) is used for instantiation of ``modalForm`` in `Point #6`_.
+- Same modal window can be used for multiple ``modalForms`` in single template (see #6).
+- Trigger element (in this example button with ``create-book`` class) is used for instantiation of ``modalForm`` in #6.
 - Any element can be trigger element as long as ``modalForm`` is bound to it.
-- Click event on trigger element loads form's html from `Point #2`_ within ``<div class="modal-content"></div>`` and sets action attribute of the form to ``formURL`` set in `Point #6`_.
+- Click event on trigger element loads form's html from #2 within ``<div class="modal-content"></div>`` and sets action attribute of the form to ``formURL`` set in #6.
 
 .. code-block:: html+django
 
@@ -195,9 +191,9 @@ Define the Bootstrap modal window and html element triggering modal opening.
 6. modalForm
 ************
 
-Add script to the template from `Point #5`_ and bind the ``modalForm`` to the trigger element. Set BookCreateView URL defined in `Point #4`_ as ``formURL`` property of ``modalForm``.
+Add script to the template from #5 and bind the ``modalForm`` to the trigger element. Set BookCreateView URL defined in #4 as ``formURL`` property of ``modalForm``.
 
-- If you want to create **more modalForms in single template using the same modal window** from `Point #5`_, repeat steps `Point #1`_ to `Point #4`_, create new trigger element as in `Point #5`_ and bind the new ``modalForm`` with unique URL to it.
+- If you want to create **more modalForms in single template using the same modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new ``modalForm`` with unique URL to it.
 - Default values for ``modalID``, ``modalContent``, ``modalForm`` and ``errorClass`` are used in this example, while ``formURL`` is customized. If you customize any other option adjust the code of the above examples accordingly.
 
 .. code-block:: html
@@ -268,7 +264,7 @@ To see ``django-bootstrap-modal-forms`` in action clone the repository and run t
 Signup form in Bootstrap modal
 ******************************
 
-For explanation how all the parts of the code work together see `Usage`_. To test the working solution presented here clone and run `Examples`_.
+For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
 .. code-block:: python
 
@@ -380,7 +376,7 @@ For explanation how all the parts of the code work together see `Usage`_. To tes
 Login form in Bootstrap modal
 *****************************
 
-For explanation how all the parts of the code work together see `Usage`_. To test the working solution presented here clone and run `Examples`_.
+For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
 .. code-block:: python
 
@@ -488,7 +484,7 @@ For explanation how all the parts of the code work together see `Usage`_. To tes
 CRUD forms in Bootstrap modal
 *****************************
 
-For explanation how all the parts of the code work together see `Usage`_. To test the working solution presented here clone and run `Examples`_.
+For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
 .. code-block:: python
 
