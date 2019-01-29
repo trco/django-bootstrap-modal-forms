@@ -259,6 +259,8 @@ To see ``django-bootstrap-modal-forms`` in action clone the repository and run t
     $ git clone https://github.com/trco/django-bootstrap-modal-forms.git
     $ cd django-bootstrap-modal-forms
     $ cd examples
+    $ pip install -r requirements.txt
+    $ python manage.py migrate
     $ python manage.py runserver
 
 Signup form in Bootstrap modal
@@ -378,6 +380,13 @@ Login form in Bootstrap modal
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
+You can set the login redirection by setting the ``LOGIN_REDIRECT_URL`` in ``settings.py``.
+
+You can also set the custom login redirection by:
+
+1. Adding ``success_url`` to the ``extra_context`` of ``CustomLoginView``
+2. Setting this ``success_url`` variable as a value of the ``hidden input field`` with ``name="next"`` within the Login form html
+
 .. code-block:: python
 
     forms.py
@@ -425,6 +434,9 @@ For explanation how all the parts of the code work together see paragraph **Usag
             </div>
           </div>
         {% endfor %}
+
+        <!-- Hidden input field for custom redirection after successful login -->
+        <input type="hidden" name="next" value="{{ success_url }}">
       </div>
 
       <div class="modal-footer">
@@ -447,7 +459,7 @@ For explanation how all the parts of the code work together see paragraph **Usag
         authentication_form = CustomAuthenticationForm
         template_name = 'accounts/login.html'
         success_message = 'Success: You were successfully logged in.'
-        success_url = reverse_lazy('index')
+        extra_context = dict(success_url=reverse_lazy('index'))
 
 .. code-block:: python
 
