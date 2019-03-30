@@ -102,8 +102,8 @@
   <script type="text/javascript">
     $(function () {
       // Log in & Sign up buttons
-      $(".login-btn").modalForm({formURL: "{% url 'accounts:login' %}"});
-      $(".signup-btn").modalForm({formURL: "{% url 'accounts:signup' %}"});
+      $(".login-btn").modalForm({formURL: "{% url 'login' %}"});
+      $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
       // Create book button
       $(".create-book").modalForm({formURL: "{% url 'create_book' %}"});
@@ -121,6 +121,11 @@
       // Delete book buttons
       $(".delete-book").each(function () {
         $(this).modalForm({formURL: $(this).data('id')});
+      })
+
+      // Hide message
+      $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
       });
 
     });

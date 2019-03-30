@@ -65,17 +65,16 @@ Usage
 1. Form
 *******
 
-Define ModelForm and inherit from built-in mixins ``PopRequestMixin`` and ``CreateUpdateAjaxMixin``.
+Define ModelForm and inherit built-in form ``BSModalForm``.
 
 .. code-block:: python
 
     forms.py
 
-    from django import forms
     from .models import Book
-    from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
+    from bootstrap_modal_forms.forms import BSModalForm
 
-    class BookForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    class BookForm(BSModalForm):
         class Meta:
             model = Book
             fields = ['title', 'author', 'price']
@@ -128,22 +127,19 @@ Define form's html and save it as Django template.
 3. Class-based view
 *******************
 
-Define a class-based view BookCreateView and inherit from built-in ``PassRequestMixin``. BookCreateView processes the form defined in #1, uses the template defined in #2 and redirects to ``success_url`` showing ``success_message``.
+Define a class-based view BookCreateView and inherit from built-in generic view ``BSModalCreateView``. BookCreateView processes the form defined in #1, uses the template defined in #2 and redirects to ``success_url`` showing ``success_message``.
 
 .. code-block:: python
 
     views.py
 
-    from django.contrib.messages.views import SuccessMessageMixin
     from django.urls import reverse_lazy
-    from django.views import generic
     from .forms import BookForm
     from .models import Book
-    from bootstrap_modal_forms.mixins import PassRequestMixin
+    from bootstrap_modal_forms.generic import BSModalCreateView
 
-    class BookCreateView(PassRequestMixin, SuccessMessageMixin,
-                         generic.CreateView):
-        template_name = 'books/create_book.html'
+    class BookCreateView(BSModalCreateView):
+        template_name = 'examples/create_book.html'
         form_class = BookForm
         success_message = 'Success: Book was created.'
         success_url = reverse_lazy('index')
@@ -210,14 +206,14 @@ Add script to the template from #5 and bind the ``modalForm`` to the trigger ele
     });
     </script>
 
-Options
-=======
+modalForm options
+=================
 
 modalID
   Sets the custom id of the modal. ``Default: "#modal"``
 
 modalContent
-  Sets the custom class of the element to which the form's html is appended. ``Default: ".modal-content"``
+  Sets the custom class of the element to which the form's html is appended. If you change ``modalContent`` to the custom class, you should also change ``modalForm`` accordingly. ``Default: ".modal-content"``
 
 modalForm
   Sets the custom form selector. ``Default: ".modal-content form"``
@@ -231,10 +227,35 @@ errorClass
 submitBtn
   Sets the custom class for the button triggering form submission in modal. ``Default: ".submit-btn"``
 
+Generic views
+=============
+
+Import generic views with ``from bootstrap_modal_forms.generic import BSModalCreateView``.
+
+BSModalCreateView
+    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.CreateView.
+
+BSModalUpdateView
+    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.UpdateView.
+
+BSModalReadView
+    Inherits Django's generic.DetailView.
+
+BSModalDeleteView
+    Inherits DeleteAjaxMixin and Django's generic.DeleteView.
+
+Forms
+=====
+
+Import forms with ``from bootstrap_modal_forms.forms import BSModalForm``.
+
+BSModalForm
+    Inherits PopRequestMixin, CreateUpdateAjaxMixin and Django's forms.ModelForm.
+
 Mixins
 ======
 
-Import mixins with ``from bootstrap_modal_forms.mixins import *``.
+Import mixins with ``from bootstrap_modal_forms.mixins import PassRequestMixin``.
 
 PassRequestMixin
     Puts the request into the form's kwargs.
@@ -258,13 +279,12 @@ To see ``django-bootstrap-modal-forms`` in action clone the repository and run t
 
     $ git clone https://github.com/trco/django-bootstrap-modal-forms.git
     $ cd django-bootstrap-modal-forms
-    $ cd examples
     $ pip install -r requirements.txt
     $ python manage.py migrate
     $ python manage.py runserver
 
-Signup form in Bootstrap modal
-******************************
+Example 1: Signup form in Bootstrap modal
+*****************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
@@ -330,15 +350,13 @@ For explanation how all the parts of the code work together see paragraph **Usag
 
     views.py
 
-    from django.contrib.messages.views import SuccessMessageMixin
     from django.urls import reverse_lazy
-    from django.views import generic
-    from bootstrap_modal_forms.mixins import PassRequestMixin
+    from bootstrap_modal_forms.generic import BSModalCreateView
     from .forms import CustomUserCreationForm
 
-    class SignUpView(PassRequestMixin, SuccessMessageMixin, generic.CreateView):
+    class SignUpView(BSModalCreateView):
         form_class = CustomUserCreationForm
-        template_name = 'accounts/signup.html'
+        template_name = 'examples/signup.html'
         success_message = 'Success: Sign up succeeded. You can now Log in.'
         success_url = reverse_lazy('index')
 
@@ -370,13 +388,13 @@ For explanation how all the parts of the code work together see paragraph **Usag
     <script type="text/javascript">
       $(function () {
         // Sign up button
-        $(".signup-btn").modalForm({formURL: "{% url 'accounts:signup' %}"});
+        $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
       });
     </script>
 
-Login form in Bootstrap modal
-*****************************
+Example 2: Login form in Bootstrap modal
+****************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
@@ -449,15 +467,13 @@ You can also set the custom login redirection by:
 
     views.py
 
-    from django.contrib.auth.views import LoginView
-    from django.contrib.messages.views import SuccessMessageMixin
     from django.urls import reverse_lazy
-    from bootstrap_modal_forms.mixins import LoginAjaxMixin
+    from bootstrap_modal_forms.generic import BSModalLoginView
     from .forms import CustomAuthenticationForm
 
-    class CustomLoginView(LoginAjaxMixin, SuccessMessageMixin, LoginView):
+    class CustomLoginView(BSModalLoginView):
         authentication_form = CustomAuthenticationForm
-        template_name = 'accounts/login.html'
+        template_name = 'examples/login.html'
         success_message = 'Success: You were successfully logged in.'
         extra_context = dict(success_url=reverse_lazy('index'))
 
@@ -488,13 +504,13 @@ You can also set the custom login redirection by:
     <script type="text/javascript">
       $(function () {
         // Log in button
-        $(".login-btn").modalForm({formURL: "{% url 'accounts:login' %}"});
+        $(".login-btn").modalForm({formURL: "{% url 'login' %}"});
 
       });
     </script>
 
-CRUD forms in Bootstrap modal
-*****************************
+Example 3: CRUD forms in Bootstrap modal
+****************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
@@ -502,12 +518,11 @@ For explanation how all the parts of the code work together see paragraph **Usag
 
     forms.py
 
-    from django import forms
     from .models import Book
-    from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
+    from bootstrap_modal_forms.forms import BSModalForm
 
 
-    class BookForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    class BookForm(BSModalForm):
         class Meta:
             model = Book
             exclude = ['timestamp']
@@ -662,12 +677,14 @@ For explanation how all the parts of the code work together see paragraph **Usag
 
     views.py
 
-    from django.contrib.messages.views import SuccessMessageMixin
     from django.urls import reverse_lazy
     from django.views import generic
     from .forms import BookForm
     from .models import Book
-    from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
+    from bootstrap_modal_forms.generic import (BSModalCreateView,
+                                               BSModalUpdateView,
+                                               BSModalReadView,
+                                               BSModalDeleteView)
 
     class Index(generic.ListView):
         model = Book
@@ -675,31 +692,29 @@ For explanation how all the parts of the code work together see paragraph **Usag
         template_name = 'index.html'
 
     # Create
-    class BookCreateView(PassRequestMixin, SuccessMessageMixin,
-                         generic.CreateView):
-        template_name = 'books/create_book.html'
+    class BookCreateView(BSModalCreateView):
+        template_name = 'examples/create_book.html'
         form_class = BookForm
         success_message = 'Success: Book was created.'
         success_url = reverse_lazy('index')
 
     # Update
-    class BookUpdateView(PassRequestMixin, SuccessMessageMixin,
-                         generic.UpdateView):
+    class BookUpdateView(BSModalUpdateView):
         model = Book
-        template_name = 'books/update_book.html'
+        template_name = 'examples/update_book.html'
         form_class = BookForm
         success_message = 'Success: Book was updated.'
         success_url = reverse_lazy('index')
 
     # Read
-    class BookReadView(generic.DetailView):
+    class BookReadView(BSModalReadView):
         model = Book
-        template_name = 'books/read_book.html'
+        template_name = 'examples/read_book.html'
 
     # Delete
-    class BookDeleteView(DeleteAjaxMixin, generic.DeleteView):
+    class BookDeleteView(BSModalDeleteView):
         model = Book
-        template_name = 'books/delete_book.html'
+        template_name = 'examples/delete_book.html'
         success_message = 'Success: Book was deleted.'
         success_url = reverse_lazy('index')
 
