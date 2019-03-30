@@ -2,6 +2,13 @@
 Changelog
 =========
 
+1.3.2 (2019-03-30)
+==================
+
+- add generic views BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView, BSModalLoginView
+- add form BSModalForm
+- update README.rst
+
 1.3.1 (2018-08-31)
 ==================
 
