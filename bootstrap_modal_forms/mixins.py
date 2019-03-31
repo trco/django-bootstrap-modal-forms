@@ -1,6 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import (REDIRECT_FIELD_NAME, get_user_model, login
-                                 as auth_login)
+from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 
 
@@ -11,9 +10,9 @@ class PassRequestMixin(object):
     Note: Using this mixin requires you to pop the `request` kwarg
     out of the dict in the super of your form's `__init__`.
     """
+
     def get_form_kwargs(self):
         kwargs = super(PassRequestMixin, self).get_form_kwargs()
-        # Update the existing form kwargs dict with the request's user.
         kwargs.update({"request": self.request})
         return kwargs
 
@@ -27,6 +26,7 @@ class PopRequestMixin(object):
     expecting these kwargs to be passed in, so they must be popped off before
     anything else is done.
     """
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request", None)
         super(PopRequestMixin, self).__init__(*args, **kwargs)
@@ -36,6 +36,7 @@ class CreateUpdateAjaxMixin(object):
     """
     Mixin which passes or saves object based on request type.
     """
+
     def save(self, commit=True):
         if not self.request.is_ajax():
             instance = super(CreateUpdateAjaxMixin, self).save(commit=commit)
@@ -44,20 +45,21 @@ class CreateUpdateAjaxMixin(object):
         return instance
 
 
-class DeleteAjaxMixin(object):
+class DeleteMessageMixin(object):
     """
-    Mixin which deletes object if request is not ajax request.
+    Mixin which adds message to BSModalDeleteView.
     """
+
     def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            messages.success(request, self.success_message)
-        return super(DeleteAjaxMixin, self).delete(request, *args, **kwargs)
+        messages.success(request, self.success_message)
+        return super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
 
 
 class LoginAjaxMixin(object):
     """
     Mixin which authenticates user if request is not ajax request.
     """
+
     def form_valid(self, form):
         if not self.request.is_ajax():
             auth_login(self.request, form.get_user())
