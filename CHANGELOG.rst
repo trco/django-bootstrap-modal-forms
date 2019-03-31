@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.4.0 (2019-03-31)
+==================
+
+- add unit tests
+- change DeleteAjaxMixin to DeleteMessageMixin
+
 1.3.2 (2019-03-30)
 ==================
 

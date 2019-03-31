@@ -288,7 +288,7 @@ Tests
 
 Run tests inside of project folder::
 
-    $ python manage.py runserver
+    $ python manage.py test
 
 Example 1: Signup form in Bootstrap modal
 *****************************************
