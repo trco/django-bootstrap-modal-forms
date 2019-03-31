@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
-from .mixins import PassRequestMixin, DeleteAjaxMixin, LoginAjaxMixin
+from .mixins import PassRequestMixin, DeleteMessageMixin, LoginAjaxMixin
 
 
 class BSModalLoginView(LoginAjaxMixin, SuccessMessageMixin, LoginView):
@@ -22,5 +22,5 @@ class BSModalReadView(generic.DetailView):
     pass
 
 
-class BSModalDeleteView(DeleteAjaxMixin, generic.DeleteView):
+class BSModalDeleteView(DeleteMessageMixin, generic.DeleteView):
     pass

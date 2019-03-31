@@ -242,7 +242,7 @@ BSModalReadView
     Inherits Django's generic.DetailView.
 
 BSModalDeleteView
-    Inherits DeleteAjaxMixin and Django's generic.DeleteView.
+    Inherits DeleteMessageMixin and Django's generic.DeleteView.
 
 Forms
 =====
@@ -266,7 +266,7 @@ PopRequestMixin
 CreateUpdateAjaxMixin
     Saves or doesn't save the object based on the request type.
 
-DeleteAjaxMixin
+DeleteMessageMixin
     Deletes object if request is not ajax request.
 
 LoginAjaxMixin
@@ -281,6 +281,13 @@ To see ``django-bootstrap-modal-forms`` in action clone the repository and run t
     $ cd django-bootstrap-modal-forms
     $ pip install -r requirements.txt
     $ python manage.py migrate
+    $ python manage.py runserver
+
+Tests
+=====
+
+Run tests inside of project folder::
+
     $ python manage.py runserver
 
 Example 1: Signup form in Bootstrap modal
