@@ -19,6 +19,7 @@ class SignUpLoginTest(FunctionalTest):
 
         # Sign up modal opens
         modal = self.wait_for_modal()
+
         # User fills in and submits sign up form with misspelled second password
         form = modal.find_element_by_tag_name('form')
         username_field = form.find_element_by_id('id_username')
@@ -34,7 +35,7 @@ class SignUpLoginTest(FunctionalTest):
         error = modal.find_element_by_class_name('help-block').text
         self.assertEqual(error, 'The two password fields didn\'t match.')
 
-        # User fills in and submits signup form correctly
+        # User fills in and submits sign up form correctly
         form = modal.find_element_by_tag_name('form')
         password1_field = form.find_element_by_id('id_password1')
         password2_field = form.find_element_by_id('id_password2')
@@ -53,11 +54,12 @@ class SignUpLoginTest(FunctionalTest):
             'Success: Sign up succeeded. You can now Log in.'
         )
 
-        # User click Log in button
+        # User clicks log in button
         self.browser.find_element_by_class_name('login-btn').click()
 
         # Log in modal opens
         modal = self.wait_for_modal()
+
         # User fills in and submits log in form with misspelled username
         form = modal.find_element_by_tag_name('form')
         username_field = form.find_element_by_id('id_username')
@@ -74,7 +76,7 @@ class SignUpLoginTest(FunctionalTest):
             'Please enter a correct username and password. Note that both fields may be case-sensitive.'
         )
 
-        # User fills in and submits login form correctly
+        # User fills in and submits log in form correctly
         form = modal.find_element_by_tag_name('form')
         username_field = form.find_element_by_id('id_username')
         username_field.clear()
@@ -84,7 +86,7 @@ class SignUpLoginTest(FunctionalTest):
         login_btn = modal.find_element_by_class_name('submit-btn')
         login_btn.click()
 
-        # User sees logout button after page redirection
+        # User sees log out button after page redirection
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/')
         logout_btn_txt = self.browser.find_element_by_class_name('logout-btn').text
@@ -107,11 +109,13 @@ class CRUDActionsTest(FunctionalTest):
     def test_create_object(self):
         # User visits homepage
         self.browser.get(self.live_server_url)
-        # User clicks Create book button
+
+        # User clicks create book button
         self.browser.find_element_by_class_name('create-book').click()
 
         # Create book modal opens
         modal = self.wait_for_modal()
+
         # User fills in and submits the form with wrong date format
         form = modal.find_element_by_tag_name('form')
         title_field = form.find_element_by_id('id_title')
@@ -147,6 +151,7 @@ class CRUDActionsTest(FunctionalTest):
         # User sees success message after page redirection
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/')
+
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
         success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
         self.assertEqual(
@@ -157,7 +162,8 @@ class CRUDActionsTest(FunctionalTest):
         # User sees created book in table
         table_entries = self.wait_for_table_rows()
         self.assertEqual(len(table_entries), 2)
-        # Check content of second table entry excluding buttons
+
+        # Check content of second table entry
         self.check_table_row(table_entries[1], 7, [
             'Life of Jane Doe',
             'Jane Doe',
@@ -171,11 +177,13 @@ class CRUDActionsTest(FunctionalTest):
     def test_update_object(self):
         # User visits homepage
         self.browser.get(self.live_server_url)
-        # User clicks Update book button
+
+        # User clicks update book button
         self.browser.find_element_by_class_name('update-book').click()
 
         # Update book modal opens
         modal = self.wait_for_modal()
+
         # User changes price and book type
         form = modal.find_element_by_tag_name('form')
         title_field = form.find_element_by_id('id_title')
@@ -192,6 +200,7 @@ class CRUDActionsTest(FunctionalTest):
         # User sees success message after page redirection
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/')
+
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
         success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
         self.assertEqual(
@@ -202,7 +211,8 @@ class CRUDActionsTest(FunctionalTest):
         # User sees updated book in table
         table_entries = self.wait_for_table_rows()
         self.assertEqual(len(table_entries), 1)
-        # Check content of first table entry excluding buttons
+
+        # Check content of first table entry
         self.check_table_row(table_entries[0], 7, [
             'Life of Jane and John Doe',
             'John Doe',
@@ -216,11 +226,13 @@ class CRUDActionsTest(FunctionalTest):
     def test_read_object(self):
         # User visits homepage
         self.browser.get(self.live_server_url)
+
         # User clicks Read book button
         self.browser.find_element_by_class_name('read-book').click()
 
         # Read book modal opens
         modal = self.wait_for_modal()
+
         # User sees book content
         modal_body = modal.find_element_by_class_name('modal-body')
         divs = modal_body.find_elements_by_tag_name('div')
@@ -234,26 +246,29 @@ class CRUDActionsTest(FunctionalTest):
     def test_delete_object(self):
         # User visits homepage
         self.browser.get(self.live_server_url)
+
         # User clicks Delete book button
         self.browser.find_element_by_class_name('delete-book').click()
 
         # Delete book modal opens
         modal = self.wait_for_modal()
+
         # User sees modal content
         modal_body = modal.find_element_by_class_name('modal-body')
-        p = modal_body.find_element_by_tag_name('p')
+        delete_text = modal_body.find_element_by_class_name('delete-text').text
         self.assertEqual(
-            p.text,
+            delete_text,
             'Are you sure you want to delete book with title Life of John Doe?'
         )
 
         # User clicks delete button
-        delete_btn = modal.find_element_by_class_name('btn-danger')
+        delete_btn = modal.find_element_by_class_name('delete-btn')
         delete_btn.click()
 
         # User sees success message after page redirection
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/')
+
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
         success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
         self.assertEqual(
