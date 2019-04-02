@@ -35,7 +35,7 @@ class MixinsTest(TestCase):
         self.assertEqual(request_initial, request_in_form_instance)
 
         # Update object through BSModalUpdateView
-        response = self.client.post(f'/update/{self.book.id}')
+        response = self.client.post('/update/1')
         request_initial = response.wsgi_request
         request_in_form_instance = response.context_data['form'].request
 
@@ -95,7 +95,7 @@ class MixinsTest(TestCase):
 
         # First post request = ajax request checking if form in view is valid
         response = self.client.post(
-            f'/update/{self.book.id}',
+            '/update/1',
             data={
                 'title': 'Life of Jane and John Doe',
                 'publication_date': '2019-01-01',
@@ -118,7 +118,7 @@ class MixinsTest(TestCase):
 
         # Second post request = non-ajax request updating an object
         response = self.client.post(
-            f'/update/{self.book.id}',
+            '/update/1',
             data={
                 'title': 'Life of Jane and John Doe',
                 'publication_date': '2019-01-01',
@@ -142,7 +142,7 @@ class MixinsTest(TestCase):
         """
 
         # Request to delete view passes message to the response
-        response = self.client.post(f'/delete/{self.book.id}')
+        response = self.client.post('/delete/1')
         messages = get_messages(response.wsgi_request)
         self.assertEqual(len(messages), 1)
 
