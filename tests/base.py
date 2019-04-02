@@ -51,3 +51,29 @@ class FunctionalTest(StaticLiveServerTestCase):
                     raise e
                 # Wait for 0.5s and retry
                 time.sleep(0.5)
+
+    def wait_for_table_rows(self):
+        start_time = time.time()
+        # Infinite loop
+        while True:
+            try:
+                table = self.browser.find_element_by_tag_name('table')
+                tbody = table.find_element_by_tag_name('tbody')
+                # Slice removes tr in thead
+                trs = tbody.find_elements_by_tag_name('tr')
+                return trs
+            except (AssertionError, WebDriverException) as e:
+                # Return exception if more than 10s pass
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                # Wait for 0.5s and retry
+                time.sleep(0.5)
+
+    def check_table_row(self, table_row, cells_count, cells_values):
+        cells = table_row.find_elements_by_tag_name('td')
+        # Compare cells count in table row with expected value
+        self.assertEqual(len(cells), cells_count)
+        # Compare content of cells in table row with expected values
+        for i in range(len(cells_values)):
+            if cells_values[i] is not None:
+                self.assertEqual(cells[i].text, cells_values[i])
