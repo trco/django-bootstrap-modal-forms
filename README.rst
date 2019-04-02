@@ -286,7 +286,7 @@ To see ``django-bootstrap-modal-forms`` in action clone the repository and run t
 Tests
 =====
 
-Run tests inside of project folder::
+Run unit and functional tests inside of project folder::
 
     $ python manage.py test
 
