@@ -1,6 +1,6 @@
 /*
 django-bootstrap-modal-forms
-version : 1.4.1
+version : 1.4.2
 Copyright (c) 2018 Uros Trstenjak
 https://github.com/trco/django-bootstrap-modal-forms
 */
@@ -17,41 +17,39 @@ https://github.com/trco/django-bootstrap-modal-forms
         });
     };
 
+    // Submit form callback function
+    var submitForm = function(modalForm) {
+      $(modalForm).submit();
+    }
+
     // Add click listener to the submitBtn
     var ajaxSubmit = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
         $(submitBtn).on("click", function () {
-            // Check if form.is_valid() via ajax request
-            var formIsValid = isFormValid(modalID, modalContent, modalForm, formURL, errorClass);
-            if (formIsValid) {
-                // Submit form if form.is_valid()
-                $(modalForm).submit();
-            } else {
-                // Reinstantiate click listener on submitBtn
-                // Form is updated with errors in isFormValid(...) call
-                ajaxSubmit(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
-            }
+            // Check if form.is_valid() via ajax request when submitBtn is clicked
+            isFormValid(modalID, modalContent, modalForm, formURL, errorClass, submitBtn, submitForm);
         });
     };
 
-    // Check if form.is_valid()
-    var isFormValid = function (modalID, modalContent, modalForm, formURL, errorClass) {
-        var formIsValid = true;
+    // Check if form.is_valid() & either show errors or submit it
+    var isFormValid = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn, callback) {
         $.ajax({
             type: $(modalForm).attr("method"),
             url: $(modalForm).attr("action"),
-            async: false,
             // Serialize form data
             data: $(modalForm).serialize(),
             success: function (response) {
                 if ($(response).find(errorClass).length > 0) {
-                    formIsValid = false;
-                    // Update form with errors if not form.is_valid()
+                    // Form is not valid, update it with errors
                     $(modalID).find(modalContent).html(response);
                     $(modalForm).attr("action", formURL);
+                    // Reinstantiate click listener on submitBtn
+                    ajaxSubmit(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
+                } else {
+                    // Form is valid, submit it
+                    callback(modalForm);
                 }
             }
         });
-        return formIsValid;
     };
 
     $.fn.modalForm = function (options) {
