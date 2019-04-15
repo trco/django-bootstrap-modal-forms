@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.4.2 (2019-04-15)
+==================
+
+- change sync to async when validating form and fix warning: [Deprecation] Synchronous XMLHttpRequest on the main thread
+
 1.4.1 (2019-04-02)
 ==================
 
