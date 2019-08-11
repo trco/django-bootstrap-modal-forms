@@ -18,6 +18,9 @@ setup(
     url='https://github.com/trco/django-bootstrap-modal-forms',
     author='Uros Trstenjak',
     author_email='uros.trstenjak@gmail.com',
+    install_requires=[
+        'django>=1.11',
+    ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: Django',
