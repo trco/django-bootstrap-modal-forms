@@ -220,7 +220,7 @@ modalID
   Sets the custom id of the modal. ``Default: "#modal"``
 
 modalContent
-  Sets the custom class of the element to which the form's html is appended. If you change ``modalContent`` to the custom class, you should also change ``modalForm`` accordingly. ``Default: ".modal-content"``
+  Sets the custom class of the element to which the form's html is appended. If you change ``modalContent`` to the custom class, you should also change ``modalForm`` accordingly. To keep Bootstrap's modal style you should than copy Bootstrap's style for ``modal-content`` and set it to your new modalContent class. ``Default: ".modal-content"``
 
 modalForm
   Sets the custom form selector. ``Default: ".modal-content form"``

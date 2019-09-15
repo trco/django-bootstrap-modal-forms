@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-bootstrap-modal-forms',
-    version='1.4.2',
+    version='1.4.3',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
@@ -18,6 +18,9 @@ setup(
     url='https://github.com/trco/django-bootstrap-modal-forms',
     author='Uros Trstenjak',
     author_email='uros.trstenjak@gmail.com',
+    install_requires=[
+        'Django>=1.8',
+    ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: Django',
@@ -32,6 +35,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
 )
