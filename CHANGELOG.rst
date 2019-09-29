@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.4.4 (2019-09-29)
+==================
+
+- add support for Django development versions
+
 1.4.3 (2019-09-15)
 ==================
 

@@ -1,6 +1,6 @@
 /*
 django-bootstrap-modal-forms
-version : 1.4.3
+version : 1.4.4
 Copyright (c) 2019 Uros Trstenjak
 https://github.com/trco/django-bootstrap-modal-forms
 */
