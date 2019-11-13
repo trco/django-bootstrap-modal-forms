@@ -35,8 +35,10 @@ https://github.com/trco/django-bootstrap-modal-forms
         $.ajax({
             type: $(modalForm).attr("method"),
             url: $(modalForm).attr("action"),
+            processData: false,
+            contentType: false,
             // Serialize form data
-            data: $(modalForm).serialize(),
+            data: new FormData($(modalForm)[0]),
             success: function (response) {
                 if ($(response).find(errorClass).length > 0) {
                     // Form is not valid, update it with errors
