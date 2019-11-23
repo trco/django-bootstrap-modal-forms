@@ -9,24 +9,27 @@ https://github.com/trco/django-bootstrap-modal-forms
 
     // Open modal & load the form at formURL to the modalContent element
     var newForm = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
-        $(modalContent).load(formURL, function () {
+        $(modalID).find(modalContent).load(formURL, function () {
             $(modalID).modal("show");
             $(modalForm).attr("action", formURL);
             // Add click listener to the submitBtn
-            ajaxSubmit(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
+            addListeners(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
         });
     };
 
     // Submit form callback function
     var submitForm = function(modalForm) {
       $(modalForm).submit();
-    }
-
-    // Add click listener to the submitBtn
-    var ajaxSubmit = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
-        $(submitBtn).on("click", function () {
-            // Check if form.is_valid() via ajax request when submitBtn is clicked
+    };
+    
+    var addListeners = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
+        // submitBtn click listener
+        $(submitBtn).on("click", function (event) {
             isFormValid(modalID, modalContent, modalForm, formURL, errorClass, submitBtn, submitForm);
+        });
+        // modal close listener
+        $(modalID).on('hidden.bs.modal', function (event) {
+            $(modalForm).remove();
         });
     };
 
@@ -45,8 +48,8 @@ https://github.com/trco/django-bootstrap-modal-forms
                     // Form is not valid, update it with errors
                     $(modalID).find(modalContent).html(response);
                     $(modalForm).attr("action", formURL);
-                    // Reinstantiate click listener on submitBtn
-                    ajaxSubmit(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
+                    // Reinstantiate listeners
+                    addListeners(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
                 } else {
                     // Form is valid, submit it
                     callback(modalForm);

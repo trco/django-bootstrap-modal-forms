@@ -106,7 +106,7 @@
       $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
       // Create book button
-      $(".create-book").modalForm({formURL: "{% url 'create_book' %}"});
+      $(".create-book").modalForm({formURL: "{% url 'create_book' %}", modalID: "#create-modal"});
 
       // Update book buttons
       $(".update-book").each(function () {

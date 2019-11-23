@@ -38,12 +38,12 @@ class FunctionalTest(StaticLiveServerTestCase):
                 # Wait for 0.5s and retry
                 time.sleep(0.5)
 
-    def wait_for_modal(self):
+    def wait_for_modal(self, modalID):
         start_time = time.time()
         # Infinite loop
         while True:
             try:
-                modal = self.browser.find_element_by_class_name('modal')
+                modal = self.browser.find_element_by_id(modalID)
                 return modal
             except (AssertionError, WebDriverException) as e:
                 # Return exception if more than 10s pass

@@ -18,7 +18,7 @@ class SignUpLoginTest(FunctionalTest):
         self.browser.find_element_by_class_name('signup-btn').click()
 
         # Sign up modal opens
-        modal = self.wait_for_modal()
+        modal = self.wait_for_modal("modal")
 
         # User fills in and submits sign up form with misspelled second password
         form = modal.find_element_by_tag_name('form')
@@ -58,7 +58,7 @@ class SignUpLoginTest(FunctionalTest):
         self.browser.find_element_by_class_name('login-btn').click()
 
         # Log in modal opens
-        modal = self.wait_for_modal()
+        modal = self.wait_for_modal("modal")
 
         # User fills in and submits log in form with misspelled username
         form = modal.find_element_by_tag_name('form')
@@ -114,7 +114,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.find_element_by_class_name('create-book').click()
 
         # Create book modal opens
-        modal = self.wait_for_modal()
+        modal = self.wait_for_modal("create-modal")
 
         # User fills in and submits the form with wrong date format
         form = modal.find_element_by_tag_name('form')
@@ -182,7 +182,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.find_element_by_class_name('update-book').click()
 
         # Update book modal opens
-        modal = self.wait_for_modal()
+        modal = self.wait_for_modal("modal")
 
         # User changes price and book type
         form = modal.find_element_by_tag_name('form')
@@ -231,7 +231,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.find_element_by_class_name('read-book').click()
 
         # Read book modal opens
-        modal = self.wait_for_modal()
+        modal = self.wait_for_modal("modal")
 
         # User sees book content
         modal_body = modal.find_element_by_class_name('modal-body')
@@ -251,7 +251,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.find_element_by_class_name('delete-book').click()
 
         # Delete book modal opens
-        modal = self.wait_for_modal()
+        modal = self.wait_for_modal("modal")
 
         # User sees modal content
         modal_body = modal.find_element_by_class_name('modal-body')
