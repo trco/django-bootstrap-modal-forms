@@ -37,6 +37,9 @@ https://github.com/trco/django-bootstrap-modal-forms
             url: $(modalForm).attr("action"),
             // Serialize form data
             data: $(modalForm).serialize(),
+            beforeSend: function() {
+                $(submitBtn).prop("disabled", true);
+            },
             success: function (response) {
                 if ($(response).find(errorClass).length > 0) {
                     // Form is not valid, update it with errors
