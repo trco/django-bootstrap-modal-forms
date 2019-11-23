@@ -1,4 +1,4 @@
-Copyright (c) 2018 Uroš Trstenjak
+Copyright (c) 2019 Uroš Trstenjak
 
 MIT License
 

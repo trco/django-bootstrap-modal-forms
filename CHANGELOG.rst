@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.5.0 (2019-11-23)
+==================
+
+- disable submitBtn after submission
+- add support for multiple modals with unique ids on single page
+
 1.4.4 (2019-09-29)
 ==================
 
