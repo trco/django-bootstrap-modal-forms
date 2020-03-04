@@ -176,6 +176,8 @@ Define the Bootstrap modal window and html element triggering modal opening.
 - Any element can be trigger element as long as ``modalForm`` is bound to it.
 - Click event on trigger element loads form's html from #2 within ``<div class="modal-content"></div>`` and sets action attribute of the form to ``formURL`` set in #6.
 
+NOTE: You cannot use more than one modal on the page that you are including this on. Even if the modal is unrelated and has different id's.
+
 .. code-block:: html+django
 
     index.html
