@@ -2,19 +2,27 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
 
+from examples.models import Vat
 from examples.models import Book
 
 
 class MixinsTest(TestCase):
 
     def setUp(self):
+        self.vat_1 = Vat.objects.create(
+            vat_percentage=28
+        )
+        self.vat_2 = Vat.objects.create(
+            vat_percentage=13
+        )
         self.book = Book.objects.create(
             title='Life of Jane Doe',
             publication_date='2019-01-01',
             author='Jane Doe',
             price=29.99,
             pages=477,
-            book_type=2
+            book_type=2,
+            vat=self.vat_1
         )
         self.user = User.objects.create_user(
             username='user',
@@ -56,7 +64,8 @@ class MixinsTest(TestCase):
                 'price': 19.99,
                 'pages': 449,
                 # Wrong value
-                'book_type': 'wrong_value'
+                'book_type': 'wrong_value',
+                'vat': 1
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
@@ -78,7 +87,8 @@ class MixinsTest(TestCase):
                 'author': 'John Doe',
                 'price': 19.99,
                 'pages': 449,
-                'book_type': 1
+                'book_type': 1,
+                'vat': 1
             }
         )
 
@@ -103,7 +113,8 @@ class MixinsTest(TestCase):
                 'price': 29.99,
                 'pages': 477,
                 # Wrong value
-                'book_type': 'wrong_value'
+                'book_type': 'wrong_value',
+                'vat': 1
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
@@ -125,7 +136,8 @@ class MixinsTest(TestCase):
                 'author': 'Jane Doe',
                 'price': 29.99,
                 'pages': 477,
-                'book_type': 2
+                'book_type': 2,
+                'vat': 1
             },
         )
 
@@ -140,11 +152,22 @@ class MixinsTest(TestCase):
         """
         Delete object through BSModalDeleteView.
         """
+        
+        response = self.client.post('/delete_vat/1')
+        messages = get_messages(response.wsgi_request)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(list(iter(messages))[0]), 'Can not remove this item, has a relation in the database.')
+        
+        response = self.client.post('/delete_vat/2')
+        messages = get_messages(response.wsgi_request)
+        self.assertEqual(str(list(iter(messages))[1]), 'Success: Vat was deleted.')
 
         # Request to delete view passes message to the response
         response = self.client.post('/delete/1')
         messages = get_messages(response.wsgi_request)
-        self.assertEqual(len(messages), 1)
+        self.assertEqual(len(messages), 3)
+        self.assertEqual(str(list(iter(messages))[2]), 'Success: Book was deleted.')
+
 
     def test_LoginAjaxMixin(self):
         """

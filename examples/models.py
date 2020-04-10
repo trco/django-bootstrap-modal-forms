@@ -1,6 +1,9 @@
 from django.db import models
 
 
+class Vat(models.Model):
+    vat_percentage = models.IntegerField()
+
 class Book(models.Model):
     HARDCOVER = 1
     PAPERBACK = 2
@@ -16,5 +19,5 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     pages = models.IntegerField(blank=True, null=True)
     book_type = models.PositiveSmallIntegerField(choices=BOOK_TYPES)
-
+    vat = models.ForeignKey(Vat, on_delete=models.PROTECT, blank=True, null=True)
     timestamp = models.DateField(auto_now_add=True, auto_now=False)

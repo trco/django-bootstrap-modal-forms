@@ -51,13 +51,15 @@ class DeleteMessageMixin(object):
     Catch exceptions fired up by "on_delete=models.PROTECT" in the model fields.
     """
 
-    try:
-        httpResponse = super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
-        messages.success(request, self.success_message)
-        return httpResponse
-    except ProtectedError:
-        messages.error(request, "Can not remove this item, has a relation in the database.")
-        return HttpResponseRedirect(self.success_url)
+    def post(self, request, *args, **kwargs):
+        try:
+            httpResponse = super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
+            messages.success(request, self.success_message)
+            return httpResponse
+        except ProtectedError:
+            messages.error(request, "Can not remove this item, has a relation in the database.")
+            return HttpResponseRedirect(self.success_url)
+    
 
 
 class LoginAjaxMixin(object):
