@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
-
+from django.db.models import ProtectedError
 
 class PassRequestMixin(object):
     """
@@ -48,11 +48,18 @@ class CreateUpdateAjaxMixin(object):
 class DeleteMessageMixin(object):
     """
     Mixin which adds message to BSModalDeleteView.
+    Catch exceptions fired up by "on_delete=models.PROTECT" in the model fields.
     """
 
     def post(self, request, *args, **kwargs):
-        messages.success(request, self.success_message)
-        return super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
+        try:
+            httpResponse = super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
+            messages.success(request, self.success_message)
+            return httpResponse
+        except ProtectedError:
+            messages.error(request, "Can not remove this item, has a relation in the database.")
+            return HttpResponseRedirect(self.success_url)
+    
 
 
 class LoginAjaxMixin(object):

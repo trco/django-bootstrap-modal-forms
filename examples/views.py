@@ -8,7 +8,7 @@ from bootstrap_modal_forms.generic import (BSModalLoginView,
                                            BSModalDeleteView)
 
 from .forms import BookForm, CustomUserCreationForm, CustomAuthenticationForm
-from .models import Book
+from .models import Book, Vat
 
 
 class Index(generic.ListView):
@@ -43,7 +43,12 @@ class BookDeleteView(BSModalDeleteView):
     success_message = 'Success: Book was deleted.'
     success_url = reverse_lazy('index')
 
-
+class VatDeleteView(BSModalDeleteView):
+    model = Vat
+    template_name = 'examples/delete_vat.html'
+    success_message = 'Success: Vat was deleted.'
+    success_url = reverse_lazy('index')
+    
 class SignUpView(BSModalCreateView):
     form_class = CustomUserCreationForm
     template_name = 'examples/signup.html'
