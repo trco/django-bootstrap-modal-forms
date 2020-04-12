@@ -72,16 +72,16 @@ Usage
 1. Form
 *******
 
-Define ModelForm and inherit built-in form ``BSModalForm``.
+Define BookModelForm and inherit built-in form ``BSModalModelForm``.
 
 .. code-block:: python
 
     forms.py
 
     from .models import Book
-    from bootstrap_modal_forms.forms import BSModalForm
+    from bootstrap_modal_forms.forms import BSModalModelForm
 
-    class BookForm(BSModalForm):
+    class BookModelForm(BSModalModelForm):
         class Meta:
             model = Book
             fields = ['title', 'author', 'price']
@@ -141,13 +141,13 @@ Define a class-based view BookCreateView and inherit from built-in generic view 
     views.py
 
     from django.urls import reverse_lazy
-    from .forms import BookForm
+    from .forms import BookModelForm
     from .models import Book
     from bootstrap_modal_forms.generic import BSModalCreateView
 
     class BookCreateView(BSModalCreateView):
         template_name = 'examples/create_book.html'
-        form_class = BookForm
+        form_class = BookModelForm
         success_message = 'Success: Book was created.'
         success_url = reverse_lazy('index')
 
@@ -254,9 +254,9 @@ BSModalDeleteView
 Forms
 =====
 
-Import forms with ``from bootstrap_modal_forms.forms import BSModalForm``.
+Import forms with ``from bootstrap_modal_forms.forms import BSModalModelForm``.
 
-BSModalForm
+BSModalModelForm
     Inherits PopRequestMixin, CreateUpdateAjaxMixin and Django's forms.ModelForm.
 
 Mixins
@@ -533,10 +533,10 @@ For explanation how all the parts of the code work together see paragraph **Usag
     forms.py
 
     from .models import Book
-    from bootstrap_modal_forms.forms import BSModalForm
+    from bootstrap_modal_forms.forms import BSModalModelForm
 
 
-    class BookForm(BSModalForm):
+    class BookModelForm(BSModalModelForm):
         class Meta:
             model = Book
             exclude = ['timestamp']
@@ -693,7 +693,7 @@ For explanation how all the parts of the code work together see paragraph **Usag
 
     from django.urls import reverse_lazy
     from django.views import generic
-    from .forms import BookForm
+    from .forms import BookModelForm
     from .models import Book
     from bootstrap_modal_forms.generic import (BSModalCreateView,
                                                BSModalUpdateView,
@@ -708,7 +708,7 @@ For explanation how all the parts of the code work together see paragraph **Usag
     # Create
     class BookCreateView(BSModalCreateView):
         template_name = 'examples/create_book.html'
-        form_class = BookForm
+        form_class = BookModelForm
         success_message = 'Success: Book was created.'
         success_url = reverse_lazy('index')
 
@@ -716,7 +716,7 @@ For explanation how all the parts of the code work together see paragraph **Usag
     class BookUpdateView(BSModalUpdateView):
         model = Book
         template_name = 'examples/update_book.html'
-        form_class = BookForm
+        form_class = BookModelForm
         success_message = 'Success: Book was updated.'
         success_url = reverse_lazy('index')
 

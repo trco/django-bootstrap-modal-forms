@@ -3,19 +3,19 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
-from bootstrap_modal_forms.forms import BSModalForm, BSForm
+from bootstrap_modal_forms.forms import BSModalModelForm, BSModalForm
 
 from .models import Book
 
 
-class SimpleForm(BSForm):
+class SimpleModalForm(BSModalForm):
     comment = forms.CharField(label="Enter your comment")
 
     class Meta:
         fields = ["comment"]
 
 
-class BookForm(BSModalForm):
+class BookModelForm(BSModalModelForm):
     publication_date = forms.DateField(
         error_messages={"invalid": "Enter a valid date in YYYY-MM-DD format."}
     )

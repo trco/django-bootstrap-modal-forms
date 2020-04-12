@@ -8,9 +8,9 @@ from bootstrap_modal_forms.generic import (
     BSModalUpdateView,
     BSModalReadView,
     BSModalDeleteView,
-    BSModalView,
+    BSModalFormView,
 )
-from .forms import SimpleForm, BookForm, CustomUserCreationForm, CustomAuthenticationForm
+from .forms import SimpleModalForm, BookModelForm, CustomUserCreationForm, CustomAuthenticationForm
 from .models import Book
 
 
@@ -20,16 +20,16 @@ class Index(generic.ListView):
     template_name = "index.html"
 
 
-class SimpleView(SuccessMessageMixin, BSModalView):
+class SimpleFormView(SuccessMessageMixin, BSModalFormView):
     template_name = "examples/simple.html"
-    form_class = SimpleForm
+    form_class = SimpleModalForm
     success_message = "Success: your comment '%(comment)s' was taken into account!"
     success_url = reverse_lazy("index")
 
 
 class BookCreateView(BSModalCreateView):
     template_name = "examples/create_book.html"
-    form_class = BookForm
+    form_class = BookModelForm
     success_message = "Success: Book was created."
     success_url = reverse_lazy("index")
 
@@ -37,7 +37,7 @@ class BookCreateView(BSModalCreateView):
 class BookUpdateView(BSModalUpdateView):
     model = Book
     template_name = "examples/update_book.html"
-    form_class = BookForm
+    form_class = BookModelForm
     success_message = "Success: Book was updated."
     success_url = reverse_lazy("index")
 

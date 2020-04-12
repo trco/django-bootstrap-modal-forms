@@ -18,7 +18,7 @@ class BSModalLoginView(LoginAjaxMixin, SuccessMessageMixin, LoginView):
     pass
 
 
-class BSModalView(PassRequestMixin, generic.FormView):
+class BSModalFormView(PassRequestMixin, generic.FormView):
     pass
 
 
