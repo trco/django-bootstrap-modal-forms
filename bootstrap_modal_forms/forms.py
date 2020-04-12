@@ -2,7 +2,7 @@ from django import forms
 from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
 
 
-class BSForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Form):
+class BSForm(PopRequestMixin, forms.Form):
     pass
 
 
