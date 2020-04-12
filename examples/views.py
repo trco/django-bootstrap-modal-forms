@@ -10,7 +10,12 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView,
     BSModalFormView,
 )
-from .forms import SimpleModalForm, BookModelForm, CustomUserCreationForm, CustomAuthenticationForm
+from .forms import (
+    SimpleModalForm,
+    BookModelForm,
+    CustomUserCreationForm,
+    CustomAuthenticationForm,
+)
 from .models import Book
 
 
