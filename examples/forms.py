@@ -9,7 +9,7 @@ from .models import Book
 
 
 class SimpleForm(BSForm):
-    comment = forms.CharField(label="Enter a comment")
+    comment = forms.CharField(label="Enter your comment")
 
     class Meta:
         fields = ["comment"]
