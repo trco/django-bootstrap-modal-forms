@@ -1,8 +1,10 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import ui, expected_conditions
 from selenium.webdriver.support.select import Select
 
-from .base import FunctionalTest
 from examples.models import Book
+from .base import FunctionalTest
 
 
 class SimpleFormTest(FunctionalTest):
@@ -120,7 +122,10 @@ class SignUpLoginTest(FunctionalTest):
 
 class CRUDActionsTest(FunctionalTest):
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        # capabilities = {'chromeOptions': {'useAutomationExtension': False}}
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('useAutomationExtension', False)
+        self.browser = webdriver.Chrome(options=options)
         self.book = Book.objects.create(
             title='Life of John Doe',
             publication_date='2017-02-02',
@@ -190,6 +195,31 @@ class CRUDActionsTest(FunctionalTest):
             7,
             ['Life of Jane Doe', 'Jane Doe', 'Hardcover', 'Jan. 1, 2019', '464', '21.00', None],
         )
+
+    def test_filter_object(self):
+        # User visits homepage
+        self.browser.get(self.live_server_url)
+
+        # User clicks filter book button
+        self.browser.find_element_by_class_name('filter-book').click()
+
+        # Update filter modal opens
+        modal = self.wait_for_modal('modal')
+
+        # User changes price and book type
+        form = modal.find_element_by_tag_name('form')
+        book_type = ui.WebDriverWait(self.browser, 10000).until(expected_conditions.element_to_be_clickable((By.ID, 'id_type')))
+        book_type = self.wait_for_element(element_id="id_type")
+
+        book_type_select = Select(book_type)
+        book_type_select.select_by_index(2)
+
+        filter_btn = modal.find_element_by_class_name('submit-btn')
+        filter_btn.click()
+
+        # User is redirected to the index with a querystring with the filter
+        redirect_url = self.browser.current_url
+        self.assertRegex(redirect_url, '/?type=3$')
 
     def test_update_object(self):
         # User visits homepage
