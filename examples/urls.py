@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
     path('simple/', views.SimpleFormView.as_view(), name='simple'),
+    path('filter/', views.BookFilterView.as_view(), name='filter_book'),
     path('create/', views.BookCreateView.as_view(), name='create_book'),
     path('update/<int:pk>', views.BookUpdateView.as_view(), name='update_book'),
     path('read/<int:pk>', views.BookReadView.as_view(), name='read_book'),

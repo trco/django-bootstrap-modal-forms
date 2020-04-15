@@ -11,7 +11,7 @@
         <h4>
           <strong>1. Simple form</strong>
         </h4>
-        <p>The simples form with a Bootstrap modal.</p>
+        <p>The simplest form with a Bootstrap modal.</p>
         <div class="row">
           <div class="col-12 mb-3">
             <button class="simple-btn btn btn-primary" type="button" name="button">Send comment</button>
@@ -53,6 +53,8 @@
           <div class="col-12 mb-3">
             <button class="create-book btn btn-primary" type="button" name="button">
               <span class="fa fa-plus mr-2"></span>Create book</button>
+            <button class="filter-book bs-modal btn btn-primary" type="button" name="button" data-form-url="{% url 'filter_book' %}">
+              <span class="fa fa-filter mr-2"></span>Filter books</button>
           </div>
           <div class="col-12 mb-3">
             {% if books %}

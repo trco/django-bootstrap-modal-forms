@@ -2,9 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
 from bootstrap_modal_forms.forms import BSModalModelForm, BSModalForm
-
+from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
 from .models import Book
 
 
@@ -13,6 +12,13 @@ class SimpleModalForm(BSModalForm):
 
     class Meta:
         fields = ['comment']
+
+
+class BookFilterForm(BSModalForm):
+    type = forms.ChoiceField(choices=Book.BOOK_TYPES)
+
+    class Meta:
+        fields = ["type", "clear"]
 
 
 class BookModelForm(BSModalModelForm):
