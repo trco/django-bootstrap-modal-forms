@@ -29,14 +29,14 @@ class SimpleFormView(SuccessMessageMixin, BSModalFormView):
     template_name = 'examples/simple.html'
     form_class = SimpleModalForm
     success_message = 'Success: your comment \'%(comment)s\' was taken into account!'
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy('index')
 
 
 class BookCreateView(BSModalCreateView):
     template_name = 'examples/create_book.html'
     form_class = BookModelForm
     success_message = 'Success: Book was created.'
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy('index')
 
 
 class BookUpdateView(BSModalUpdateView):

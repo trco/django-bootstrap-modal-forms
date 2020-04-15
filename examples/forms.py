@@ -9,29 +9,29 @@ from .models import Book
 
 
 class SimpleModalForm(BSModalForm):
-    comment = forms.CharField(label="Enter your comment")
+    comment = forms.CharField(label='Enter your comment')
 
     class Meta:
-        fields = ["comment"]
+        fields = ['comment']
 
 
 class BookModelForm(BSModalModelForm):
     publication_date = forms.DateField(
-        error_messages={"invalid": "Enter a valid date in YYYY-MM-DD format."}
+        error_messages={'invalid': 'Enter a valid date in YYYY-MM-DD format.'}
     )
 
     class Meta:
         model = Book
-        exclude = ["timestamp"]
+        exclude = ['timestamp']
 
 
 class CustomUserCreationForm(PopRequestMixin, CreateUpdateAjaxMixin, UserCreationForm):
     class Meta:
         model = User
-        fields = ["username", "password1", "password2"]
+        fields = ['username', 'password1', 'password2']
 
 
 class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
-        fields = ["username", "password"]
+        fields = ['username', 'password']
