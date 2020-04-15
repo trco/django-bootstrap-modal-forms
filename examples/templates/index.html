@@ -80,16 +80,15 @@
                       <td class="text-center">{{ book.pages }}</td>
                       <td class="text-center">{{ book.price }}</td>
                       <td class="text-center">
-                        <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'read_book' book.pk %}">
+                        <button type="button" class="read-book bs-modal btn btn-sm btn-primary" data-form-url="{% url 'read_book' book.pk %}">
                           <span class="fa fa-eye"></span>
                         </button>
-                        <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'update_book' book.pk %}">
+                        <button type="button" class="update-book bs-modal btn btn-sm btn-primary" data-form-url="{% url 'update_book' book.pk %}">
                           <span class="fa fa-pencil"></span>
                         </button>
-                        <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'delete_book' book.pk %}">
+                        <button type="button" class="delete-book bs-modal btn btn-sm btn-danger" data-form-url="{% url 'delete_book' book.pk %}">
                           <span class="fa fa-trash"></span>
                         </button>
-                        <!--<button type="button" class="delete-book btn btn-sm btn-danger" data-toggle="modal" data-target="#modal" data-id="{% url 'delete_book' book.pk %}"> <span class="fa fa-trash" aria-label="Delete"></span> </button>-->
                       </td>
                     </tr>
                   {% endfor %}
@@ -111,27 +110,19 @@
   <script type="text/javascript">
     $(function () {
       // Log in & Sign up buttons
+      // The formURL is given explicitly
       $(".simple-btn").modalForm({formURL: "{% url 'simple' %}"});
       $(".login-btn").modalForm({formURL: "{% url 'login' %}"});
       $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
-      // Create book button
+      // Create buttons with the bs-modal class, uses the <div> with id="modal" (default)
+      // The formURL is retrieved from the data of the element
+      $(".bs-modal").each(function () {
+        $(this).modalForm({formURL: $(this).data('form-url')});
+      });
+
+      // Create book button, uses the <div> with id="create-modal"
       $(".create-book").modalForm({formURL: "{% url 'create_book' %}", modalID: "#create-modal"});
-
-      // Update book buttons
-      $(".update-book").each(function () {
-        $(this).modalForm({formURL: $(this).data('id')});
-      });
-
-      // Read book buttons
-      $(".read-book").each(function () {
-        $(this).modalForm({formURL: $(this).data('id')});
-      });
-
-      // Delete book buttons
-      $(".delete-book").each(function () {
-        $(this).modalForm({formURL: $(this).data('id')});
-      })
 
       // Hide message
       $(".alert").fadeTo(2000, 500).slideUp(500, function(){
