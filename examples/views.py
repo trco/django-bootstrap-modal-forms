@@ -11,7 +11,6 @@ from bootstrap_modal_forms.generic import (
     BSModalFormView,
 )
 from .forms import (
-    SimpleModalForm,
     BookModelForm,
     CustomUserCreationForm,
     CustomAuthenticationForm,
@@ -29,13 +28,6 @@ class Index(generic.ListView):
         if 'type' in self.request.GET:
             qs = qs.filter(book_type=int(self.request.GET['type']))
         return qs
-
-
-class SimpleFormView(SuccessMessageMixin, BSModalFormView):
-    template_name = 'examples/simple.html'
-    form_class = SimpleModalForm
-    success_message = 'Success: your comment \'%(comment)s\' was taken into account!'
-    success_url = reverse_lazy('index')
 
 
 class BookFilterView(BSModalFormView):
