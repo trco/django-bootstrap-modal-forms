@@ -890,8 +890,8 @@ Your view should inherit from ``BSModalFormView``, a view handling properly form
                 self.filter = f'?type={form.cleaned_data["type"]}'
 
             # call the base form_valid (that will call the get_success_url)
-            resp = super().form_valid(form)
-            return resp
+            response = super().form_valid(form)
+            return response
 
         def get_success_url(self):
             return reverse_lazy('index') + self.filter

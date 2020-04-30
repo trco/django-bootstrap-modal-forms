@@ -48,11 +48,11 @@ class BookFilterView(BSModalFormView):
             self.filter = ''
         else:
             # the user has filtered the list of books
-            self.filter = f'?type={form.cleaned_data["type"]}'
+            self.filter = '?type=' + form.cleaned_data["type"]
 
         # call the base form_valid (that will call the get_success_url)
-        resp = super().form_valid(form)
-        return resp
+        response = super().form_valid(form)
+        return response
 
     def get_success_url(self):
         return reverse_lazy('index') + self.filter
