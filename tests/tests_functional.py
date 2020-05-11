@@ -1,39 +1,7 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import ui, expected_conditions
 from selenium.webdriver.support.select import Select
 
 from examples.models import Book
 from .base import FunctionalTest
-
-
-class SimpleFormTest(FunctionalTest):
-    def test_signup_login(self):
-        # User visits homepage and checks the content
-        self.browser.get(self.live_server_url)
-
-        # User clicks the send comment button
-        self.browser.find_element_by_class_name('simple-btn').click()
-
-        # Create book modal opens
-        modal = self.wait_for_modal('modal')
-
-        # User add a comment
-        form = modal.find_element_by_tag_name('form')
-        comment_field = form.find_element_by_id('id_comment')
-        comment_field.clear()
-        comment_field.send_keys('What a great package!')
-
-        update_btn = modal.find_element_by_class_name('submit-btn')
-        update_btn.click()
-
-        # User sees success message after page redirection
-        redirect_url = self.browser.current_url
-        self.assertRegex(redirect_url, '/')
-
-        # Slice removes '\nx' since alert is dismissible and contains 'times' button
-        success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
-        self.assertEqual(success_msg, 'Success: your comment \'What a great package!\' was taken into account!')
 
 
 class SignUpLoginTest(FunctionalTest):
@@ -45,10 +13,10 @@ class SignUpLoginTest(FunctionalTest):
         self.assertIn('django-bootstrap-modal-forms', header_text)
 
         # User clicks Sign up button
-        self.browser.find_element_by_class_name('signup-btn').click()
+        self.browser.find_element_by_id('signup-btn').click()
 
         # Sign up modal opens
-        modal = self.wait_for_modal('modal')
+        modal = self.wait_for(element_id='modal')
 
         # User fills in and submits sign up form with misspelled second password
         form = modal.find_element_by_tag_name('form')
@@ -78,14 +46,14 @@ class SignUpLoginTest(FunctionalTest):
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/')
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
-        success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
+        success_msg = self.wait_for(class_name='alert').text[:-2]
         self.assertEqual(success_msg, 'Success: Sign up succeeded. You can now Log in.')
 
         # User clicks log in button
-        self.browser.find_element_by_class_name('login-btn').click()
+        self.browser.find_element_by_id('login-btn').click()
 
         # Log in modal opens
-        modal = self.wait_for_modal('modal')
+        modal = self.wait_for(element_id='modal')
 
         # User fills in and submits log in form with misspelled username
         form = modal.find_element_by_tag_name('form')
@@ -97,7 +65,7 @@ class SignUpLoginTest(FunctionalTest):
         login_btn.click()
 
         # User sees error in form
-        error = modal.find_element_by_class_name('invalid').text
+        error = self.wait_for(class_name='invalid').text
         self.assertEqual(
             error,
             'Please enter a correct username and password. Note that both fields may be case-sensitive.',
@@ -114,18 +82,15 @@ class SignUpLoginTest(FunctionalTest):
         login_btn.click()
 
         # User sees log out button after page redirection
+        logout_btn_txt = self.wait_for(element_id='logout-btn').text
+        self.assertEqual(logout_btn_txt, 'Log out')
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/')
-        logout_btn_txt = self.browser.find_element_by_class_name('logout-btn').text
-        self.assertEqual(logout_btn_txt, 'Log out')
 
 
 class CRUDActionsTest(FunctionalTest):
     def setUp(self):
-        # capabilities = {'chromeOptions': {'useAutomationExtension': False}}
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option('useAutomationExtension', False)
-        self.browser = webdriver.Chrome(options=options)
+        super().setUp()
         self.book = Book.objects.create(
             title='Life of John Doe',
             publication_date='2017-02-02',
@@ -140,13 +105,13 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks create book button
-        self.browser.find_element_by_class_name('create-book').click()
+        self.browser.find_element_by_id('create-book').click()
 
         # Create book modal opens
-        modal = self.wait_for_modal('create-modal')
+        modal = self.wait_for(element_id='create-modal')
 
         # User fills in and submits the form with wrong date format
-        form = modal.find_element_by_tag_name('form')
+        form = self.wait_for(tag='form')
         title_field = form.find_element_by_id('id_title')
         publication_date_field = form.find_element_by_id('id_publication_date')
         author_field = form.find_element_by_id('id_author')
@@ -165,8 +130,10 @@ class CRUDActionsTest(FunctionalTest):
         create_btn = modal.find_element_by_class_name('submit-btn')
         create_btn.click()
 
+        self.wait_for(class_name='help-block')
+
         # User sees error in form
-        error = modal.find_element_by_class_name('help-block').text
+        error = self.wait_for(class_name='help-block').text
         self.assertEqual(error, 'Enter a valid date in YYYY-MM-DD format.')
 
         # User corrects the date and submits the form
@@ -182,7 +149,7 @@ class CRUDActionsTest(FunctionalTest):
         self.assertRegex(redirect_url, '/')
 
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
-        success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
+        success_msg = self.wait_for(class_name='alert').text[:-2]
         self.assertEqual(success_msg, 'Success: Book was created.')
 
         # User sees created book in table
@@ -201,16 +168,13 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks filter book button
-        self.browser.find_element_by_class_name('filter-book').click()
+        self.wait_for(element_id='filter-book').click()
 
         # Update filter modal opens
-        modal = self.wait_for_modal('modal')
+        modal = self.wait_for(element_id='modal')
 
         # User changes price and book type
-        form = modal.find_element_by_tag_name('form')
-        book_type = ui.WebDriverWait(self.browser, 10000).until(expected_conditions.element_to_be_clickable((By.ID, 'id_type')))
-        book_type = self.wait_for_element(element_id="id_type")
-
+        book_type = self.browser.find_element_by_id("id_type")
         book_type_select = Select(book_type)
         book_type_select.select_by_index(2)
 
@@ -218,6 +182,7 @@ class CRUDActionsTest(FunctionalTest):
         filter_btn.click()
 
         # User is redirected to the index with a querystring with the filter
+        self.wait_for(element_id='filter-book')
         redirect_url = self.browser.current_url
         self.assertRegex(redirect_url, '/?type=3$')
 
@@ -226,10 +191,10 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks update book button
-        self.browser.find_element_by_class_name('update-book').click()
+        self.browser.find_element_by_id('update-book').click()
 
         # Update book modal opens
-        modal = self.wait_for_modal('modal')
+        modal = self.wait_for(element_id='modal')
 
         # User changes price and book type
         form = modal.find_element_by_tag_name('form')
@@ -276,10 +241,10 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks Read book button
-        self.browser.find_element_by_class_name('read-book').click()
+        self.browser.find_element_by_id('read-book').click()
 
         # Read book modal opens
-        modal = self.wait_for_modal('modal')
+        modal = self.wait_for(element_id='modal')
 
         # User sees book content
         modal_body = modal.find_element_by_class_name('modal-body')
@@ -296,10 +261,10 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks Delete book button
-        self.browser.find_element_by_class_name('delete-book').click()
+        self.browser.find_element_by_id('delete-book').click()
 
         # Delete book modal opens
-        modal = self.wait_for_modal('modal')
+        modal = self.wait_for(element_id='modal')
 
         # User sees modal content
         modal_body = modal.find_element_by_class_name('modal-body')
@@ -309,7 +274,7 @@ class CRUDActionsTest(FunctionalTest):
         )
 
         # User clicks delete button
-        delete_btn = modal.find_element_by_class_name('delete-btn')
+        delete_btn = modal.find_element_by_id('delete-btn')
         delete_btn.click()
 
         # User sees success message after page redirection

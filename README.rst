@@ -397,12 +397,12 @@ For explanation how all the parts of the code work together see paragraph **Usag
       </div>
     </div>
 
-    <button class="signup-btn btn btn-primary" type="button" name="button">Sign up</button>
+    <button id="signup-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
 
     <script type="text/javascript">
       $(function () {
         // Sign up button
-        $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
+        $("#signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
       });
     </script>
@@ -513,12 +513,12 @@ You can also set the custom login redirection by:
       </div>
     </div>
 
-    <button class="login-btn btn btn-primary" type="button" name="button">Sign up</button>
+    <button id="login-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
 
     <script type="text/javascript">
       $(function () {
         // Log in button
-        $(".login-btn").modalForm({formURL: "{% url 'login' %}"});
+        $("#login-btn").modalForm({formURL: "{% url 'login' %}"});
 
       });
     </script>

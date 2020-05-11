@@ -14,7 +14,7 @@
         <p>Sign up via Bootstrap modal.</p>
         <div class="row">
           <div class="col-12 mb-3">
-            <button class="signup-btn btn btn-primary" type="button" name="button">Sign up</button>
+            <button id="signup-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
           </div>
         </div>
         <h4>
@@ -28,9 +28,9 @@
                 Your are logged in as
                 <strong>{{ user }}</strong>.
               </span>
-              <a href="{% url 'logout' %}" class="logout-btn btn btn-danger" role="button">Log out</a>
+              <a href="{% url 'logout' %}" id="logout-btn" class="btn btn-danger" role="button">Log out</a>
             {% else %}
-              <button class="login-btn btn btn-primary" type="button" name="button">Log in</button>
+              <button id="login-btn" class="btn btn-primary" type="button" name="button">Log in</button>
             {% endif %}
           </div>
 
@@ -108,8 +108,8 @@
       $(function () {
           // Log in & Sign up buttons
           // The formURL is given explicitly
-          $(".login-btn").modalForm({formURL: "{% url 'login' %}"});
-          $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
+          $("#login-btn").modalForm({formURL: "{% url 'login' %}"});
+          $("#signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
           // Create book button, uses the <div> with id="create-modal"
           $("#create-book").modalForm({formURL: "{% url 'create_book' %}", modalID: "#create-modal"});
