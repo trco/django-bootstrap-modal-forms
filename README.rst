@@ -53,7 +53,7 @@ How it works?
     <script type="text/javascript">
     $(document).ready(function() {
 
-        $(".create-book").modalForm({
+        $("#create-book").modalForm({
             formURL: "{% url 'create_book' %}"
         });
 
@@ -172,7 +172,7 @@ Define URL for the view in #3.
 Define the Bootstrap modal window and html element triggering modal opening.
 
 - Same modal window can be used for multiple ``modalForms`` in single template (see #6).
-- Trigger element (in this example button with ``create-book`` class) is used for instantiation of ``modalForm`` in #6.
+- Trigger element (in this example button with ``create-book`` id) is used for instantiation of ``modalForm`` in #6.
 - Any element can be trigger element as long as ``modalForm`` is bound to it.
 - Click event on trigger element loads form's html from #2 within ``<div class="modal-content"></div>`` and sets action attribute of the form to ``formURL`` set in #6.
 
@@ -780,7 +780,8 @@ For explanation how all the parts of the code work together see paragraph **Usag
     <script type="text/javascript">
       $(function () {
 
-        // Create buttons with the bs-modal class, uses the <div> with id="modal" (default)
+        // Update, Read and Delete book buttons (with the bs-modal class)
+        // uses the <div> with id="modal" (default)
         // The formURL is retrieved from the data of the element
         $(".bs-modal").each(function () {
           $(this).modalForm({formURL: $(this).data('form-url')});
