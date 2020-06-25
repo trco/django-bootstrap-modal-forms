@@ -69,12 +69,7 @@
 
       $(".create-book").modalForm({
         formURL: "{% url 'create_book' %}",
-        modalID: "#create-modal",
-        closeOnSubmit: false,
-        ajaxSuccessMessage: "<div style='position:fixed;top:0;z-index:10;width:100%;border-radius:0;' class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>Success: Book updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><script>$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500);});<\/script>",
-        dataUrl: "books/",
-        dataElementId: "#books-table",
-        dataKey: "table"
+        modalID: "#create-modal"
       });
 
       function updateBookModalForm() {
@@ -82,7 +77,7 @@
           $(this).modalForm({
             formURL: $(this).data('id'),
             closeOnSubmit: false,
-            ajaxSuccessMessage: "<div style='position:fixed;top:0;z-index:10;width:100%;border-radius:0;' class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>Success: Book updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><script>$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500);});<\/script>",
+            ajaxSuccessMessage: "<div style='position:fixed;top:0;z-index:10;width:100%;border-radius:0;' class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>Success: Book was updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><script>$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500);});<\/script>",
             dataUrl: "books/",
             dataElementId: "#books-table",
             dataKey: "table",

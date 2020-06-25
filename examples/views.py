@@ -71,5 +71,4 @@ def books(request):
             {'books': books},
             request=request
         )
-        print(data)
         return JsonResponse(data)
