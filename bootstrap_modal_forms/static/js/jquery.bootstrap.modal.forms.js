@@ -31,7 +31,7 @@ https://github.com/trco/django-bootstrap-modal-forms
     var submitForm = function (settings) {
         if (settings.closeOnSubmit) {
             $(settings.modalForm).submit();
-        } else {
+        } else {            
             $.ajax({
                 type: $(settings.modalForm).attr("method"),
                 url: $(settings.modalForm).attr("action"),

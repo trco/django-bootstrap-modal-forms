@@ -191,7 +191,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks update book button
-        self.browser.find_element_by_id('update-book').click()
+        self.browser.find_element_by_class_name('update-book').click()
 
         # Update book modal opens
         modal = self.wait_for(element_id='modal')
@@ -241,7 +241,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks Read book button
-        self.browser.find_element_by_id('read-book').click()
+        self.browser.find_element_by_class_name('read-book').click()
 
         # Read book modal opens
         modal = self.wait_for(element_id='modal')
@@ -261,7 +261,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks Delete book button
-        self.browser.find_element_by_id('delete-book').click()
+        self.browser.find_element_by_class_name('delete-book').click()
 
         # Delete book modal opens
         modal = self.wait_for(element_id='modal')
