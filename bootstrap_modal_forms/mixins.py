@@ -13,7 +13,7 @@ class PassRequestMixin(object):
 
     def get_form_kwargs(self):
         kwargs = super(PassRequestMixin, self).get_form_kwargs()
-        kwargs.update({"request": self.request})
+        kwargs.update({'request': self.request})
         return kwargs
 
 
@@ -28,7 +28,7 @@ class PopRequestMixin(object):
     """
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request", None)
+        self.request = kwargs.pop('request', None)
         super(PopRequestMixin, self).__init__(*args, **kwargs)
 
 
