@@ -2,6 +2,13 @@
 Changelog
 =========
 
+2.0.0
+=====
+
+- add generic view BSModalFormView
+- rename BSModalForm to BSModalModelForm
+- add form BSModalForm
+
 1.5.0 (2019-11-23)
 ==================
 

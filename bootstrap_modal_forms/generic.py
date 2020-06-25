@@ -4,8 +4,8 @@ from django.views import generic
 from .mixins import PassRequestMixin, DeleteMessageMixin, LoginAjaxMixin
 
 DJANGO_VERSION = django.get_version().split('.')
-DJANGO_MAJOR_VERSION = DJANGO_VERSION[0];
-DJANGO_MINOR_VERSION = DJANGO_VERSION[1];
+DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
+DJANGO_MINOR_VERSION = DJANGO_VERSION[1]
 
 # Import custom LoginView for Django versions < 1.11
 if DJANGO_MAJOR_VERSION == '1' and '11' not in DJANGO_MINOR_VERSION:
@@ -18,13 +18,15 @@ class BSModalLoginView(LoginAjaxMixin, SuccessMessageMixin, LoginView):
     pass
 
 
-class BSModalCreateView(PassRequestMixin, SuccessMessageMixin,
-                        generic.CreateView):
+class BSModalFormView(PassRequestMixin, generic.FormView):
     pass
 
 
-class BSModalUpdateView(PassRequestMixin, SuccessMessageMixin,
-                        generic.UpdateView):
+class BSModalCreateView(PassRequestMixin, SuccessMessageMixin, generic.CreateView):
+    pass
+
+
+class BSModalUpdateView(PassRequestMixin, SuccessMessageMixin, generic.UpdateView):
     pass
 
 
