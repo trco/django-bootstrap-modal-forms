@@ -11,16 +11,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     # Basic setUp & tearDown
     def setUp(self):
-        self._initialise_firefox()
-
-    def _initialise_firefox(self):
         self.browser = webdriver.Firefox()
-
-    def _initialise_chrome(self):
-        chrome_options = webdriver.ChromeOptions()
-        # disable warning when opening Chrome without admin rights on extension
-        chrome_options.add_experimental_option('useAutomationExtension', False)
-        self.browser = webdriver.Chrome(chrome_options=chrome_options)
 
     def tearDown(self):
         self.browser.quit()
