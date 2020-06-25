@@ -1,11 +1,15 @@
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
 
-from bootstrap_modal_forms.generic import (BSModalLoginView,
-                                           BSModalCreateView,
-                                           BSModalUpdateView,
-                                           BSModalReadView,
-                                           BSModalDeleteView)
+from bootstrap_modal_forms.generic import (
+    BSModalLoginView,
+    BSModalCreateView,
+    BSModalUpdateView,
+    BSModalReadView,
+    BSModalDeleteView
+)
 
 from .forms import BookForm, CustomUserCreationForm, CustomAuthenticationForm
 from .models import Book
@@ -56,3 +60,16 @@ class CustomLoginView(BSModalLoginView):
     template_name = 'examples/login.html'
     success_message = 'Success: You were successfully logged in.'
     success_url = reverse_lazy('index')
+
+
+def books(request):
+    data = dict()
+    if request.method == 'GET':
+        books = Book.objects.all()
+        data['table'] = render_to_string(
+            '_books_table.html',
+            {'books': books},
+            request=request
+        )
+        print(data)
+        return JsonResponse(data)

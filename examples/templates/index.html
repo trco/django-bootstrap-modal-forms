@@ -47,45 +47,7 @@
           </div>
           <div class="col-12 mb-3">
             {% if books %}
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th class="text-center" scope="col">#</th>
-                    <th class="text-center" scope="col">Title</th>
-                    <th class="text-center" scope="col">Author</th>
-                    <th class="text-center" scope="col">Type</th>
-                    <th class="text-center" scope="col">Publication date</th>
-                    <th class="text-center" scope="col">Pages</th>
-                    <th class="text-center" scope="col">Price (€)</th>
-                    <th class="text-center" scope="col">Read / Update / Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for book in books %}
-                    <tr>
-                      <th class="text-center" scope="row">{{ forloop.counter }}</th>
-                      <td class="text-center">{{ book.title }}</td>
-                      <td class="text-center">{{ book.author }}</td>
-                      <td class="text-center">{{ book.get_book_type_display }}</td>
-                      <td class="text-center">{{ book.publication_date }}</td>
-                      <td class="text-center">{{ book.pages }}</td>
-                      <td class="text-center">{{ book.price }}</td>
-                      <td class="text-center">
-                        <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'read_book' book.pk %}">
-                          <span class="fa fa-eye"></span>
-                        </button>
-                        <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'update_book' book.pk %}">
-                          <span class="fa fa-pencil"></span>
-                        </button>
-                        <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'delete_book' book.pk %}">
-                          <span class="fa fa-trash"></span>
-                        </button>
-                        <!--<button type="button" class="delete-book btn btn-sm btn-danger" data-toggle="modal" data-target="#modal" data-id="{% url 'delete_book' book.pk %}"> <span class="fa fa-trash" aria-label="Delete"></span> </button>-->
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% include "_books_table.html" %}
             {% else %}
               <p class="no-books text-primary">No books added yet.</p>
             {% endif %}
@@ -105,13 +67,30 @@
       $(".login-btn").modalForm({formURL: "{% url 'login' %}"});
       $(".signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
-      // Create book button
-      $(".create-book").modalForm({formURL: "{% url 'create_book' %}", modalID: "#create-modal"});
-
-      // Update book buttons
-      $(".update-book").each(function () {
-        $(this).modalForm({formURL: $(this).data('id')});
+      $(".create-book").modalForm({
+        formURL: "{% url 'create_book' %}",
+        modalID: "#create-modal",
+        closeOnSubmit: false,
+        ajaxSuccessMessage: "<div style='position:fixed;top:0;z-index:10;width:100%;border-radius:0;' class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>Success: Book updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><script>$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500);});<\/script>",
+        dataUrl: "books/",
+        dataElementId: "#books-table",
+        dataKey: "table"
       });
+
+      function updateBookModalForm() {
+        $(".update-book").each(function () {
+          $(this).modalForm({
+            formURL: $(this).data('id'),
+            closeOnSubmit: false,
+            ajaxSuccessMessage: "<div style='position:fixed;top:0;z-index:10;width:100%;border-radius:0;' class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>Success: Book updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><script>$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500);});<\/script>",
+            dataUrl: "books/",
+            dataElementId: "#books-table",
+            dataKey: "table",
+            addModalFormFunction: updateBookModalForm
+          });
+        });
+      }
+      updateBookModalForm();
 
       // Read book buttons
       $(".read-book").each(function () {
