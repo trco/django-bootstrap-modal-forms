@@ -38,7 +38,7 @@ class CreateUpdateAjaxMixin(object):
     """
 
     def save(self, commit=True):
-        if not self.request.is_ajax():
+        if not self.request.is_ajax() or self.request.POST.get('closeOnSubmit') == 'False':
             instance = super(CreateUpdateAjaxMixin, self).save(commit=commit)
         else:
             instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
