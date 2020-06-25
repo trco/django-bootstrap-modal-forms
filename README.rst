@@ -171,8 +171,9 @@ Define URL for the view in #3.
 
 Define the Bootstrap modal window and html element triggering modal opening.
 
-- Same modal window can be used for multiple ``modalForms`` in single template (see #6).
-- Trigger element (in this example button with ``create-book`` id) is used for instantiation of ``modalForm`` in #6.
+- **Single modal** can be used for multiple ``modalForms`` in single template (see #6).
+- When using **multiple modals** on the same page each modal should have unique ``id`` and the same value should also be set as ``modalID`` option when instantiating ``modalForm``on trigger element.
+- Trigger element (in this example button with ``id="create-book"``) is used for instantiation of ``modalForm`` in #6.
 - Any element can be trigger element as long as ``modalForm`` is bound to it.
 - Click event on trigger element loads form's html from #2 within ``<div class="modal-content"></div>`` and sets action attribute of the form to ``formURL`` set in #6.
 
@@ -182,9 +183,7 @@ Define the Bootstrap modal window and html element triggering modal opening.
 
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-        </div>
+        <div class="modal-content"></div>
       </div>
     </div>
 
@@ -196,7 +195,7 @@ Define the Bootstrap modal window and html element triggering modal opening.
 
 Add script to the template from #5 and bind the ``modalForm`` to the trigger element. Set BookCreateView URL defined in #4 as ``formURL`` property of ``modalForm``.
 
-- If you want to create **more modalForms in single template using the same modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new ``modalForm`` with unique URL to it.
+- If you want to create **more modalForms in single template using the single modal window** from #5, repeat steps #1 to #4, create new trigger element as in #5 and bind the new ``modalForm`` with unique URL to it.
 - Default values for ``modalID``, ``modalContent``, ``modalForm`` and ``errorClass`` are used in this example, while ``formURL`` is customized. If you customize any other option adjust the code of the above examples accordingly.
 
 .. code-block:: html
@@ -234,27 +233,13 @@ errorClass
 submitBtn
   Sets the custom class for the button triggering form submission in modal. ``Default: ".submit-btn"``
 
-Generic views
-=============
-
-Import generic views with ``from bootstrap_modal_forms.generic import BSModalCreateView``.
-
-BSModalCreateView
-    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.CreateView.
-
-BSModalUpdateView
-    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.UpdateView.
-
-BSModalReadView
-    Inherits Django's generic.DetailView.
-
-BSModalDeleteView
-    Inherits DeleteMessageMixin and Django's generic.DeleteView.
-
 Forms
 =====
 
-Import forms with ``from bootstrap_modal_forms.forms import BSModalModelForm``.
+Import forms with ``from bootstrap_modal_forms.forms import BSModalForm``.
+
+BSModalForm
+    Inherits PopRequestMixin and Django's forms.Form.
 
 BSModalModelForm
     Inherits PopRequestMixin, CreateUpdateAjaxMixin and Django's forms.ModelForm.
@@ -278,6 +263,26 @@ DeleteMessageMixin
 
 LoginAjaxMixin
     Authenticates user if request is not ajax request.
+
+Generic views
+=============
+
+Import generic views with ``from bootstrap_modal_forms.generic import BSModalFormView``.
+
+BSModalFormView
+    Inherits PassRequestMixin and Django's generic.FormView.
+
+BSModalCreateView
+    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.CreateView.
+
+BSModalUpdateView
+    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.UpdateView.
+
+BSModalReadView
+    Inherits Django's generic.DetailView.
+
+BSModalDeleteView
+    Inherits DeleteMessageMixin and Django's generic.DeleteView.
 
 Examples
 ========
@@ -402,8 +407,9 @@ For explanation how all the parts of the code work together see paragraph **Usag
     <script type="text/javascript">
       $(function () {
         // Sign up button
-        $("#signup-btn").modalForm({formURL: "{% url 'signup' %}"});
-
+        $("#signup-btn").modalForm({
+            formURL: "{% url 'signup' %}"
+        });
       });
     </script>
 
@@ -518,12 +524,13 @@ You can also set the custom login redirection by:
     <script type="text/javascript">
       $(function () {
         // Log in button
-        $("#login-btn").modalForm({formURL: "{% url 'login' %}"});
-
+        $("#login-btn").modalForm({
+            formURL: "{% url 'login' %}"
+        });
       });
     </script>
 
-Example 3: CRUD forms in Bootstrap modal
+Example 3: Django's forms.ModelForm (CRUD forms) in Bootstrap modal
 ****************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
@@ -601,7 +608,6 @@ For explanation how all the parts of the code work together see paragraph **Usag
       </div>
 
       <div class="modal-body">
-
         <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
           {% for error in form.non_field_errors %}
             {{ error }}
@@ -641,21 +647,15 @@ For explanation how all the parts of the code work together see paragraph **Usag
     </div>
 
     <div class="modal-body">
-
       <div class="">
-        Title:
-        {{ book.title }}
+        Title: {{ book.title }}
       </div>
       <div class="">
-        Author:
-        {{ book.author }}
+        Author: {{ book.author }}
       </div>
       <div class="">
-        Price:
-        {{ book.price }}
-        €
+        Price: {{ book.price }} €
       </div>
-
     </div>
 
     <div class="modal-footer">
@@ -695,10 +695,12 @@ For explanation how all the parts of the code work together see paragraph **Usag
     from django.views import generic
     from .forms import BookModelForm
     from .models import Book
-    from bootstrap_modal_forms.generic import (BSModalCreateView,
-                                               BSModalUpdateView,
-                                               BSModalReadView,
-                                               BSModalDeleteView)
+    from bootstrap_modal_forms.generic import (
+      BSModalCreateView,
+      BSModalUpdateView,
+      BSModalReadView,
+      BSModalDeleteView
+    )
 
     class Index(generic.ListView):
         model = Book
@@ -780,51 +782,43 @@ For explanation how all the parts of the code work together see paragraph **Usag
     <script type="text/javascript">
       $(function () {
 
-        // Update, Read and Delete book buttons (with the bs-modal class)
-        // uses the <div> with id="modal" (default)
+        // Update, Read and Delete book buttons open modal with id="modal" (default)
         // The formURL is retrieved from the data of the element
         $(".bs-modal").each(function () {
-          $(this).modalForm({formURL: $(this).data('form-url')});
+          $(this).modalForm({
+              formURL: $(this).data('form-url')
+          });
         });
 
-        // Create book button, uses the <div> with id="create-modal"
-        $("#create-book").modalForm({formURL: "{% url 'create_book' %}", modalID: "#create-modal"});
+         // Create book button opens form in modal with id="create-modal"
+        $("#create-book").modalForm({
+            formURL: "{% url 'create_book' %}",
+            modalID: "#create-modal"
+        });
 
       });
     </script>
 
 - See the difference between button triggering Create action and buttons triggering Read, Update and Delete actions.
 - Within the for loop in .html file the ``data-form-url`` attribute of each Update, Read and Delete button should be set to relevant URL with pk argument of the object to be updated, read or deleted.
-- These ``data-form-url`` URLs should than be retrieved for each button in script and set as ``formURLs`` for ``modalForms`` bound to the buttons.
-  As we assign the class ``bs-modal`` to each button triggering a Bootstrap modal view, we can use jquery to do the latter.
-- Notice for the button with id ``create-book`` how we specify a different id for the modal.
+- These ``data-form-url`` URLs should than be set as ``formURLs`` for ``modalForms`` bound to the buttons.
 
-Example 4: Basic Django forms in Bootstrap modal
+Example 4: Django's forms.Form in Bootstrap modal
 ************************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
-
-Basic Django forms (without any link to a Django model) can also benefit from Bootstrap modal.
-
-This example will add a form to filter the books by type, allowing also to clear the existing filter.
-
-Define your form by inheriting from ``BSModalForm``.
 
 .. code-block:: python
 
     forms.py
 
-    from django.contrib.auth.forms import AuthenticationForm
-    from django.contrib.auth.models import User
+    from bootstrap_modal_forms.forms import BSModalForm
 
     class BookFilterForm(BSModalForm):
         type = forms.ChoiceField(choices=Book.BOOK_TYPES)
 
         class Meta:
-            fields = ["type", "clear"]
-
-The html template displays the field of your form as well as
- an extra button `Clear` that sets the `clear` field of the form.
+            fields = ['type', 'clear']
 
 .. code-block:: html
 
@@ -842,9 +836,7 @@ The html template displays the field of your form as well as
         </button>
       </div>
 
-
       <div class="modal-body">
-
         <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
           {% for error in form.non_field_errors %}
             {{ error }}
@@ -864,15 +856,12 @@ The html template displays the field of your form as well as
         {% endfor %}
       </div>
 
-
       <div class="modal-footer">
         <input type="submit" class="btn btn-primary" name="clear" value="Clear"/>
         <button type="button" class="submit-btn btn btn-primary">Filter</button>
       </div>
 
     </form>
-
-Your view should inherit from ``BSModalFormView``, a view handling properly forms inheriting from ``BSModalForm``.
 
 .. code-block:: python
 
@@ -883,14 +872,11 @@ Your view should inherit from ``BSModalFormView``, a view handling properly form
         form_class = BookFilterForm
 
         def form_valid(self, form):
-            if "clear" in self.request.POST:
-                # the user has clicked on the 'Clear' button
+            if 'clear' in self.request.POST:
                 self.filter = ''
             else:
-                # the user has filtered the list of books
-                self.filter = f'?type={form.cleaned_data["type"]}'
+                self.filter = '?type=' + form.cleaned_data['type']
 
-            # call the base form_valid (that will call the get_success_url)
             response = super().form_valid(form)
             return response
 
@@ -909,24 +895,15 @@ Your view should inherit from ``BSModalFormView``, a view handling properly form
         path('filter/', views.BookFilterView.as_view(), name='filter_book'),
     ]
 
-You can finally add to the index.html the extra `Filter` button.
-
 .. code-block:: html
 
-    index.html (adaptation to existing index.html from example 3)
-
-      <!-- replace the previous create-book button with the following button bar -->
-      <div class="col-12 mb-3">
-        <button id="create-book" class="btn btn-primary" type="button" name="button">
-          <span class="fa fa-plus mr-2"></span>Create book
-        </button>
-        <button id="filter-book" class="bs-modal btn btn-primary" type="button" name="button" data-form-url="{% url 'filter_book' %}">
-          <span class="fa fa-filter mr-2"></span>Filter books
-        </button>
-      </div>
-
-- Notice how easily we add a button triggering a new modal view by just adding the button with the proper ``bs-modal`` class and data-form-url field.
-
+    index.html
+      
+      ...
+      <button id="filter-book" class="bs-modal btn btn-primary" type="button" name="button" data-form-url="{% url 'filter_book' %}">
+        <span class="fa fa-filter mr-2"></span>Filter books
+      </button>
+      ...
 
 Contribute
 ==========
