@@ -753,6 +753,15 @@ For explanation how all the parts of the code work together see paragraph **Usag
 
     .html file containing modal, trigger elements and script instantiating modalForms
 
+    <!-- Modal 1 with id="create-book"-->
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2 with id="modal" -->
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content"></div>
@@ -904,6 +913,16 @@ For explanation how all the parts of the code work together see paragraph **Usag
         <span class="fa fa-filter mr-2"></span>Filter books
       </button>
       ...
+
+      <script type="text/javascript">
+        $(function () {
+          ...
+          $(".bs-modal").each(function () {
+              $(this).modalForm({formURL: $(this).data('form-url')});
+          });
+          ...
+        });
+      </script>
 
 Contribute
 ==========
