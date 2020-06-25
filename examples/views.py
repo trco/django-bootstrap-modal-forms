@@ -6,6 +6,7 @@ from django.views import generic
 
 from bootstrap_modal_forms.generic import (
     BSModalLoginView,
+    BSModalFormView,
     BSModalCreateView,
     BSModalUpdateView,
     BSModalReadView,
