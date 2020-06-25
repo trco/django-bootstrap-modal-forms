@@ -1,0 +1,41 @@
+<table id="books-table" class="table">
+  <thead>
+  <tr>
+    <th class="text-center" scope="col">#</th>
+    <th class="text-center" scope="col">Title</th>
+    <th class="text-center" scope="col">Author</th>
+    <th class="text-center" scope="col">Type</th>
+    <th class="text-center" scope="col">Publication date</th>
+    <th class="text-center" scope="col">Pages</th>
+    <th class="text-center" scope="col">Price (€)</th>
+    <th class="text-center" scope="col">Read / Update / Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for book in books %}
+    <tr>
+      <th class="text-center" scope="row">{{ forloop.counter }}</th>
+      <td class="text-center">{{ book.title }}</td>
+      <td class="text-center">{{ book.author }}</td>
+      <td class="text-center">{{ book.get_book_type_display }}</td>
+      <td class="text-center">{{ book.publication_date }}</td>
+      <td class="text-center">{{ book.pages }}</td>
+      <td class="text-center">{{ book.price }}</td>
+      <td class="text-center">
+        <!-- Read book buttons -->
+        <button type="button" class="bs-modal read-book btn btn-sm btn-primary" data-form-url="{% url 'read_book' book.pk %}">
+          <span class="fa fa-eye"></span>
+        </button>
+        <!-- Update book buttons -->
+        <button type="button" class="update-book btn btn-sm btn-primary" data-form-url="{% url 'update_book' book.pk %}">
+          <span class="fa fa-pencil"></span>
+        </button>
+        <!-- Delete book buttons -->
+        <button type="button" class="bs-modal delete-book btn btn-sm btn-danger" data-form-url="{% url 'delete_book' book.pk %}">
+          <span class="fa fa-trash"></span>
+        </button>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

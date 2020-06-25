@@ -1,58 +1,90 @@
 /*
 django-bootstrap-modal-forms
-version : 1.5.0
-Copyright (c) 2019 Uros Trstenjak
+version : 2.0.0
+Copyright (c) 2020 Uros Trstenjak
 https://github.com/trco/django-bootstrap-modal-forms
 */
 
 (function ($) {
 
     // Open modal & load the form at formURL to the modalContent element
-    var newForm = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
-        $(modalID).find(modalContent).load(formURL, function () {
-            $(modalID).modal("show");
-            $(modalForm).attr("action", formURL);
-            // Add click listener to the submitBtn
-            addListeners(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
+    var modalForm = function (settings) {
+        $(settings.modalID).find(settings.modalContent).load(settings.formURL, function () {
+            $(settings.modalID).modal("show");
+            $(settings.modalForm).attr("action", settings.formURL);
+            addEventHandlers(settings);
+        });
+    };
+
+    var addEventHandlers = function (settings) {
+        // submitBtn click handler
+        $(settings.submitBtn).on("click", function (event) {
+            isFormValid(settings, submitForm);
+        });
+        // Modal close handler
+        $(settings.modalID).on("hidden.bs.modal", function (event) {
+            $(settings.modalForm).remove();
         });
     };
 
     // Submit form callback function
-    var submitForm = function(modalForm) {
-      $(modalForm).submit();
-    };
-    
-    var addListeners = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
-        // submitBtn click listener
-        $(submitBtn).on("click", function (event) {
-            isFormValid(modalID, modalContent, modalForm, formURL, errorClass, submitBtn, submitForm);
-        });
-        // modal close listener
-        $(modalID).on('hidden.bs.modal', function (event) {
-            $(modalForm).remove();
-        });
+    var submitForm = function (settings) {
+        if (settings.closeOnSubmit) {
+            $(settings.modalForm).submit();
+        } else {            
+            $.ajax({
+                type: $(settings.modalForm).attr("method"),
+                url: $(settings.modalForm).attr("action"),
+                // Add closeOnSubmit and check for it in save method of CreateUpdateAjaxMixin
+                data: $(settings.modalForm).serialize() + "&closeOnSubmit=False",
+                success: function (response) {
+                    $(settings.modalID).prepend(settings.ajaxSuccessMessage);
+
+                    // Update page without refresh
+                    $.ajax({
+                        type: "GET",
+                        url: settings.dataUrl,
+                        dataType: "json",
+                        success: function (response) {
+                            // Reload form
+                            $(settings.modalID).find(settings.modalContent).load(settings.formURL, function () {
+                                $(settings.modalForm).attr("action", settings.formURL);
+                                addEventHandlers(settings);
+                            });
+
+                            // Update page
+                            $(settings.dataElementId).html(response[settings.dataKey]);
+                            
+                            // Add modalForm to trigger element after ajax page update
+                            if (settings.addModalFormFunction) {
+                                settings.addModalFormFunction();
+                            }
+                        }
+                    });
+                }
+            });
+        }
     };
 
-    // Check if form.is_valid() & either show errors or submit it
-    var isFormValid = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn, callback) {
+    // Check if form.is_valid() & either show errors or submit it via callback
+    var isFormValid = function (settings, callback) {
         $.ajax({
-            type: $(modalForm).attr("method"),
-            url: $(modalForm).attr("action"),
-            // Serialize form data
-            data: $(modalForm).serialize(),
-            beforeSend: function() {
-                $(submitBtn).prop("disabled", true);
+            type: $(settings.modalForm).attr("method"),
+            url: $(settings.modalForm).attr("action"),
+            data: $(settings.modalForm).serialize(),
+            beforeSend: function () {
+                $(settings.submitBtn).prop("disabled", true);
             },
             success: function (response) {
-                if ($(response).find(errorClass).length > 0) {
+                if ($(response).find(settings.errorClass).length > 0) {
                     // Form is not valid, update it with errors
-                    $(modalID).find(modalContent).html(response);
-                    $(modalForm).attr("action", formURL);
-                    // Reinstantiate listeners
-                    addListeners(modalID, modalContent, modalForm, formURL, errorClass, submitBtn);
+                    $(settings.modalID).find(settings.modalContent).html(response);
+                    $(settings.modalForm).attr("action", settings.formURL);
+                    // Reinstantiate handlers
+                    addEventHandlers(settings);
                 } else {
                     // Form is valid, submit it
-                    callback(modalForm);
+                    callback(settings);
                 }
             }
         });
@@ -66,24 +98,27 @@ https://github.com/trco/django-bootstrap-modal-forms
             modalForm: ".modal-content form",
             formURL: null,
             errorClass: ".invalid",
-            submitBtn: ".submit-btn"
+            submitBtn: ".submit-btn",
+            closeOnSubmit: true,
+            ajaxSuccessMessage: null,
+            dataUrl: null,
+            dataElementId: null,
+            dataKey: null,
+            addModalFormFunction: null
         };
 
         // Extend default settings with provided options
         var settings = $.extend(defaults, options);
 
-        return this.each(function () {
-            // Add click listener to the element with attached modalForm
+        this.each(function () {
+            // Add click event handler to the element with attached modalForm
             $(this).click(function (event) {
-                // Instantiate new modalForm in modal
-                newForm(settings.modalID,
-                    settings.modalContent,
-                    settings.modalForm,
-                    settings.formURL,
-                    settings.errorClass,
-                    settings.submitBtn);
+                // Instantiate new form in modal
+                modalForm(settings);
             });
         });
+
+        return this;
     };
 
 }(jQuery));
