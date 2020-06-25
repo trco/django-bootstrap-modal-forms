@@ -111,11 +111,10 @@
           $("#login-btn").modalForm({formURL: "{% url 'login' %}"});
           $("#signup-btn").modalForm({formURL: "{% url 'signup' %}"});
 
-          // Create book button, uses the <div> with id="create-modal"
+          // Create book button opens form in modal with id="create-modal"
           $("#create-book").modalForm({formURL: "{% url 'create_book' %}", modalID: "#create-modal"});
 
-          // Update, Read and Delete book buttons (with the bs-modal class)
-          // uses the <div> with id="modal" (default)
+          // Update, Read and Delete book buttons open modal with id="modal" (default)
           // The formURL is retrieved from the data of the element
           $(".bs-modal").each(function () {
               $(this).modalForm({formURL: $(this).data('form-url')});

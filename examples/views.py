@@ -37,13 +37,10 @@ class BookFilterView(BSModalFormView):
 
     def form_valid(self, form):
         if 'clear' in self.request.POST:
-            # the user has clicked on the 'Clear' button
             self.filter = ''
         else:
-            # the user has filtered the list of books
             self.filter = '?type=' + form.cleaned_data['type']
 
-        # call the base form_valid (that will call the get_success_url)
         response = super().form_valid(form)
         return response
 
