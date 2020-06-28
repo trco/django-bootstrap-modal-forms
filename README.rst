@@ -212,6 +212,111 @@ Add script to the template from #5 and bind the ``modalForm`` to the trigger ele
     });
     </script>
 
+Async create/update with or without modal closing on submit
+===========================================================
+
+Set ``asyncUpdate`` and ``asyncSettings`` settings to create or update objects without page redirection to ``successUrl`` and define whether a modal should close or stay opened after form submission. See comments in example below and paragraph **modalForm options** for explanation of ``asyncSettings``.
+
+.. code-block:: html
+
+    index.html
+
+    <!-- asyncSettings.dataElementId -->
+    <table id="books-table" class="table">
+      <thead>
+        ...
+      </thead>
+      <tbody>
+      {% for book in books %}
+        <tr>
+            ...
+            <!-- Update book buttons -->
+            <button type="button" class="update-book btn btn-sm btn-primary" data-form-url="{% url 'update_book' book.pk %}">
+              <span class="fa fa-pencil"></span>
+            </button>
+            ...
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $(function () {
+            ...
+
+            # asyncSettings.successMessage
+            var asyncSuccessMessage = [
+              "<div ",
+              "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+              "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+              "Success: Book was updated.",
+              "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+              "<span aria-hidden='true'>&times;</span>",
+              "</button>",
+              "</div>",
+              "<script>",
+              "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+              "<\/script>"
+            ].join();
+
+            # asyncSettings.addModalFormFunction
+            function updateBookModalForm() {
+              $(".update-book").each(function () {
+                $(this).modalForm({
+                  formURL: $(this).data("form-url"),
+                  asyncUpdate: true,
+                  asyncSettings: {
+                    closeOnSubmit: false,
+                    successMessage: asyncSuccessMessage
+                    dataUrl: "books/",
+                    dataElementId: "#books-table",
+                    dataKey: "table",
+                    addModalFormFunction: updateBookModalForm
+                  }
+                });
+              });
+            }
+            updateBookModalForm();
+        
+            ...
+        });
+    </script>
+
+.. code-block:: python
+
+    urls.py
+
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [
+        ...
+        # asyncSettings.dataUrl
+        path('books/', views.books, name='books'),
+        ...
+    ]
+
+.. code-block:: python
+
+    views.py
+
+    from django.http import JsonResponse
+    from django.template.loader import render_to_string
+    from .models import Book
+
+    def books(request):
+        data = dict()
+        if request.method == 'GET':
+            books = Book.objects.all()
+            # asyncSettings.dataKey = 'table'
+            data['table'] = render_to_string( 
+                '_books_table.html',
+                {'books': books},
+                request=request
+            )
+            return JsonResponse(data)
+
 modalForm options
 =================
 
@@ -232,6 +337,27 @@ errorClass
 
 submitBtn
   Sets the custom class for the button triggering form submission in modal. ``Default: ".submit-btn"``
+
+asyncUpdate
+  Sets asynchronous content update after form submission. ``Default: false``
+
+asyncSettings.closeOnSubmit
+  Sets whether modal closes or not after form submission. ``Default: false``
+
+asyncSettings.successMessage
+  Sets successMessage shown after succesful for submission. Should be set to string defining message element. See ``asyncSuccessMessage`` example above. ``Default: null``
+
+asyncSettings.dataUrl
+  Sets url of the view returning new queryset = all of the objects plus newly created or updated one after asynchronous update. ``Default: null``
+
+asyncSettings.dataElementId
+  Sets the ``id`` of the element which renders asynchronously updated queryset. ``Default: null``
+
+asyncSettings.dataKey
+  Sets the key containing asynchronously updated queryset in the data dictionary returned from the view providing updated queryset. ``Default: null``
+
+asyncSettings.addModalFormFunction
+  Sets the method needed for reinstantiation of event listeners on button after asynchronous update. ``Default: false``
 
 Forms
 =====
