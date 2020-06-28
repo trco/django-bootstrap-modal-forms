@@ -680,7 +680,7 @@ You can also set the custom login redirection by:
     </script>
 
 Example 3: Django's forms.ModelForm (CRUD forms) in Bootstrap modal
-****************************************
+*******************************************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
@@ -962,7 +962,7 @@ For explanation how all the parts of the code work together see paragraph **Usag
 - These ``data-form-url`` URLs should than be set as ``formURLs`` for ``modalForms`` bound to the buttons.
 
 Example 4: Django's forms.Form in Bootstrap modal
-************************************************
+*************************************************
 
 For explanation how all the parts of the code work together see paragraph **Usage**. To test the working solution presented here clone and run **Examples**.
 
