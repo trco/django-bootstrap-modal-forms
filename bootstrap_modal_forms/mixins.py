@@ -38,7 +38,8 @@ class CreateUpdateAjaxMixin(object):
     """
 
     def save(self, commit=True):
-        if not self.request.is_ajax() or self.request.POST.get('closeOnSubmit') == 'False':
+        # if not self.request.is_ajax() or self.request.POST.get('closeOnSubmit') == 'False':
+        if not self.request.is_ajax() or self.request.POST.get('asyncUpdate') == 'True':
             instance = super(CreateUpdateAjaxMixin, self).save(commit=commit)
         else:
             instance = super(CreateUpdateAjaxMixin, self).save(commit=False)

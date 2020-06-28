@@ -27,44 +27,6 @@ https://github.com/trco/django-bootstrap-modal-forms
         });
     };
 
-    // Submit form callback function
-    var submitForm = function (settings) {
-        if (settings.closeOnSubmit) {
-            $(settings.modalForm).submit();
-        } else {            
-            $.ajax({
-                type: $(settings.modalForm).attr("method"),
-                url: $(settings.modalForm).attr("action"),
-                // Add closeOnSubmit and check for it in save method of CreateUpdateAjaxMixin
-                data: $(settings.modalForm).serialize() + "&closeOnSubmit=False",
-                success: function (response) {
-                    $(settings.modalID).prepend(settings.ajaxSuccessMessage);
-
-                    // Update page without refresh
-                    $.ajax({
-                        type: "GET",
-                        url: settings.dataUrl,
-                        dataType: "json",
-                        success: function (response) {
-                            // Reload form
-                            $(settings.modalID).find(settings.modalContent).load(settings.formURL, function () {
-                                $(settings.modalForm).attr("action", settings.formURL);
-                                addEventHandlers(settings);
-                            });
-
-                            // Update page
-                            $(settings.dataElementId).html(response[settings.dataKey]);
-                            
-                            // Add modalForm to trigger element after ajax page update
-                            if (settings.addModalFormFunction) {
-                                settings.addModalFormFunction();
-                            }
-                        }
-                    });
-                }
-            });
-        }
-    };
 
     // Check if form.is_valid() & either show errors or submit it via callback
     var isFormValid = function (settings, callback) {
@@ -90,6 +52,89 @@ https://github.com/trco/django-bootstrap-modal-forms
         });
     };
 
+    // Submit form callback function
+    var submitForm = function (settings) {        
+        if (!settings.asyncUpdate) {
+            $(settings.modalForm).submit();
+        } else {          
+            var asyncSettingsValid = validateAsyncSettings(settings.asyncSettings);
+            var asyncSettings = settings.asyncSettings;
+
+            if (asyncSettingsValid) {                
+                $.ajax({
+                    type: $(settings.modalForm).attr("method"),
+                    url: $(settings.modalForm).attr("action"),
+                    // Add asyncUpdate and check for it in save method of CreateUpdateAjaxMixin
+                    data: $(settings.modalForm).serialize() + "&asyncUpdate=True",
+                    success: function (response) {
+                        var body = $("body");
+                        if (body.length === 0) {
+                            console.error("django-bootstrap-modal-forms: <body> element missing in your html.");
+                        }
+                        body.prepend(asyncSettings.successMessage);
+    
+                        // Update page without refresh
+                        $.ajax({
+                            type: "GET",
+                            url: asyncSettings.dataUrl,
+                            dataType: "json",
+                            success: function (response) {
+                                // Update page
+                                $(asyncSettings.dataElementId).html(response[asyncSettings.dataKey]);
+    
+                                // Add modalForm to trigger element after async page update
+                                if (asyncSettings.addModalFormFunction) {
+                                    asyncSettings.addModalFormFunction();
+                                }
+    
+                                if (asyncSettings.closeOnSubmit) {
+                                    $(settings.modalID).modal("hide");
+                                } else {
+                                    // Reload form
+                                    $(settings.modalID).find(settings.modalContent).load(settings.formURL, function () {
+                                        $(settings.modalForm).attr("action", settings.formURL);
+                                        addEventHandlers(settings);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    };
+
+    var validateAsyncSettings = function (settings) {
+        var missingSettings = [];
+
+        if (!settings.successMessage) {
+            missingSettings.push("successMessage");
+            console.error("django-bootstrap-modal-forms: 'successMessage' in asyncSettings is missing.");
+        }        
+        if (!settings.dataUrl) {
+            missingSettings.push("dataUrl");
+            console.error("django-bootstrap-modal-forms: 'dataUrl' in asyncSettings is missing.");
+        }
+        if (!settings.dataElementId) {
+            missingSettings.push("dataElementId");
+            console.error("django-bootstrap-modal-forms: 'dataElementId' in asyncSettings is missing.");
+        }
+        if (!settings.dataKey) {
+            missingSettings.push("dataKey");
+            console.error("django-bootstrap-modal-forms: 'dataKey' in asyncSettings is missing.");
+        }
+        if (!settings.addModalFormFunction) {
+            missingSettings.push("addModalFormFunction");
+            console.error("django-bootstrap-modal-forms: 'addModalFormFunction' in asyncSettings is missing.");
+        }
+
+        if (missingSettings.length > 0) {
+            return false;
+        }
+
+        return true;
+    };
+
     $.fn.modalForm = function (options) {
         // Default settings
         var defaults = {
@@ -99,12 +144,15 @@ https://github.com/trco/django-bootstrap-modal-forms
             formURL: null,
             errorClass: ".invalid",
             submitBtn: ".submit-btn",
-            closeOnSubmit: true,
-            ajaxSuccessMessage: null,
-            dataUrl: null,
-            dataElementId: null,
-            dataKey: null,
-            addModalFormFunction: null
+            asyncUpdate: false,
+            asyncSettings: {
+                closeOnSubmit: false,
+                successMessage: null,
+                dataUrl: null,
+                dataElementId: null,
+                dataKey: null,
+                addModalFormFunction: null
+            }
         };
 
         // Extend default settings with provided options
