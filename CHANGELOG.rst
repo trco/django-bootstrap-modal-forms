@@ -2,12 +2,13 @@
 Changelog
 =========
 
-2.0.0
-=====
+2.0.0 (2020-06-28)
+==================
 
+- rename BSModalForm to BSModalModelForm supporting Django's forms.ModelForm
+- add support for Django's forms.Form with BSModalForm
 - add generic view BSModalFormView
-- rename BSModalForm to BSModalModelForm
-- add form BSModalForm
+- add support for asynchronous page updating after form submission
 
 1.5.0 (2019-11-23)
 ==================
