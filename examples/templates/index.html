@@ -82,6 +82,20 @@
             modalID: "#create-modal"
           });
 
+          var asyncSuccessMessage = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Book was updated.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+
           function updateBookModalForm() {
             $(".update-book").each(function () {
               $(this).modalForm({
@@ -89,7 +103,7 @@
                 asyncUpdate: true,
                 asyncSettings: {
                   closeOnSubmit: false,
-                  successMessage: "<div style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>Success: Book was updated.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><script>$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});<\/script>",
+                  successMessage: asyncSuccessMessage,
                   dataUrl: "books/",
                   dataElementId: "#books-table",
                   dataKey: "table",
