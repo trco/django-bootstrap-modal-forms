@@ -357,7 +357,7 @@ asyncSettings.dataKey
   Sets the key containing asynchronously updated queryset in the data dictionary returned from the view providing updated queryset. ``Default: null``
 
 asyncSettings.addModalFormFunction
-  Sets the method needed for reinstantiation of event listeners on button after asynchronous update. ``Default: false``
+  Sets the method needed for reinstantiation of event listeners on button after asynchronous update. ``Default: null``
 
 modalForm default settings object and it's structure
 ****************************************************
