@@ -359,6 +359,29 @@ asyncSettings.dataKey
 asyncSettings.addModalFormFunction
   Sets the method needed for reinstantiation of event listeners on button after asynchronous update. ``Default: false``
 
+modalForm default settings object and it's structure
+****************************************************
+
+.. code-block:: html
+  
+    triggerElement.modalForm({
+        modalID: "#modal",
+        modalContent: ".modal-content",
+        modalForm: ".modal-content form",
+        formURL: null,
+        errorClass: ".invalid",
+        submitBtn: ".submit-btn",
+        asyncUpdate: false,
+        asyncSettings: {
+            closeOnSubmit: false,
+            successMessage: null,
+            dataUrl: null,
+            dataElementId: null,
+            dataKey: null,
+            addModalFormFunction: null
+        }
+    });
+
 Forms
 =====
 
