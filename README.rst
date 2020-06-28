@@ -172,7 +172,7 @@ Define URL for the view in #3.
 Define the Bootstrap modal window and html element triggering modal opening.
 
 - **Single modal** can be used for multiple ``modalForms`` in single template (see #6).
-- When using **multiple modals** on the same page each modal should have unique ``id`` and the same value should also be set as ``modalID`` option when instantiating ``modalForm``on trigger element.
+- When using **multiple modals** on the same page each modal should have unique ``id`` and the same value should also be set as ``modalID`` option when instantiating ``modalForm`` on trigger element.
 - Trigger element (in this example button with ``id="create-book"``) is used for instantiation of ``modalForm`` in #6.
 - Any element can be trigger element as long as ``modalForm`` is bound to it.
 - Click event on trigger element loads form's html from #2 within ``<div class="modal-content"></div>`` and sets action attribute of the form to ``formURL`` set in #6.
