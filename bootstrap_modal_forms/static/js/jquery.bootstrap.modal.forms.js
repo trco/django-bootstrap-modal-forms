@@ -33,7 +33,9 @@ https://github.com/trco/django-bootstrap-modal-forms
         $.ajax({
             type: $(settings.modalForm).attr("method"),
             url: $(settings.modalForm).attr("action"),
-            data: $(settings.modalForm).serialize(),
+            data: new FormData( $(settings.modalForm)[0] ),
+            contentType: false,
+            processData: false,
             beforeSend: function () {
                 $(settings.submitBtn).prop("disabled", true);
             },
@@ -61,11 +63,15 @@ https://github.com/trco/django-bootstrap-modal-forms
             var asyncSettings = settings.asyncSettings;
 
             if (asyncSettingsValid) {                
+                let formdata = new FormData( $(settings.modalForm)[0] );
+                formdata.append('asyncUpdate', 'True');
                 $.ajax({
                     type: $(settings.modalForm).attr("method"),
                     url: $(settings.modalForm).attr("action"),
                     // Add asyncUpdate and check for it in save method of CreateUpdateAjaxMixin
-                    data: $(settings.modalForm).serialize() + "&asyncUpdate=True",
+                    data: formdata,
+                    contentType: false,
+                    processData: false,
                     success: function (response) {
                         var body = $("body");
                         if (body.length === 0) {
