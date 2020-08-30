@@ -19,7 +19,12 @@ https://github.com/trco/django-bootstrap-modal-forms
     var addEventHandlers = function (settings) {
         // submitBtn click handler
         $(settings.submitBtn).on("click", function (event) {
-            isFormValid(settings, submitForm);
+            if (settings.checkValidBeforeSubmit) {
+                isFormValid(settings, submitForm);
+            }
+            else {
+                submitForm(settings);
+            }
         });
         // Modal close handler
         $(settings.modalID).on("hidden.bs.modal", function (event) {
@@ -144,6 +149,7 @@ https://github.com/trco/django-bootstrap-modal-forms
             formURL: null,
             errorClass: ".invalid",
             submitBtn: ".submit-btn",
+            checkValidBeforeSubmit: true,
             asyncUpdate: false,
             asyncSettings: {
                 closeOnSubmit: false,
