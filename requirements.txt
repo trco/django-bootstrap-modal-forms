@@ -1,5 +1,8 @@
 Django==2.2.13
 django-bootstrap-modal-forms==1.4.1
 django-widget-tweaks==1.4.2
-selenium==3.14.0
+geckodriver-autoinstaller==0.1.0
 pytz==2018.5
+selenium==3.14.0
+sqlparse==0.3.1
+urllib3==1.25.10

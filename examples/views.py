@@ -78,6 +78,13 @@ class BookDeleteView(BSModalDeleteView):
     success_url = reverse_lazy('index')
 
 
+class BookDeleteAsyncView(BSModalDeleteView):
+    model = Book
+    template_name = 'examples/delete_book_async.html'
+    success_message = 'Success: Book was deleted.'
+    success_url = reverse_lazy('index')
+
+
 class SignUpView(BSModalCreateView):
     form_class = CustomUserCreationForm
     template_name = 'examples/signup.html'
