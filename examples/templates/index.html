@@ -114,6 +114,25 @@
           }
           updateBookModalForm();
 
+          function deleteBookModalForm() {
+            $(".delete-book-async").each(function () {
+              $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                asyncUpdate: true,
+                checkValidBeforeSubmit: false,
+                asyncSettings: {
+                  closeOnSubmit: true,
+                  successMessage: asyncSuccessMessage,
+                  dataUrl: "books/",
+                  dataElementId: "#books-table",
+                  dataKey: "table",
+                  addModalFormFunction: deleteBookModalForm
+                }
+              });
+            });
+          }
+          deleteBookModalForm();
+
           // Read and Delete book buttons open modal with id="modal"
           // The formURL is retrieved from the data of the element
           $(".bs-modal").each(function () {

@@ -8,7 +8,7 @@
     <th class="text-center" scope="col">Publication date</th>
     <th class="text-center" scope="col">Pages</th>
     <th class="text-center" scope="col">Price (€)</th>
-    <th class="text-center" scope="col">Read / Update / Delete</th>
+    <th class="text-center" scope="col">Read / Update / Delete / Async Delete</th>
   </tr>
   </thead>
   <tbody>
@@ -32,6 +32,10 @@
         </button>
         <!-- Delete book buttons -->
         <button type="button" class="bs-modal delete-book btn btn-sm btn-danger" data-form-url="{% url 'delete_book' book.pk %}">
+          <span class="fa fa-trash"></span>
+        </button>
+        <!-- Async delete book button -->
+        <button type="button" class="delete-book-async btn btn-sm btn-danger" data-form-url="{% url 'delete_book_async' book.pk %}">
           <span class="fa fa-trash"></span>
         </button>
       </td>

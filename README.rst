@@ -212,7 +212,7 @@ Add script to the template from #5 and bind the ``modalForm`` to the trigger ele
     });
     </script>
 
-Async create/update with or without modal closing on submit
+Async create/update/delete with or without modal closing on submit
 ===========================================================
 
 Set ``asyncUpdate`` and ``asyncSettings`` settings to create or update objects without page redirection to ``successUrl`` and define whether a modal should close or stay opened after form submission. See comments in example below and paragraph **modalForm options** for explanation of ``asyncSettings``.
@@ -233,6 +233,10 @@ Set ``asyncUpdate`` and ``asyncSettings`` settings to create or update objects w
             <!-- Update book buttons -->
             <button type="button" class="update-book btn btn-sm btn-primary" data-form-url="{% url 'update_book' book.pk %}">
               <span class="fa fa-pencil"></span>
+            </button>
+            <!-- Delete book buttons -->
+            <button type="button" class="delete-book-async btn btn-sm btn-danger" data-form-url="{% url 'delete_book' book.pk %}">
+              <span class="fa fa-trash"></span>
             </button>
             ...
           </td>
@@ -278,6 +282,26 @@ Set ``asyncUpdate`` and ``asyncSettings`` settings to create or update objects w
               });
             }
             updateBookModalForm();
+
+            //checking for form validity on delete means submitting the delete form twice, causing an error
+            function deleteBookModalForm() {
+              $(".delete-book").each(function () {
+                $(this).modalForm({
+                  formURL: $(this).data("form-url"),
+                  asyncUpdate: true,
+                  checkValidBeforeSubmit: false,
+                  asyncSettings: {
+                    closeOnSubmit: false,
+                    successMessage: asyncSuccessMessage,
+                    dataUrl: "books/",
+                    dataElementId: "#books-table",
+                    dataKey: "table",
+                    addModalFormFunction: deleteBookModalForm
+                  }
+                });
+              });
+            }
+          deleteBookModalForm();
         
             ...
         });
@@ -337,6 +361,9 @@ errorClass
 
 submitBtn
   Sets the custom class for the button triggering form submission in modal. ``Default: ".submit-btn"``
+
+checkValidBeforeSubmit
+  Sets whether to check form validity before submitting (set to false for async delete). ``Default: true``
 
 asyncUpdate
   Sets asynchronous content update after form submission. ``Default: false``
