@@ -1,5 +1,10 @@
 from selenium.webdriver.support.select import Select
 
+import geckodriver_autoinstaller
+geckodriver_autoinstaller.install()  # Check if the current version of geckodriver exists
+                                     # and if it doesn't exist, download it automatically,
+                                     # then add geckodriver to path
+
 from examples.models import Book
 from .base import FunctionalTest
 
@@ -292,3 +297,41 @@ class CRUDActionsTest(FunctionalTest):
         # There is no books in database anymore
         books = Book.objects.all()
         self.assertEqual(books.count(), 0)
+
+    def test_delete_async_object(self):
+        # User visits homepage
+        self.browser.get(self.live_server_url)
+
+        # User clicks Delete book button
+        self.browser.find_element_by_class_name('delete-book-async').click()
+
+        # Delete book modal opens
+        modal = self.wait_for(element_id='modal')
+
+        # User sees modal content
+        modal_body = modal.find_element_by_class_name('modal-body')
+        delete_text = modal_body.find_element_by_class_name('delete-text').text
+        self.assertEqual(
+            delete_text, 'Are you sure you want to delete book with title Life of John Doe?'
+        )
+
+        # User clicks delete button
+        delete_btn = modal.find_element_by_class_name('submit-btn')
+        delete_btn.click()
+
+        # User sees success message after page redirection
+        redirect_url = self.browser.current_url
+        self.assertRegex(redirect_url, '/')
+
+        # Slice removes '\nx' since alert is dismissible and contains 'times' button
+        success_msg = self.browser.find_element_by_class_name('alert').text[:-2]
+        self.assertEqual(success_msg, 'Success: Book was asynchronously deleted.')
+
+        # User sees an empty table
+        table_entries = self.wait_for_table_rows()
+        self.assertEqual(len(table_entries), 0)
+
+        # There is no books in database anymore
+        books = Book.objects.all()
+        self.assertEqual(books.count(), 0)
+

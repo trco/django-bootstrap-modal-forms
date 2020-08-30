@@ -82,19 +82,23 @@
             modalID: "#create-modal"
           });
 
-          var asyncSuccessMessage = [
-            "<div ",
-            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
-            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
-            "Success: Book was updated.",
-            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
-            "<span aria-hidden='true'>&times;</span>",
-            "</button>",
-            "</div>",
-            "<script>",
-            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
-            "<\/script>"
-          ].join("");
+          function createAsyncSuccessMessage(msg) {
+            return [
+              "<div ",
+              "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+              "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+              `${msg}`,
+              "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+              "<span aria-hidden='true'>&times;</span>",
+              "</button>",
+              "</div>",
+              "<script>",
+              "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+              "<\/script>"
+            ].join("");
+          }
+
+          var asyncUpdateMessage = createAsyncSuccessMessage("Success: Book was updated.");
 
           function updateBookModalForm() {
             $(".update-book").each(function () {
@@ -103,7 +107,7 @@
                 asyncUpdate: true,
                 asyncSettings: {
                   closeOnSubmit: false,
-                  successMessage: asyncSuccessMessage,
+                  successMessage: asyncUpdateMessage,
                   dataUrl: "books/",
                   dataElementId: "#books-table",
                   dataKey: "table",
@@ -114,6 +118,8 @@
           }
           updateBookModalForm();
 
+          var asyncDeleteMessage = createAsyncSuccessMessage("Success: Book was asynchronously deleted.");
+
           function deleteBookModalForm() {
             $(".delete-book-async").each(function () {
               $(this).modalForm({
@@ -122,7 +128,7 @@
                 checkValidBeforeSubmit: false,
                 asyncSettings: {
                   closeOnSubmit: true,
-                  successMessage: asyncSuccessMessage,
+                  successMessage: asyncDeleteMessage,
                   dataUrl: "books/",
                   dataElementId: "#books-table",
                   dataKey: "table",
