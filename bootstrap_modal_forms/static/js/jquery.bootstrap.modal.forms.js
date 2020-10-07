@@ -30,6 +30,13 @@ https://github.com/trco/django-bootstrap-modal-forms
 
     // Check if form.is_valid() & either show errors or submit it via callback
     var isFormValid = function (settings, callback) {
+        if (!$(settings.modalForm)[0].checkValidity()) {
+            var elemstohide = $("input:hidden, textarea:hidden, select:hidden").filter("*:enabled")
+            elemstohide.attr("disabled", true);
+            $(settings.modalForm)[0].reportValidity()
+            elemstohide.attr("disabled", false);
+            return false;
+        }
         $.ajax({
             type: $(settings.modalForm).attr("method"),
             url: $(settings.modalForm).attr("action"),
