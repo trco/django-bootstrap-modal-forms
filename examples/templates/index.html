@@ -42,8 +42,11 @@
 
         <div class="row">
           <div class="col-12 mb-3">
-            <button id="create-book" class="btn btn-primary" type="button" name="button">
-              <span class="fa fa-plus mr-2"></span>Create book
+            <button id="create-book-sync" class="btn btn-primary" type="button" name="button">
+              <span class="fa fa-plus mr-2"></span>Create book - Synchronous
+            </button>
+            <button id="create-book-async" class="btn btn-primary" type="button" name="button">
+              <span class="fa fa-plus mr-2"></span>Create book - Asynchronous
             </button>
             <button id="filter-book" class="bs-modal btn btn-primary" type="button" name="button" data-form-url="{% url 'filter_book' %}">
               <span class="fa fa-filter mr-2"></span>Filter books
@@ -77,12 +80,36 @@
           });
 
           // Create book button opens modal with id="create-modal"
+          /* 
           $("#create-book").modalForm({
             formURL: "{% url 'create_book' %}",
             modalID: "#create-modal"
           });
+          */
 
-          var asyncSuccessMessage = [
+          function createBookSyncModalForm() {
+            $("#create-book-sync").modalForm({
+                formURL: "{% url 'create_book' %}",
+                modalID: "#create-modal"
+            });
+          }
+          createBookSyncModalForm();
+
+          var asyncSuccessMessageCreate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Book was created.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+
+          var asyncSuccessMessageUpdate = [
             "<div ",
             "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
             "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
@@ -103,7 +130,7 @@
                 asyncUpdate: true,
                 asyncSettings: {
                   closeOnSubmit: false,
-                  successMessage: asyncSuccessMessage,
+                  successMessage: asyncSuccessMessageUpdate,
                   dataUrl: "books/",
                   dataElementId: "#books-table",
                   dataKey: "table",
@@ -113,6 +140,23 @@
             });
           }
           updateBookModalForm();
+
+          function createBookAsyncModalForm() {
+            $("#create-book-async").modalForm({
+                formURL: "{% url 'create_book' %}",
+                modalID: "#create-modal",
+                asyncUpdate: true,
+                asyncSettings: {
+                  closeOnSubmit: true,
+                  successMessage: asyncSuccessMessageCreate,
+                  dataUrl: "books/",
+                  dataElementId: "#books-table",
+                  dataKey: "table",
+                  addModalFormFunction: updateBookModalForm
+                }
+            });
+          }
+          createBookAsyncModalForm();
 
           // Read and Delete book buttons open modal with id="modal"
           // The formURL is retrieved from the data of the element
