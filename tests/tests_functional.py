@@ -105,7 +105,7 @@ class CRUDActionsTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # User clicks create book button
-        self.browser.find_element_by_id('create-book').click()
+        self.browser.find_element_by_id('create-book-sync').click()
 
         # Create book modal opens
         modal = self.wait_for(element_id='create-modal')
