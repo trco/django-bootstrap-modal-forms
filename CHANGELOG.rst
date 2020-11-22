@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.0.1 (2020-11-22)
+==================
+
+- fix file uploads by updating form serialization 
+
 2.0.0 (2020-06-28)
 ==================
 
