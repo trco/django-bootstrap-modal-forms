@@ -22,9 +22,9 @@ https://github.com/trco/django-bootstrap-modal-forms
             isFormValid(settings, submitForm);
         });
         // Support submition on form fields
-        $(settings.modalForm).on("submit", function (e) {
-            if (e.originalEvent !== undefined) {
-                e.preventDefault();
+        $(settings.modalForm).on("submit", function (event) {
+            if (event.originalEvent !== undefined) {
+                event.preventDefault();
                 isFormValid(settings, submitForm);
                 return false;
             }
