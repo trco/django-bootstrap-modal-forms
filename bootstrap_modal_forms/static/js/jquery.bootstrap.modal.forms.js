@@ -78,11 +78,19 @@ https://github.com/trco/django-bootstrap-modal-forms
                             console.error("django-bootstrap-modal-forms: <body> element missing in your html.");
                         }
                         body.prepend(asyncSettings.successMessage);
-    
+
+                        var dataUrl;
+                        if (asyncSettings.passFormDataToNextPage) {
+                            var formData = $(settings.modalForm).serialize();
+                            dataUrl = asyncSettings.dataUrl + (asyncSettings.dataUrl.indexOf('?') != -1 ? "&" + formData : "?" + formData);
+                        } else {
+                            dataUrl = asyncSettings.dataUrl
+                        }
+
                         // Update page without refresh
                         $.ajax({
                             type: "GET",
-                            url: asyncSettings.dataUrl,
+                            url: dataUrl,
                             dataType: "json",
                             success: function (response) {
                                 // Update page
