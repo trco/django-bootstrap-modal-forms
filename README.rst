@@ -350,6 +350,9 @@ asyncSettings.successMessage
 asyncSettings.dataUrl
   Sets url of the view returning new queryset = all of the objects plus newly created or updated one after asynchronous update. ``Default: null``
 
+asyncSettings.passFormDataToNextPage
+  Adds the form data to the dataUrl as GET params after form submission. ``Default: false``
+
 asyncSettings.dataElementId
   Sets the ``id`` of the element which renders asynchronously updated queryset. ``Default: null``
 
