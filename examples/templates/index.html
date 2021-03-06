@@ -48,11 +48,14 @@
             <button id="create-book-async" class="btn btn-primary" type="button" name="button">
               <span class="fa fa-plus mr-2"></span>Create book - Asynchronous
             </button>
-            <button id="filter-book" class="bs-modal btn btn-primary" type="button" name="button" data-form-url="{% url 'filter_book' %}">
+            <button id="filter-book" class="filter-book btn btn-primary" type="button" name="button" data-form-url="{% url 'filter_book' %}">
               <span class="fa fa-filter mr-2"></span>Filter books
             </button>
           </div>
           <div class="col-12 mb-3">
+          {% if 'type' in request.GET %}
+            <p class="filtered-books">Filtered books.</p>
+          {% endif %}
             {% if books %}
               {% include "_books_table.html" %}
             {% else %}
@@ -69,24 +72,17 @@
 {% block extrascripts %}
   <script type="text/javascript">
       $(function () {
-          // Log in & Sign up buttons
-          // The formURL is given explicitly
+          // Login
           $("#login-btn").modalForm({
             formURL: "{% url 'login' %}"
           });
 
+          //  Signup
           $("#signup-btn").modalForm({
             formURL: "{% url 'signup' %}"
           });
 
-          // Create book button opens modal with id="create-modal"
-          /* 
-          $("#create-book").modalForm({
-            formURL: "{% url 'create_book' %}",
-            modalID: "#create-modal"
-          });
-          */
-
+          // Create book synchronous
           function createBookSyncModalForm() {
             $("#create-book-sync").modalForm({
                 formURL: "{% url 'create_book' %}",
@@ -95,6 +91,8 @@
           }
           createBookSyncModalForm();
 
+          // Create book asynchronous button
+          // message
           var asyncSuccessMessageCreate = [
             "<div ",
             "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
@@ -109,6 +107,26 @@
             "<\/script>"
           ].join("");
 
+          // modal form
+          function createBookAsyncModalForm() {
+            $("#create-book-async").modalForm({
+                formURL: "{% url 'create_book' %}",
+                modalID: "#create-modal",
+                asyncUpdate: true,
+                asyncSettings: {
+                  closeOnSubmit: true,
+                  successMessage: asyncSuccessMessageCreate,
+                  dataUrl: "books/",
+                  dataElementId: "#books-table",
+                  dataKey: "table",
+                  addModalFormFunction: updateBookModalForm
+                }
+            });
+          }
+          createBookAsyncModalForm();
+
+          // Update book asynchronous button
+          // message
           var asyncSuccessMessageUpdate = [
             "<div ",
             "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
@@ -123,6 +141,7 @@
             "<\/script>"
           ].join("");
 
+          // modal form
           function updateBookModalForm() {
             $(".update-book").each(function () {
               $(this).modalForm({
@@ -141,26 +160,18 @@
           }
           updateBookModalForm();
 
-          function createBookAsyncModalForm() {
-            $("#create-book-async").modalForm({
-                formURL: "{% url 'create_book' %}",
-                modalID: "#create-modal",
-                asyncUpdate: true,
-                asyncSettings: {
-                  closeOnSubmit: true,
-                  successMessage: asyncSuccessMessageCreate,
-                  dataUrl: "books/",
-                  dataElementId: "#books-table",
-                  dataKey: "table",
-                  addModalFormFunction: updateBookModalForm
-                }
-            });
-          }
-          createBookAsyncModalForm();
+          // Delete book buttons - formURL is retrieved from the data of the element
+          $(".delete-book").each(function () {
+              $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+          });
 
-          // Read and Delete book buttons open modal with id="modal"
-          // The formURL is retrieved from the data of the element
-          $(".bs-modal").each(function () {
+          // Read book buttons
+          $(".read-book").each(function () {
+              $(this).modalForm({formURL: $(this).data("form-url")});
+          });
+
+          // Filter books button
+          $("#filter-book").each(function () {
               $(this).modalForm({formURL: $(this).data("form-url")});
           });
 

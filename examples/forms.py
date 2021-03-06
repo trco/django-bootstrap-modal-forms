@@ -11,7 +11,7 @@ class BookFilterForm(BSModalForm):
     type = forms.ChoiceField(choices=Book.BOOK_TYPES)
 
     class Meta:
-        fields = ['type', 'clear']
+        fields = ['type']
 
 
 class BookModelForm(BSModalModelForm):
