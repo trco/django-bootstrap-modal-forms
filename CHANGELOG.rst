@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.1.0 (2021-03-06)
+==================
+
+- fix form submission with button type submit
+
 2.0.1 (2020-11-22)
 ==================
 
