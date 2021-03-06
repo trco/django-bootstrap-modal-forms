@@ -39,11 +39,7 @@ class BookFilterView(BSModalFormView):
     form_class = BookFilterForm
 
     def form_valid(self, form):
-        if 'clear' in self.request.POST:
-            self.filter = ''
-        else:
-            self.filter = '?type=' + form.cleaned_data['type']
-
+        self.filter = '?type=' + form.cleaned_data['type']
         response = super().form_valid(form)
         return response
 
