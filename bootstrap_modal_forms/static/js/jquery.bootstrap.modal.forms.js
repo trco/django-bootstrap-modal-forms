@@ -17,13 +17,8 @@ https://github.com/trco/django-bootstrap-modal-forms
     };
 
     var addEventHandlers = function (settings) {
-        // submitBtn click handler
-        $(settings.submitBtn).on("click", function (event) {
-            isFormValid(settings, submitForm);
-        });
-        // Support submition on form fields
         $(settings.modalForm).on("submit", function (event) {
-            if (event.originalEvent !== undefined) {
+            if (event.originalEvent !== undefined && settings.isDeleteForm === false) {
                 event.preventDefault();
                 isFormValid(settings, submitForm);
                 return false;
@@ -34,7 +29,6 @@ https://github.com/trco/django-bootstrap-modal-forms
             $(settings.modalForm).remove();
         });
     };
-
 
     // Check if form.is_valid() & either show errors or submit it via callback
     var isFormValid = function (settings, callback) {
@@ -68,12 +62,14 @@ https://github.com/trco/django-bootstrap-modal-forms
             $(settings.modalForm).submit();
         } else {          
             var asyncSettingsValid = validateAsyncSettings(settings.asyncSettings);
-            var asyncSettings = settings.asyncSettings;
-
+            
             if (asyncSettingsValid) {                
+                var asyncSettings = settings.asyncSettings;
+                // Serialize form data
                 var formdata = new FormData($(settings.modalForm)[0]);
                 // Add asyncUpdate and check for it in save method of CreateUpdateAjaxMixin
                 formdata.append("asyncUpdate", "True");
+                
                 $.ajax({
                     type: $(settings.modalForm).attr("method"),
                     url: $(settings.modalForm).attr("action"),
@@ -156,8 +152,8 @@ https://github.com/trco/django-bootstrap-modal-forms
             modalContent: ".modal-content",
             modalForm: ".modal-content form",
             formURL: null,
+            isDeleteForm: false,
             errorClass: ".invalid",
-            submitBtn: ".submit-btn",
             asyncUpdate: false,
             asyncSettings: {
                 closeOnSubmit: false,
