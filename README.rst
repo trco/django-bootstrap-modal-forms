@@ -9,7 +9,7 @@ Live Demo
 
 Demo_
 
-.. _Demo: https://trco.si/dbmf/
+.. _Demo: http://trco.silkym.com/dbmf/
 
 Installation
 ============
