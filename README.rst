@@ -214,6 +214,7 @@ Async create/update with or without modal closing on submit
 ===========================================================
 
 Set ``asyncUpdate`` and ``asyncSettings`` settings to create or update objects without page redirection to ``successUrl`` and define whether a modal should close or stay opened after form submission. See comments in example below and paragraph **modalForm options** for explanation of ``asyncSettings``.
+See examples on how to properly reinstantiate modal forms for all CRUD buttons when using async options.
 
 .. code-block:: html
 
@@ -355,7 +356,7 @@ asyncSettings.dataKey
   Sets the key containing asynchronously updated queryset in the data dictionary returned from the view providing updated queryset. ``Default: null``
 
 asyncSettings.addModalFormFunction
-  Sets the method needed for reinstantiation of event listeners on button after asynchronous update. ``Default: null``
+  Sets the method needed for reinstantiation of event listeners on buttons (single or all CRUD buttons) after asynchronous update. ``Default: null``
 
 modalForm default settings object and it's structure
 ****************************************************
