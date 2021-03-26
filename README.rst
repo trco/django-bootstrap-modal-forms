@@ -922,15 +922,15 @@ For explanation how all the parts of the code work together see paragraph **Usag
     {% for book in books %}
         <div class="text-center">
           <!-- Read book buttons -->
-          <button type="button" id="read-book" class="bs-modal btn btn-sm btn-primary" data-form-url="{% url 'read_book' book.pk %}">
+          <button type="button" class="read-book bs-modal btn btn-sm btn-primary" data-form-url="{% url 'read_book' book.pk %}">
             <span class="fa fa-eye"></span>
           </button>
           <!-- Update book buttons -->
-          <button type="button" id="update-book" class="bs-modal btn btn-sm btn-primary" data-form-url="{% url 'update_book' book.pk %}">
+          <button type="button" class="update-book bs-modal btn btn-sm btn-primary" data-form-url="{% url 'update_book' book.pk %}">
             <span class="fa fa-pencil"></span>
           </button>
           <!-- Delete book buttons -->
-          <button type="button" id="delete-book" class="bs-modal btn btn-sm btn-danger" data-form-url="{% url 'delete_book' book.pk %}">
+          <button type="button" class="delete-book bs-modal btn btn-sm btn-danger" data-form-url="{% url 'delete_book' book.pk %}">
             <span class="fa fa-trash"></span>
           </button>
         </div>
