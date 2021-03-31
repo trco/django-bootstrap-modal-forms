@@ -58,8 +58,7 @@ class DeleteMessageMixin(object):
             return super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
         else:
             self.object = self.get_object()
-            success_url = self.get_success_url()
-            return HttpResponseDirect(success_url)
+            return HttpResponseRedirect(self.get_success_url())
 
 class LoginAjaxMixin(object):
     """
