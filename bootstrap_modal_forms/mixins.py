@@ -48,13 +48,18 @@ class CreateUpdateAjaxMixin(object):
 
 class DeleteMessageMixin(object):
     """
-    Mixin which adds message to BSModalDeleteView.
+    Mixin which adds message to BSModalDeleteView and only calls the delete method if request
+    is not ajax request.
     """
-
-    def post(self, request, *args, **kwargs):
-        messages.success(request, self.success_message)
-        return super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
-
+   
+    def delete(self, request, *args, **kwargs):
+        if not self.request.is_ajax():
+            messages.success(request, self.success_message)
+            return super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
+        else:
+            self.object = self.get_object()
+            success_url = self.get_success_url()
+            return HttpResponseDirect(success_url)
 
 class LoginAjaxMixin(object):
     """
