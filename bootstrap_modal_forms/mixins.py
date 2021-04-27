@@ -54,7 +54,7 @@ class DeleteMessageMixin(object):
     """
    
     def delete(self, request, *args, **kwargs):
-        if not self.request.is_ajax():
+        if not is_ajax(request.META):
             messages.success(request, self.success_message)
             return super(DeleteMessageMixin, self).delete(request, *args, **kwargs)
         else:
