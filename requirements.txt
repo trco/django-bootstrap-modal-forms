@@ -1,4 +1,4 @@
-Django==2.2.13
+Django==2.2.20
 django-bootstrap-modal-forms==1.4.1
 django-widget-tweaks==1.4.2
 selenium==3.14.0
