@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 
+from .utils import is_ajax
+
 
 class PassRequestMixin(object):
     """
@@ -38,8 +40,7 @@ class CreateUpdateAjaxMixin(object):
     """
 
     def save(self, commit=True):
-        # if not self.request.is_ajax() or self.request.POST.get('closeOnSubmit') == 'False':
-        if not self.request.is_ajax() or self.request.POST.get('asyncUpdate') == 'True':
+        if not is_ajax(self.request.META) or self.request.POST.get('asyncUpdate') == 'True':
             instance = super(CreateUpdateAjaxMixin, self).save(commit=commit)
         else:
             instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
@@ -62,7 +63,7 @@ class LoginAjaxMixin(object):
     """
 
     def form_valid(self, form):
-        if not self.request.is_ajax():
+        if not is_ajax(self.request.META):
             auth_login(self.request, form.get_user())
             messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
