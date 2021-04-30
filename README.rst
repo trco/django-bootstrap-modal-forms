@@ -38,10 +38,17 @@ IMPORTANT: Adjust Bootstrap and jQuery file paths to match yours, but include ``
 
     <body>
         <script src="{% static 'assets/js/bootstrap.js' %}"></script>
+
+        <!-- Bootstrap 4 -->
         <script src="{% static 'assets/js/jquery.js' %}"></script>
         <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
         <!-- You can alternatively load the minified version -->
         <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
+        <!-- Bootstrap 5 -->
+        <script src="{% static 'js/bootstrap5.modal.forms.js' %}"></script>
+        <!-- You can alternatively load the minified version -->
+        <script src="{% static 'js/bootstrap5.modal.forms.min.js' %}"></script>
     </body>
 
 How it works?
@@ -51,13 +58,21 @@ How it works?
     index.html
 
     <script type="text/javascript">
-    $(document).ready(function() {
 
+    // BS4
+    $(document).ready(function() {
         $("#create-book").modalForm({
             formURL: "{% url 'create_book' %}"
         });
-
     });
+
+    // BS5
+    document.addEventListener('DOMContentLoaded', (e) => {
+      modalForm(document.getElementById('create-book'), {
+        formURL: "{% url 'create_book' %}"
+      })
+    });
+
     </script>
 
 1. Click event on html element instantiated with ``modalForm`` opens modal
@@ -201,13 +216,21 @@ Add script to the template from #5 and bind the ``modalForm`` to the trigger ele
     index.html
 
     <script type="text/javascript">
-    $(document).ready(function() {
 
+    // BS4
+    $(document).ready(function() {
         $("#create-book").modalForm({
             formURL: "{% url 'create_book' %}"
         });
-
     });
+
+    // BS5
+    document.addEventListener('DOMContentLoaded', (e) => {
+      modalForm(document.getElementById('create-book'), {
+        formURL: "{% url 'create_book' %}"
+      })
+    });
+
     </script>
 
 Async create/update with or without modal closing on submit
