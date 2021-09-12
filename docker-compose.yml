@@ -11,7 +11,7 @@ services:
       - 8000:8000
     volumes:
       - persist_database:/usr/src/app/database
-      - ./bootstrap-modal-forms:/usr/src/app/bootstrap-modal-forms
+      - ./bootstrap_modal_forms:/usr/src/app/bootstrap_modal_forms
       - ./examples:/usr/src/app/examples
       - ./setup:/usr/src/app/setup
       - ./tests:/usr/src/app/tests
