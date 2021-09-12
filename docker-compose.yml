@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  django-bootstrap-modal-forms:
+    container_name: django-bootstrap-modal-forms
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    volumes:
+      - persist_database:/usr/src/app/database
+      - ./bootstrap-modal-forms:/usr/src/app/bootstrap-modal-forms
+      - ./examples:/usr/src/app/examples
+      - ./setup:/usr/src/app/setup
+      - ./tests:/usr/src/app/tests
+
+volumes:
+  persist_database:
