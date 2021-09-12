@@ -14,7 +14,7 @@ Demo_
 Test and experiment on your machine
 ===================================
 
-This repository includes ``Dockerfile`` and ``docker-compose.yml`` files so you can easily setup and start to experiment with ``django-bootstrap-modal-forms`` running inside of container on your local machine. Any changes made in bootstrap_modal_forms, examples and test folders are reflected directly in container (see docker-compose.yml) and the data stored in sqlite3 database are persistent even if you remove stopped container. Follow the steps bellow to run the app::
+This repository includes ``Dockerfile`` and ``docker-compose.yml`` files so you can easily setup and start to experiment with ``django-bootstrap-modal-forms`` running inside of a container on your local machine. Any changes you make in ``bootstrap_modal_forms``, ``examples`` and ``test`` folders are reflected in the container (see docker-compose.yml) and the data stored in sqlite3 database are persistent even if you remove stopped container. Follow the steps below to run the app::
 
     $ clone repository
     $ cd django-bootstrap-modal-forms
