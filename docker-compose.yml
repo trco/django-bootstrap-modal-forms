@@ -13,7 +13,6 @@ services:
       - persist_database:/usr/src/app/database
       - ./bootstrap_modal_forms:/usr/src/app/bootstrap_modal_forms
       - ./examples:/usr/src/app/examples
-      - ./setup:/usr/src/app/setup
       - ./tests:/usr/src/app/tests
 
 volumes:
