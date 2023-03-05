@@ -3,6 +3,7 @@ on:
   push:
     tags:        
       - '*' 
+  workflow_dispatch: {}
 jobs:
   build-and-publish-to-pypi:
     name: Build and publish Python distribution to PyPI
