@@ -1,4 +1,4 @@
-name: Publish Python distribution to PyPI
+name: Build and publish Python distribution to PyPI
 on:
   push:
     tags:        
