@@ -1,7 +1,7 @@
 /*
 django-bootstrap-modal-forms
-version : 2.x
-Copyright (c) 2021 Marcel Rupp
+version : 2.2.1
+Copyright (c) 2023 Marcel Rupp
 */
 
 // Open modal & load the form at formURL to the modalContent element

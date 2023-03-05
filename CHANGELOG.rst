@@ -2,6 +2,12 @@
 Changelog
 =========
 
+2.2.1 (2023-03-05)
+==================
+
+- add support for Bootstrap5 without jQuery dependency
+- update documentation with Bootstrap5 examples
+
 2.2.0 (2021-04-27)
 ==================
 
