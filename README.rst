@@ -77,10 +77,23 @@ How it works?
     });
 
     // BS5
+    // instantiate single modal form
     document.addEventListener('DOMContentLoaded', (e) => {
       modalForm(document.getElementById('create-book'), {
         formURL: "{% url 'create_book' %}"
       })
+    });
+
+    // BS5
+    // instantiate multiple modal forms with unique formUrls
+    document.addEventListener('DOMContentLoaded', (e) => {
+      var deleteButtons = document.getElementsByClassName("delete-book");
+      for (var index=0; index < deleteButtons.length; index++) {
+        modalForm(deleteButtons[index], {
+          formURL: deleteButtons[index]["dataset"]["formUrl"],
+          isDeleteForm: true
+        });
+      }
     });
 
     </script>
