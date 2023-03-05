@@ -1,5 +1,8 @@
 name: Publish Python distribution to PyPI
-on: push
+on:
+  push:
+    tags:        
+      - '*' 
 jobs:
   build-and-publish-to-pypi:
     name: Build and publish Python distribution to PyPI
@@ -25,7 +28,6 @@ jobs:
         --outdir dist/
         .
     - name: Publish distribution to PyPI
-      if: startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
