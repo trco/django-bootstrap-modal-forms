@@ -59,7 +59,7 @@ const isFormValid = function (settings, callback) {
     btnSubmit.disabled = true;
     fetch(form.action, {
         headers: headers,
-        method: form.method,
+        method: form.getAttribute('method'),
         body: new FormData(form),
     }).then(res => {
         return res.text();
@@ -98,7 +98,7 @@ const submitForm = function (settings) {
             formData.append("asyncUpdate", "True");
 
             fetch(form.action, {
-                method: form.method,
+                method: form.getAttribute('method'),
                 body: formData,
             }).then(res => {
                 return res.text();
