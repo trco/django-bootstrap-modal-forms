@@ -1,7 +1,8 @@
 import django
-from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
-from .mixins import PassRequestMixin, DeleteMessageMixin, LoginAjaxMixin
+from .mixins import PassRequestMixin, DeleteMessageMixin, LoginAjaxMixin, FormValidationMixin
+
+from .utils import is_ajax
 
 DJANGO_VERSION = django.get_version().split('.')
 DJANGO_MAJOR_VERSION = DJANGO_VERSION[0]
@@ -14,7 +15,7 @@ else:
     from django.contrib.auth.views import LoginView
 
 
-class BSModalLoginView(LoginAjaxMixin, SuccessMessageMixin, LoginView):
+class BSModalLoginView(LoginAjaxMixin, LoginView):
     pass
 
 
@@ -22,11 +23,11 @@ class BSModalFormView(PassRequestMixin, generic.FormView):
     pass
 
 
-class BSModalCreateView(PassRequestMixin, SuccessMessageMixin, generic.CreateView):
+class BSModalCreateView(PassRequestMixin, FormValidationMixin, generic.CreateView):
     pass
 
 
-class BSModalUpdateView(PassRequestMixin, SuccessMessageMixin, generic.UpdateView):
+class BSModalUpdateView(PassRequestMixin, FormValidationMixin, generic.UpdateView):
     pass
 
 
