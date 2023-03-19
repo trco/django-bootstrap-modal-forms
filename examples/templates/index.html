@@ -67,127 +67,140 @@
 
 {% block extrascripts %}
   <script type="text/javascript">
-      $(function () {
-          // Login
-          $("#login-btn").modalForm({
-            formURL: "{% url 'login' %}"
-          });
+    // Login
+    document.addEventListener('DOMContentLoaded', (e) => {
+      modalForm(document.getElementById('login-btn'), {
+        formURL: "{% url 'login' %}"
+      })
+    });
 
-          //  Signup
-          $("#signup-btn").modalForm({
-            formURL: "{% url 'signup' %}"
-          });
+    //  Signup
+    document.addEventListener('DOMContentLoaded', (e) => {
+      modalForm(document.getElementById('signup-btn'), {
+        formURL: "{% url 'signup' %}"
+      })
+    });
 
-          // Create book synchronous
-          function createBookSyncModalForm() {
-            $("#create-book-sync").modalForm({
-                formURL: "{% url 'create_book' %}",
-                modalID: "#create-modal"
-            });
-          }
-          createBookSyncModalForm();
+    // Create book sync
+    document.addEventListener('DOMContentLoaded', (e) => {
+      modalForm(document.getElementById('create-book-sync'), {
+        formURL: "{% url 'create_book' %}",
+        modalID: "#create-modal"
+      })
+    });
 
-          // Create book asynchronous button
-          // message
-          var asyncSuccessMessageCreate = [
-            "<div ",
-            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
-            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
-            "Success: Book was created.",
-            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
-            "<span aria-hidden='true'>&times;</span>",
-            "</button>",
-            "</div>",
-            "<script>",
-            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
-            "<\/script>"
-          ].join("");
-
-          // modal form
-          function createBookAsyncModalForm() {
-            $("#create-book-async").modalForm({
-                formURL: "{% url 'create_book' %}",
-                modalID: "#create-modal",
-                asyncUpdate: true,
-                asyncSettings: {
-                  closeOnSubmit: true,
-                  successMessage: asyncSuccessMessageCreate,
-                  dataUrl: "books/",
-                  dataElementId: "#books-table",
-                  dataKey: "table",
-                  addModalFormFunction: reinstantiateModalForms
-                }
-            });
-          }
-          createBookAsyncModalForm();
-
-          // Update book asynchronous button
-          // message
-          var asyncSuccessMessageUpdate = [
-            "<div ",
-            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
-            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
-            "Success: Book was updated.",
-            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
-            "<span aria-hidden='true'>&times;</span>",
-            "</button>",
-            "</div>",
-            "<script>",
-            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
-            "<\/script>"
-          ].join("");
-
-          // modal form
-          function updateBookModalForm() {
-            $(".update-book").each(function () {
-              $(this).modalForm({
-                formURL: $(this).data("form-url"),
-                asyncUpdate: true,
-                asyncSettings: {
-                  closeOnSubmit: false,
-                  successMessage: asyncSuccessMessageUpdate,
-                  dataUrl: "books/",
-                  dataElementId: "#books-table",
-                  dataKey: "table",
-                  addModalFormFunction: reinstantiateModalForms
-                }
-              });
-            });
-          }
-          updateBookModalForm();
-
-          // Delete book buttons - formURL is retrieved from the data of the element
-          function deleteBookModalForm() {
-            $(".delete-book").each(function () {
-                $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
-            });
-          }
-          deleteBookModalForm();
-
-          // Read book buttons
-          function readBookModalForm() {
-            $(".read-book").each(function () {
-                $(this).modalForm({formURL: $(this).data("form-url")});
-            });
-          }
-          readBookModalForm();
-
-          function reinstantiateModalForms() {
-            createBookAsyncModalForm();
-            readBookModalForm();
-            updateBookModalForm();
-            deleteBookModalForm();
-          }
-
-          // Filter books button
-          $("#filter-book").each(function () {
-              $(this).modalForm({formURL: $(this).data("form-url")});
-          });
-
-          // Hide message
-          $(".alert").fadeTo(2000, 500).slideUp(500, function () {
-              $(".alert").slideUp(500);
-          });
+    // Read book
+    function readBookModalForm() {
+      document.addEventListener('DOMContentLoaded', (e) => {
+        var readButtons = document.getElementsByClassName("read-book");
+        for (var index=0; index < readButtons.length; index++) {
+          modalForm(readButtons[index], {formURL: readButtons[index]["dataset"]["formUrl"]});
+        }
       });
+    };
+    readBookModalForm();
+    
+    // Delete book
+    function deleteBookModalForm() {
+      document.addEventListener('DOMContentLoaded', (e) => {
+        var deleteButtons = document.getElementsByClassName("delete-book");
+        for (var index=0; index < deleteButtons.length; index++) {
+          modalForm(deleteButtons[index], {
+            formURL: deleteButtons[index]["dataset"]["formUrl"],
+            isDeleteForm: true
+          });
+        }
+      });
+    };
+    deleteBookModalForm();
+
+    // Filter books
+    document.addEventListener('DOMContentLoaded', (e) => {
+      var filterButton = document.getElementById('filter-book')
+      modalForm(filterButton, {
+        formURL: filterButton["dataset"]["formUrl"]
+      })
+    });
+
+    // Create book asynchronous button
+    // message
+    var asyncSuccessMessageCreate = [
+      "<div ",
+      "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+      "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+      "Success: Book was created.",
+      "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+      "<span aria-hidden='true'>&times;</span>",
+      "</button>",
+      "</div>",
+      "<script>",
+      "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+      "<\/script>"
+    ].join("");
+
+    function createBookAsyncModalForm() {
+      document.addEventListener('DOMContentLoaded', (e) => {
+        modalForm(document.getElementById('create-book-async'), {
+            formURL: "{% url 'create_book' %}",
+            modalID: "#create-modal",
+            asyncUpdate: true,
+            asyncSettings: {
+              closeOnSubmit: true,
+              successMessage: asyncSuccessMessageCreate,
+              dataUrl: "books/",
+              dataElementId: "#books-table",
+              dataKey: "table",
+              addModalFormFunction: reinstantiateModalForms
+            }
+        })
+      });
+    };
+    createBookAsyncModalForm();
+
+    // Update book asynchronous button
+    // message
+    var asyncSuccessMessageUpdate = [
+      "<div ",
+      "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+      "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+      "Success: Book was updated.",
+      "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+      "<span aria-hidden='true'>&times;</span>",
+      "</button>",
+      "</div>",
+      "<script>",
+      "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+      "<\/script>"
+    ].join("");
+
+    // modal form
+    function updateBookModalForm() {
+      document.addEventListener('DOMContentLoaded', (e) => {
+      var updateButtons = document.getElementsByClassName("update-book");
+      for (var index=0; index < updateButtons.length; index++) {
+        modalForm(updateButtons[index], {
+          formURL: updateButtons[index]["dataset"]["formUrl"],
+          asyncUpdate: true,
+          asyncSettings: {
+            closeOnSubmit: false,
+            successMessage: asyncSuccessMessageUpdate,
+            dataUrl: "books/",
+            dataElementId: "#books-table",
+            dataKey: "table",
+            addModalFormFunction: reinstantiateModalForms
+            }
+          });
+        }
+      });
+    };
+    updateBookModalForm();
+
+    function reinstantiateModalForms() {
+      createBookAsyncModalForm();
+      readBookModalForm();
+      updateBookModalForm();
+      deleteBookModalForm();
+    }
+
   </script>
 {% endblock extrascripts %}
