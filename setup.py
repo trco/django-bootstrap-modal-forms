@@ -9,15 +9,15 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-bootstrap-modal-forms',
-    version='2.2.0',
+    version='master',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
     description='A Django plugin for creating AJAX driven forms in Bootstrap modal.',
     long_description=README,
-    url='https://github.com/trco/django-bootstrap-modal-forms',
-    author='Uros Trstenjak',
-    author_email='uros.trstenjak@gmail.com',
+    url='https://github.com/MBoaretto25/django-bootstrap-modal-forms',
+    author='Marco Boaretto',
+    author_email='marco.boaretto19@gmail.com',
     install_requires=[
         'Django>=1.8',
     ],
