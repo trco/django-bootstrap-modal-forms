@@ -352,11 +352,6 @@ cython_debug/
 # @see https://python-poetry.org/docs/configuration/#local-configuration
 poetry.toml
 
-##################
-##### Docker #####
-##################
-!docker/.env
-
 ###############################
 #####     Application     #####
 ###############################
