@@ -21,7 +21,7 @@ const modalFormCallback = function (settings) {
         })
     }
 
-    fetch(settings.formURL).then(res => {
+    fetch(settings.formURL, {credentials: settings.credentials}).then(res => {
         // Get content from target URL
         return res.text();
     }).then(data => {
@@ -131,6 +131,7 @@ const submitForm = function (settings) {
             fetch(form.action, {
                 method: form.method,
                 body: formData,
+                credentials: settings.credentials,
             }).then(res => {
                 return res.text();
             }).then(data => {
@@ -145,7 +146,7 @@ const submitForm = function (settings) {
 
                 if (asyncSettings.dataUrl) {
                     // Update page without refresh
-                    fetch(asyncSettings.dataUrl).then(res => res.json()).then(data => {
+                    fetch(asyncSettings.dataUrl, {credentials: settings.credentials}).then(res => res.json()).then(data => {
                         // Update page
                         let dataElement = document.querySelector(asyncSettings.dataElementId);
                         if (dataElement) {
@@ -161,7 +162,7 @@ const submitForm = function (settings) {
                             bootstrap.Modal.getInstance(modal).hide();
                         } else {
                             // Reload form
-                            fetch(settings.formURL).then(res => {
+                            fetch(settings.formURL, {credentials: settings.credentials}).then(res => {
                                 return res.text();
                             }).then(data => {
                                 let content = modal.querySelector(settings.modalContent);
