@@ -1,6 +1,5 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -12,7 +11,6 @@ from bootstrap_modal_forms.generic import (
     BSModalReadView,
     BSModalDeleteView
 )
-
 from .forms import (
     BookModelForm,
     CustomUserCreationForm,

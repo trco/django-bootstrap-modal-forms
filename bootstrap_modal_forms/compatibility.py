@@ -1,11 +1,11 @@
 from django.conf import settings
-from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model, login as auth_login
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.utils.decorators import method_decorator
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
@@ -54,8 +54,8 @@ class LoginView(SuccessURLAllowedHostsMixin, FormView):
             self.redirect_field_name,
             self.request.GET.get(self.redirect_field_name, '')
         )
-        url_is_safe = is_safe_url(
-            url=redirect_to
+        url_is_safe = url_has_allowed_host_and_scheme(
+            redirect_to, settings.ALLOWED_HOSTS
         )
         return redirect_to if url_is_safe else ''
 
