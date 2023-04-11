@@ -13,6 +13,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 # Python version is given implicitly by Django version. If Django 3.2 requires Python 3.6, this project automatically also needs Python 3.6.
 # Django version is defined in "requirements.txt"
+# Right now, we need Python 3.8. Because in Python 3.8 type hints with Protocols were introduced.
 setup(
     name='django-bootstrap-modal-forms',
     version='2.2.1',
@@ -33,8 +34,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
