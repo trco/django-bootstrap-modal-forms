@@ -11,8 +11,6 @@ from setup import settings
 
 WebDriver = Union[webdriver.Firefox, webdriver.Chrome, webdriver.Edge, webdriver.Safari]
 
-MAX_WAIT = 10
-
 
 class FunctionalTest(StaticLiveServerTestCase):
     """
