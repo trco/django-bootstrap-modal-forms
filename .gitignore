@@ -352,7 +352,7 @@ cython_debug/
 # @see https://python-poetry.org/docs/configuration/#local-configuration
 poetry.toml
 
-###############################
-#####     Application     #####
-###############################
-geckodriver.log
+############################################
+#####   django-bootstrap-modal-forms   #####
+############################################
+geckodriver.exe
