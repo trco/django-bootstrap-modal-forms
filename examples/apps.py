@@ -6,7 +6,7 @@ from typing import Set
 from django.apps import AppConfig
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(frozen=True)
 class ExampleBook:
     title: str
     publication_date: datetime

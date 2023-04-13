@@ -55,7 +55,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     def get_browser(cls) -> WebDriver:
         if cls.BROWSER_TYPE is webdriver.Firefox:
             if cls.BROWSER_DRIVER_PATH is None:
-                raise ValueError('Chrome needs a path to a browser driver file!')
+                raise ValueError('Firefox needs a path to a browser driver file!')
             else:
                 if cls.FIRE_FOX_BINARY is None:
                     return webdriver.Firefox(executable_path=cls.BROWSER_DRIVER_PATH)
@@ -63,7 +63,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                     return webdriver.Firefox(firefox_binary=str(cls.FIRE_FOX_BINARY), executable_path=cls.BROWSER_DRIVER_PATH)
         elif cls.BROWSER_TYPE is webdriver.Chrome:
             if cls.BROWSER_DRIVER_PATH is None:
-                raise ValueError('Firefox needs a path to a browser driver file!')
+                raise ValueError('Chrome needs a path to a browser driver file!')
             else:
                 return webdriver.Chrome(executable_path=cls.BROWSER_DRIVER_PATH)
         elif cls.BROWSER_TYPE is webdriver.Edge:
