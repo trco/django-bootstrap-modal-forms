@@ -73,7 +73,7 @@ class LoginAjaxMixin:
         return HttpResponseRedirect(self.get_success_url())
 
 
-class FormValidationMixin(object):
+class FormValidationMixin:
     """
     Generic View Mixin which saves object and redirects to success_url if request is not ajax request. Otherwise response 204 No content is returned.
     """
