@@ -1,7 +1,4 @@
-from django.db.models import QuerySet
 from django.http import JsonResponse
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
@@ -14,6 +11,7 @@ from bootstrap_modal_forms.generic import (
     BSModalReadView,
     BSModalDeleteView
 )
+
 from .forms import (
     BookModelForm,
     CustomUserCreationForm,
@@ -28,7 +26,7 @@ class Index(generic.ListView):
     context_object_name = 'books'
     template_name = 'index.html'
 
-    def get_queryset(self) -> QuerySet:
+    def get_queryset(self):
         qs = super().get_queryset()
         if 'type' in self.request.GET:
             qs = qs.filter(book_type=int(self.request.GET['type']))
@@ -39,12 +37,12 @@ class BookFilterView(BSModalFormView):
     template_name = 'examples/filter_book.html'
     form_class = BookFilterForm
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form):
         self.filter = '?type=' + form.cleaned_data['type']
         response = super().form_valid(form)
         return response
 
-    def get_success_url(self) -> str:
+    def get_success_url(self):
         return reverse_lazy('index') + self.filter
 
 
@@ -89,7 +87,7 @@ class CustomLoginView(BSModalLoginView):
     success_url = reverse_lazy('index')
 
 
-def books(request: HttpRequest) -> HttpResponse:
+def books(request):
     data = {}
     if request.method == 'GET':
         books = Book.objects.all()

@@ -2,12 +2,14 @@ from django.db import models
 
 
 class Book(models.Model):
+    HARDCOVER = 1
+    PAPERBACK = 2
+    EBOOK = 3
     BOOK_TYPES = (
-        (1, 'Hardcover'),
-        (2, 'Paperback'),
-        (3, 'E-book'),
+        (HARDCOVER, 'Hardcover'),
+        (PAPERBACK, 'Paperback'),
+        (EBOOK, 'E-book'),
     )
-
     title = models.CharField(max_length=50)
     publication_date = models.DateField(null=True)
     author = models.CharField(max_length=30, blank=True)
