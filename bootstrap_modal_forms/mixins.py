@@ -40,11 +40,13 @@ class CreateUpdateAjaxMixin(object):
     """
 
     def save(self, commit=True):
-        if not is_ajax(self.request.META) or self.request.POST.get('asyncUpdate') == 'True':
-            instance = super(CreateUpdateAjaxMixin, self).save(commit=commit)
-        else:
-            instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
-        return instance
+        isAjaxRequest = is_ajax(self.request.META)
+        asyncUpdate = self.request.POST.get('asyncUpdate') == 'True'
+
+        if not isAjaxRequest or asyncUpdate:
+            return super(CreateUpdateAjaxMixin, self).save(commit=commit)
+        if isAjaxRequest:
+            return super(CreateUpdateAjaxMixin, self).save(commit=False)
 
 
 class DeleteMessageMixin(object):
@@ -76,7 +78,7 @@ class LoginAjaxMixin(object):
 
 class FormValidationMixin(object):
     """
-    Generic View Mixin which saves object and redirects to success_url if request is not ajax request. Otherwise resoponse 204 No content is returned.
+    Generic View Mixin which saves object and redirects to success_url if request is not ajax request. Otherwise response 204 No content is returned.
     """
         
     def form_valid(self, form):
