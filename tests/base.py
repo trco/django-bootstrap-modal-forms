@@ -1,15 +1,12 @@
 from pathlib import Path
-from typing import Optional, Union, Type
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from setup import settings
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-
-from setup import settings
-
-WebDriver = Union[webdriver.Firefox, webdriver.Chrome, webdriver.Edge, webdriver.Safari]
 
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -31,14 +28,14 @@ class FunctionalTest(StaticLiveServerTestCase):
         - Compatibility: https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
     """
 
-    BROWSER: Optional[WebDriver] = None
+    BROWSER = None
     # Change this, to your browser type of choice
-    BROWSER_TYPE: Type[WebDriver] = webdriver.Firefox
+    BROWSER_TYPE = webdriver.Chrome
     # Change this, to your driver file of your chosen browser
-    BROWSER_DRIVER_PATH: Path = Path(settings.BASE_DIR, 'geckodriver.exe')
+    BROWSER_DRIVER_PATH: Path = Path(settings.BASE_DIR, 'chromedriver')
     # If you're using Firefox, and you have installed firefox in a none-standard directory, change this to the executable wherever
     # you have installed Firefox. E.g.: Path('C:/My/None/Standard/directory/firefox.exe')
-    FIRE_FOX_BINARY: Optional[Path] = None
+    FIRE_FOX_BINARY = None
 
     @classmethod
     def setUpClass(cls):
@@ -52,7 +49,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         super().tearDownClass()
 
     @classmethod
-    def get_browser(cls) -> WebDriver:
+    def get_browser(cls):
         if cls.BROWSER_TYPE is webdriver.Firefox:
             if cls.BROWSER_DRIVER_PATH is None:
                 raise ValueError('Firefox needs a path to a browser driver file!')
