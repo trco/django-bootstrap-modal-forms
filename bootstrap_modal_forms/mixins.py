@@ -41,9 +41,9 @@ class CreateUpdateAjaxMixin:
         asyncUpdate = self.request.POST.get('asyncUpdate') == 'True'
 
         if not isAjaxRequest or asyncUpdate:
-            return super(CreateUpdateAjaxMixin, self).save(commit=commit)
+            return super().save(commit=commit)
         if isAjaxRequest:
-            return super(CreateUpdateAjaxMixin, self).save(commit=False)
+            return super().save(commit=False)
 
 
 class DeleteMessageMixin:
