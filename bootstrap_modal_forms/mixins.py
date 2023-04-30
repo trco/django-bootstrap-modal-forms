@@ -1,11 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.forms import AuthenticationForm
-from django.db.models import Model
 from django.http import HttpResponseRedirect
-from django.http.request import HttpRequest
-
-from .utils import *
 
 class PassRequestMixin:
     """
@@ -73,3 +68,7 @@ class LoginAjaxMixin:
             auth_login(self.request, form.get_user())
             messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
+
+
+def is_ajax(meta):
+    return 'HTTP_X_REQUESTED_WITH' in meta and meta['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
