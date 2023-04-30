@@ -1,11 +1,10 @@
-from django.contrib.auth.views import LoginView
-from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
+from django.contrib.auth.views import LoginView
 
-from .mixins import PassRequestMixin, DeleteMessageMixin, LoginAjaxMixin
+from .mixins import PassRequestMixin, DeleteMessageMixin, LoginAjaxMixin, FormValidationMixin
 
 
-class BSModalLoginView(LoginAjaxMixin, SuccessMessageMixin, LoginView):
+class BSModalLoginView(LoginAjaxMixin, LoginView):
     pass
 
 
@@ -13,11 +12,11 @@ class BSModalFormView(PassRequestMixin, generic.FormView):
     pass
 
 
-class BSModalCreateView(PassRequestMixin, SuccessMessageMixin, generic.CreateView):
+class BSModalCreateView(PassRequestMixin, FormValidationMixin, generic.CreateView):
     pass
 
 
-class BSModalUpdateView(PassRequestMixin, SuccessMessageMixin, generic.UpdateView):
+class BSModalUpdateView(PassRequestMixin, FormValidationMixin, generic.UpdateView):
     pass
 
 
