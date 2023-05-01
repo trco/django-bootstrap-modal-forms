@@ -11,9 +11,6 @@ with open(Path(PROJECT_ROOT_DIR, 'README.rst')) as readme_file:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-# Python version is given implicitly by Django version. If Django 3.2 requires Python 3.6, this project automatically also needs Python 3.6.
-# Django version is defined in "requirements.txt"
-# Right now, we need Python 3.8. Because in Python 3.8 type hints with Protocols were introduced.
 setup(
     name='django-bootstrap-modal-forms',
     version='2.2.1',
