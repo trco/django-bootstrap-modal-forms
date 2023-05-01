@@ -30,7 +30,7 @@ class SignUpLoginTest(FunctionalTest):
 
         # User sees error in form
         error = self.wait_for(class_name='help-block')
-        self.assertEqual(error.text, 'The two password fields didn\'t match.')
+        self.assertEqual(error.text, 'The two password fields didn’t match.')
 
         # User fills in and submits sign up form correctly
         form = modal.find_element_by_tag_name('form')
