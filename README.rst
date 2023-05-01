@@ -62,7 +62,7 @@ Installation
         <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
 
         <!-- Bootstrap 5 -->
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/bootstrap5.modal.forms.js' %}"></script>
         <!-- You can alternatively load the minified version -->
         <script src="{% static 'js/bootstrap5.modal.forms.min.js' %}"></script>
