@@ -1,15 +1,10 @@
-'use strict';
 /*
 django-bootstrap-modal-forms
 version : 2.2.1
 Copyright (c) 2023 Marcel Rupp
 */
 
-/**
- * Open modal & load the form as inner HTML from "formURL" to the "modalContent" element
- *
- * @param {Object} settings Configuration/Settings for associated modal
- */
+// Open modal & load the form at formURL to the modalContent element
 const modalFormCallback = function (settings) {
     let modal = document.querySelector(settings.modalID);
     let content = modal.querySelector(settings.modalContent);
@@ -21,32 +16,21 @@ const modalFormCallback = function (settings) {
         })
     }
 
-    fetch(settings.formURL, {credentials: settings.credentials}).then(res => {
-        // Get content from target URL
+    fetch(settings.formURL).then(res => {
         return res.text();
     }).then(data => {
-        // Set content to inner HTML
         content.innerHTML = data;
     }).then(() => {
-        // Finally show the modal with new content
         modalInstance.show();
 
         let form = modal.querySelector(settings.modalForm);
         if (form) {
-            form.action = settings.formURL;
-            // Add handler for form validation
-            addEventHandlers(modal, form, settings);
+            form.setAttribute("action", settings.formURL);
+            addEventHandlers(modal, form, settings)
         }
     });
 };
 
-/**
- * Adds event handler for form validation cycle.
- *
- * @param {HTMLElement} modal The modal
- * @param {HTMLElement} form The actual form, that should be evaluated by the server
- * @param {Object} settings Configuration/Settings for associated modal
- */
 const addEventHandlers = function (modal, form, settings) {
     form.addEventListener('submit', (event) => {
         if (settings.isDeleteForm === false) {
@@ -56,7 +40,7 @@ const addEventHandlers = function (modal, form, settings) {
         }
     });
 
-    modal.addEventListener('hidden.bs.modal', () => {
+    modal.addEventListener('hidden.bs.modal', (event) => {
         let content = modal.querySelector(settings.modalContent);
         while (content.lastChild) {
             content.removeChild(content.lastChild);
@@ -64,33 +48,23 @@ const addEventHandlers = function (modal, form, settings) {
     });
 };
 
-/**
- * Sends the form to the server & processes the result. If the form is valid the redirect from the
- * form will be executed. If the form is invalid the errors are shown and no redirect will be executed.
- *
- * @param {Object} settings Configuration/Settings for associated modal
- * @param {Function} callback Callback to break out of form validation cycle
- */
+// Check if form.is_valid() & either show errors or submit it via callback
 const isFormValid = function (settings, callback) {
     let modal = document.querySelector(settings.modalID);
     let form = modal.querySelector(settings.modalForm);
-    let headers = new Headers();
+    const headers = new Headers();
     headers.append('X-Requested-With', 'XMLHttpRequest');
 
     let btnSubmit = modal.querySelector('button[type="submit"]');
     btnSubmit.disabled = true;
-
-    fetch(form.action, {
+    fetch(form.getAttribute("action"), {
         headers: headers,
-        method: form.method,
+        method: form.getAttribute("method"),
         body: new FormData(form),
-        credentials: settings.credentials,
     }).then(res => {
         return res.text();
     }).then(data => {
-        console.log(data)
         if (data.includes(settings.errorClass)) {
-            // Form is invalid, therefore set the returned form (with marked invalid fields) to new inner HTML
             modal.querySelector(settings.modalContent).innerHTML = data;
 
             form = modal.querySelector(settings.modalForm);
@@ -99,8 +73,7 @@ const isFormValid = function (settings, callback) {
                 return;
             }
 
-            // Start from the beginning
-            form.action = settings.formURL;
+            form.setAttribute("action", settings.formURL);
             addEventHandlers(modal, form, settings)
         } else {
             callback(settings);
@@ -108,11 +81,7 @@ const isFormValid = function (settings, callback) {
     });
 };
 
-/**
- * Submit form callback function
- *
- * @param {Object} settings Configuration/Settings for associated modal
- */
+// Submit form callback function
 const submitForm = function (settings) {
     let modal = document.querySelector(settings.modalID);
     let form = modal.querySelector(settings.modalForm);
@@ -120,7 +89,7 @@ const submitForm = function (settings) {
     if (!settings.asyncUpdate) {
         form.submit();
     } else {
-        const asyncSettingsValid = validateAsyncSettings(settings.asyncSettings);
+        let asyncSettingsValid = validateAsyncSettings(settings.asyncSettings);
         if (asyncSettingsValid) {
             let asyncSettings = settings.asyncSettings;
             // Serialize form data
@@ -128,10 +97,9 @@ const submitForm = function (settings) {
             // Add asyncUpdate and check for it in save method of CreateUpdateAjaxMixin
             formData.append("asyncUpdate", "True");
 
-            fetch(form.action, {
-                method: form.method,
+            fetch(form.getAttribute("action"), {
+                method: form.getAttribute("method"),
                 body: formData,
-                credentials: settings.credentials,
             }).then(res => {
                 return res.text();
             }).then(data => {
@@ -146,7 +114,7 @@ const submitForm = function (settings) {
 
                 if (asyncSettings.dataUrl) {
                     // Update page without refresh
-                    fetch(asyncSettings.dataUrl, {credentials: settings.credentials}).then(res => res.json()).then(data => {
+                    fetch(asyncSettings.dataUrl).then(res => res.json()).then(data => {
                         // Update page
                         let dataElement = document.querySelector(asyncSettings.dataElementId);
                         if (dataElement) {
@@ -162,7 +130,7 @@ const submitForm = function (settings) {
                             bootstrap.Modal.getInstance(modal).hide();
                         } else {
                             // Reload form
-                            fetch(settings.formURL, {credentials: settings.credentials}).then(res => {
+                            fetch(settings.formURL).then(res => {
                                 return res.text();
                             }).then(data => {
                                 let content = modal.querySelector(settings.modalContent);
@@ -174,7 +142,7 @@ const submitForm = function (settings) {
                                     return;
                                 }
 
-                                form.action = settings.formURL;
+                                form.setAttribute("action", settings.formURL);
                                 addEventHandlers(modal, form, settings)
                             });
                         }
@@ -187,14 +155,8 @@ const submitForm = function (settings) {
     }
 };
 
-/**
- * Validates given settings/configuration for asynchronous calls.
- *
- * @param {Object} settings Configuration/Settings for associated modal
- * @return {boolean} True if given configuration/settings is valid, false otherwise
- */
 const validateAsyncSettings = function (settings) {
-    let missingSettings = [];
+    var missingSettings = [];
 
     if (!settings.successMessage) {
         missingSettings.push("successMessage");
@@ -216,23 +178,15 @@ const validateAsyncSettings = function (settings) {
         missingSettings.push("addModalFormFunction");
         console.error("django-bootstrap-modal-forms: 'addModalFormFunction' in asyncSettings is missing.");
     }
-    return missingSettings.length < 1;
+
+    if (missingSettings.length > 0) {
+        return false;
+    }
+
+    return true;
 };
 
-/**
- * Adds click listener to given button. If button is clicked, associated
- * modal makes a call to given URL("formURL") to load its inner HTML.
- *
- * credentials:
- *      Prevent browser to share credentials (Cookies, Authorization headers & TLS client certificates for future
- *      authentication) secrets with malicious 3rd parties. Defaults to "same-origin".
- *      @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#sending_a_request_with_credentials_included
- *
- * @param {HTMLElement} trigger_btn Button that triggers the modal to open/close
- * @param {Object} settings Configuration/Settings for this given modal
- * @return {HTMLElement} The button with an event listener
- */
-const modalForm = function (trigger_btn, settings) {
+const modalForm = function(elem, options) {
     // Default settings
     let defaults = {
         modalID: "#modal",
@@ -241,7 +195,6 @@ const modalForm = function (trigger_btn, settings) {
         formURL: null,
         isDeleteForm: false,
         errorClass: "is-invalid",
-        credentials: 'same-origin', // Choices: omit, include, same-origin
         asyncUpdate: false,
         asyncSettings: {
             closeOnSubmit: false,
@@ -253,11 +206,11 @@ const modalForm = function (trigger_btn, settings) {
         }
     };
 
-    const replenished_settings = {...defaults, ...settings}
+    let settings = {...defaults, ...options}
 
-    trigger_btn.addEventListener('click', () => {
-        modalFormCallback(replenished_settings);
+    elem.addEventListener('click', () => {
+        modalFormCallback(settings);
     })
 
-    return trigger_btn;
+    return elem;
 }

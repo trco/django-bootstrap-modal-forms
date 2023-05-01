@@ -1,7 +1,7 @@
 import os
+from pathlib import Path
 
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'ke2rim3a=ukld9cjh6$d$fb%ztgobvrs807i^d!_whg%@n^%v#'
 DEBUG = True
 
@@ -32,12 +32,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'setup.urls'
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'examples/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -55,37 +52,27 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database/db.sqlite3'),
+        'NAME': str(Path(BASE_DIR, 'db.sqlite3')),
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# No password rules in development
+AUTH_PASSWORD_VALIDATORS = []
+# Simple (and unsecure) but fast password hasher in development
+PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+# No internationalization for this project
+USE_I18N = False
+USE_L10N = False
+USE_TZ = False
 
 STATICFILES_FINDERS = [
     # searches in STATICFILES_DIRS
