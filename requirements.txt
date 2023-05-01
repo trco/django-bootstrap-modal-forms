@@ -1,5 +1,5 @@
 # End of life Django 3.2: April 2024
 # @see https://www.djangoproject.com/download/#supported-versions
-Django==3.2
+Django==3.2.18
 django-widget-tweaks~=1.4
 selenium~=3.14
