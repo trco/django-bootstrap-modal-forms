@@ -25,7 +25,7 @@ const modalFormCallback = function (settings) {
 
         let form = modal.querySelector(settings.modalForm);
         if (form) {
-            form.action = settings.formURL;
+            form.setAttribute("action", settings.formURL);
             addEventHandlers(modal, form, settings)
         }
     });
@@ -57,9 +57,9 @@ const isFormValid = function (settings, callback) {
 
     let btnSubmit = modal.querySelector('button[type="submit"]');
     btnSubmit.disabled = true;
-    fetch(form.action, {
+    fetch(form.getAttribute("action"), {
         headers: headers,
-        method: form.method,
+        method: form.getAttribute("method"),
         body: new FormData(form),
     }).then(res => {
         return res.text();
@@ -73,7 +73,7 @@ const isFormValid = function (settings, callback) {
                 return;
             }
 
-            form.action = settings.formURL;
+            form.setAttribute("action", settings.formURL);
             addEventHandlers(modal, form, settings)
         } else {
             callback(settings);
@@ -97,8 +97,8 @@ const submitForm = function (settings) {
             // Add asyncUpdate and check for it in save method of CreateUpdateAjaxMixin
             formData.append("asyncUpdate", "True");
 
-            fetch(form.action, {
-                method: form.method,
+            fetch(form.getAttribute("action"), {
+                method: form.getAttribute("method"),
                 body: formData,
             }).then(res => {
                 return res.text();
@@ -142,7 +142,7 @@ const submitForm = function (settings) {
                                     return;
                                 }
 
-                                form.action = settings.formURL;
+                                form.setAttribute("action", settings.formURL);
                                 addEventHandlers(modal, form, settings)
                             });
                         }
@@ -156,7 +156,6 @@ const submitForm = function (settings) {
 };
 
 const validateAsyncSettings = function (settings) {
-    console.log(settings)
     var missingSettings = [];
 
     if (!settings.successMessage) {

@@ -1,6 +1,5 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -89,7 +88,7 @@ class CustomLoginView(BSModalLoginView):
 
 
 def books(request):
-    data = dict()
+    data = {}
     if request.method == 'GET':
         books = Book.objects.all()
         data['table'] = render_to_string(

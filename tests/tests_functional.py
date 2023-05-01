@@ -7,13 +7,13 @@ from .base import FunctionalTest
 class SignUpLoginTest(FunctionalTest):
     def test_signup_login(self):
         # User visits homepage and checks the content
-        self.browser.get(self.live_server_url)
-        self.assertIn('django-bootstrap-modal-forms', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.BROWSER.get(self.live_server_url)
+        self.assertIn('django-bootstrap-modal-forms', self.BROWSER.title)
+        header_text = self.BROWSER.find_element_by_tag_name('h1').text
         self.assertIn('django-bootstrap-modal-forms', header_text)
 
         # User clicks Sign up button
-        self.browser.find_element_by_id('signup-btn').click()
+        self.BROWSER.find_element_by_id('signup-btn').click()
 
         # Sign up modal opens
         modal = self.wait_for(element_id='modal')
@@ -41,14 +41,14 @@ class SignUpLoginTest(FunctionalTest):
         form.submit()
 
         # User sees success message after page redirection
-        redirect_url = self.browser.current_url
+        redirect_url = self.BROWSER.current_url
         self.assertRegex(redirect_url, '/')
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
         success_msg = self.wait_for(class_name='alert').text[:-2]
         self.assertEqual(success_msg, 'Success: Sign up succeeded. You can now Log in.')
 
         # User clicks log in button
-        self.browser.find_element_by_id('login-btn').click()
+        self.BROWSER.find_element_by_id('login-btn').click()
 
         # Log in modal opens
         modal = self.wait_for(element_id='modal')
@@ -80,7 +80,7 @@ class SignUpLoginTest(FunctionalTest):
         # User sees log out button after page redirection
         logout_btn_txt = self.wait_for(element_id='logout-btn').text
         self.assertEqual(logout_btn_txt, 'Log out')
-        redirect_url = self.browser.current_url
+        redirect_url = self.BROWSER.current_url
         self.assertRegex(redirect_url, '/')
 
 
@@ -98,10 +98,10 @@ class CRUDActionsTest(FunctionalTest):
 
     def test_create_object(self):
         # User visits homepage
-        self.browser.get(self.live_server_url)
+        self.BROWSER.get(self.live_server_url)
 
         # User clicks create book button
-        self.browser.find_element_by_id('create-book-sync').click()
+        self.BROWSER.find_element_by_id('create-book-sync').click()
 
         # Create book modal opens
         modal = self.wait_for(element_id='create-modal')
@@ -140,7 +140,7 @@ class CRUDActionsTest(FunctionalTest):
         form.submit()
 
         # User sees success message after page redirection
-        redirect_url = self.browser.current_url
+        redirect_url = self.BROWSER.current_url
         self.assertRegex(redirect_url, '/')
 
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
@@ -160,7 +160,7 @@ class CRUDActionsTest(FunctionalTest):
 
     def test_filter_object(self):
         # User visits homepage
-        self.browser.get(self.live_server_url)
+        self.BROWSER.get(self.live_server_url)
 
         # User clicks filter book button
         self.wait_for(element_id='filter-book').click()
@@ -171,7 +171,7 @@ class CRUDActionsTest(FunctionalTest):
         # User changes book type
         form = modal.find_element_by_tag_name('form')   
         
-        book_type = self.browser.find_element_by_id("id_type")
+        book_type = self.BROWSER.find_element_by_id("id_type")
         book_type_select = Select(book_type)
         book_type_select.select_by_index(0)
 
@@ -179,15 +179,15 @@ class CRUDActionsTest(FunctionalTest):
 
         # User is redirected to the homepage with a querystring with the filter
         self.wait_for(class_name='filtered-books')
-        redirect_url = self.browser.current_url
+        redirect_url = self.BROWSER.current_url
         self.assertRegex(redirect_url, '/?type=1$')
 
     def test_update_object(self):
         # User visits homepage
-        self.browser.get(self.live_server_url)
+        self.BROWSER.get(self.live_server_url)
 
         # User clicks update book button
-        self.browser.find_element_by_class_name('update-book').click()
+        self.BROWSER.find_element_by_class_name('update-book').click()
 
         # Update book modal opens
         modal = self.wait_for(element_id='modal')
@@ -206,7 +206,7 @@ class CRUDActionsTest(FunctionalTest):
         form.submit()
 
         # User sees success message after page redirection
-        redirect_url = self.browser.current_url
+        redirect_url = self.BROWSER.current_url
         self.assertRegex(redirect_url, '/')
 
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
@@ -234,10 +234,10 @@ class CRUDActionsTest(FunctionalTest):
 
     def test_read_object(self):
         # User visits homepage
-        self.browser.get(self.live_server_url)
+        self.BROWSER.get(self.live_server_url)
 
         # User clicks Read book button
-        self.browser.find_element_by_class_name('read-book').click()
+        self.BROWSER.find_element_by_class_name('read-book').click()
 
         # Read book modal opens
         modal = self.wait_for(element_id='modal')
@@ -254,10 +254,10 @@ class CRUDActionsTest(FunctionalTest):
 
     def test_delete_object(self):
         # User visits homepage
-        self.browser.get(self.live_server_url)
+        self.BROWSER.get(self.live_server_url)
 
         # User clicks Delete book button
-        self.browser.find_element_by_class_name('delete-book').click()
+        self.BROWSER.find_element_by_class_name('delete-book').click()
 
         # Delete book modal opens
         modal = self.wait_for(element_id='modal')
@@ -271,7 +271,7 @@ class CRUDActionsTest(FunctionalTest):
         delete_btn.click()
 
         # User sees success message after page redirection
-        redirect_url = self.browser.current_url
+        redirect_url = self.BROWSER.current_url
         self.assertRegex(redirect_url, '/')
 
         # Slice removes '\nx' since alert is dismissible and contains 'times' button
