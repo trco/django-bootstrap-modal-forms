@@ -51,11 +51,11 @@ class DeleteMessageMixin:
     Generic View Mixin which adds message to BSModalDeleteView and only calls the delete method if request
     is not ajax request.
     """
-   
-    def delete(self, request, *args, **kwargs):
+
+    def post(self, request, *args, **kwargs):
         if not is_ajax(request.META):
             messages.success(request, self.success_message)
-            return super().delete(request, *args, **kwargs)
+            return super().post(request, *args, **kwargs)
         else:
             self.object = self.get_object()
             return HttpResponseRedirect(self.get_success_url())
