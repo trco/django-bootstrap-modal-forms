@@ -48,8 +48,8 @@ class CreateUpdateAjaxMixin:
 
 class DeleteMessageMixin:
     """
-    Generic View Mixin which adds message to BSModalDeleteView and only calls the delete method if request
-    is not ajax request.
+    Generic View Mixin which adds message to BSModalDeleteView and only calls the post method if request
+    is not ajax request. In case request is ajax post method calls delete method, which redirects to success url.
     """
 
     def post(self, request, *args, **kwargs):
