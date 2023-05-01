@@ -21,6 +21,13 @@ This repository includes ``Dockerfile`` and ``docker-compose.yml`` files so you 
     $ docker compose up (use -d flag to run app in detached mode in the background)
     $ visit 0.0.0.0:8000
 
+Tests
+=====
+
+Run unit and functional tests inside of project folder::
+
+    $ python manage.py test
+
 Installation
 ============
 
@@ -36,9 +43,7 @@ Installation
         ...
     ]
 
-3. Include Bootstrap, jQuery and ``jquery.bootstrap.modal.forms.js`` on every page where you would like to set up the AJAX driven Django forms in Bootstrap modal.
-
-IMPORTANT: Adjust Bootstrap and jQuery file paths to match yours, but include ``jquery.bootstrap.modal.forms.js`` exactly as in code bellow.
+3. Include Bootstrap, jQuery and ``jquery.bootstrap(5).modal.forms.js`` on every page where you would like to set up the AJAX driven Django forms in Bootstrap modal. **IMPORTANT:** Adjust Bootstrap and jQuery file paths to match yours, but include ``jquery.bootstrap.modal.forms.js`` exactly as in code bellow.
 
 .. code-block:: html+django
 
@@ -50,12 +55,14 @@ IMPORTANT: Adjust Bootstrap and jQuery file paths to match yours, but include ``
         <script src="{% static 'assets/js/bootstrap.js' %}"></script>
 
         <!-- Bootstrap 4 -->
-        <script src="{% static 'assets/js/jquery.js' %}"></script>
-        <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+        <script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'assets/js/popper.min.js' %}"></script>
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
         <!-- You can alternatively load the minified version -->
-        <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+        <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
 
         <!-- Bootstrap 5 -->
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/bootstrap5.modal.forms.js' %}"></script>
         <!-- You can alternatively load the minified version -->
         <script src="{% static 'js/bootstrap5.modal.forms.min.js' %}"></script>
@@ -444,33 +451,39 @@ Mixins
 Import mixins with ``from bootstrap_modal_forms.mixins import PassRequestMixin``.
 
 PassRequestMixin
-    Puts the request into the form's kwargs.
+    Form Mixin which puts the request into the form's kwargs. Note: Using this mixin requires you to pop the `request` kwarg out of the dict in the super of your form's `__init__`. See PopRequestMixin.
 
 PopRequestMixin
-    Pops request out of the kwargs and attaches it to the form's instance.
+    Form Mixin which pops request out of the kwargs and attaches it to the form's instance. Note: This mixin must precede forms.ModelForm/forms.Form. The form is not expecting these kwargs to be passed in, so they must be popped off before anything else is done.
 
 CreateUpdateAjaxMixin
-    Saves or doesn't save the object based on the request type.
+    ModelForm Mixin which passes or saves object based on request type.
 
 DeleteMessageMixin
-    Deletes object if request is not ajax request.
+    Generic View Mixin which adds message to BSModalDeleteView and only calls the post method if request is not ajax request. In case request is ajax post method calls delete method, which redirects to success url.
+
+FormValidationMixin
+    Generic View Mixin which saves object and redirects to success_url if request is not ajax request. Otherwise response 204 No content is returned.
 
 LoginAjaxMixin
-    Authenticates user if request is not ajax request.
+    Generic View Mixin which authenticates user if request is not ajax request.
 
 Generic views
 =============
 
 Import generic views with ``from bootstrap_modal_forms.generic import BSModalFormView``.
 
+BSModalLoginView
+    Inhertis LoginAjaxMixin and Django's LoginView.
+
 BSModalFormView
     Inherits PassRequestMixin and Django's generic.FormView.
 
 BSModalCreateView
-    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.CreateView.
+    Inherits PassRequestMixin, FormValidationMixin and generic.CreateView.
 
 BSModalUpdateView
-    Inherits PassRequestMixin and Django's SuccessMessageMixin and generic.UpdateView.
+    Inherits PassRequestMixin, FormValidationMixin and generic.UpdateView.
 
 BSModalReadView
     Inherits Django's generic.DetailView.
@@ -488,13 +501,6 @@ To see ``django-bootstrap-modal-forms`` in action clone the repository and run t
     $ pip install -r requirements.txt
     $ python manage.py migrate
     $ python manage.py runserver
-
-Tests
-=====
-
-Run unit and functional tests inside of project folder::
-
-    $ python manage.py test
 
 Example 1: Signup form in Bootstrap modal
 *****************************************
