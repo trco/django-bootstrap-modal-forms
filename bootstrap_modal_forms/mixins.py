@@ -89,7 +89,7 @@ class FormValidationMixin:
         
         form.save()
         messages.success(self.request, self.success_message)
-        return HttpResponseRedirect(self.success_url)   
+        return HttpResponseRedirect(self.get_success_url())
 
 
 def is_ajax(meta):
