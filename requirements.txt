@@ -1,5 +1,5 @@
 # End of life Django 4.2: April 2026
 # @see https://www.djangoproject.com/download/#supported-versions
 Django==4.2
-django-widget-tweaks~=1.4
-selenium~=3.14
+django-widget-tweaks==1.4
+selenium==3.14
