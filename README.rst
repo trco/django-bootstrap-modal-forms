@@ -11,6 +11,19 @@ Demo_
 
 .. _Demo: http://trco.silkym.com/dbmf/
 
+
+General information
+===================
+
+Opening an issue
+****************
+When reproting an issue for ``django-bootstrap-modal-forms`` package, please prepare a publicly available repository having the issue you are reporting. The clear reproduce is the optimal way towards reoslution.
+
+Contribute
+**********
+This is an Open Source project and any contribution is highly appreciated.
+
+
 Test and experiment on your machine
 ===================================
 
@@ -1120,11 +1133,6 @@ For explanation how all the parts of the code work together see paragraph **Usag
           ...
         });
       </script>
-
-Contribute
-==========
-
-This is an Open Source project and any contribution is appreciated.
 
 License
 =======
