@@ -2,6 +2,17 @@
 Changelog
 =========
 
+3.0.0 (2023-05-02)
+==================
+
+- deprecate support for python < 3.8
+- deprecate support for Django < 3.2
+- deprecate SuccessMessageMixin
+- add FormValidationMixin
+- add support for Chrome, Firefox, Edge and Safari drivers when running funtional tests
+- update examples to Django=4.2
+- update README.rst
+
 2.2.1 (2023-03-05)
 ==================
 
