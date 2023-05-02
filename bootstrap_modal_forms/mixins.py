@@ -77,7 +77,12 @@ class FormValidationMixin:
     """
     Generic View Mixin which saves object and redirects to success_url if request is not ajax request. Otherwise response 204 No content is returned.
     """
-        
+
+    def get_success_url(self):
+        if self.success_url:
+            return self.success_url
+        return super().get_success_url()
+
     def form_valid(self, form):
         isAjaxRequest = is_ajax(self.request.META)
         asyncUpdate = self.request.POST.get('asyncUpdate') == 'True'
@@ -86,7 +91,7 @@ class FormValidationMixin:
             if asyncUpdate:
                 form.save()
             return HttpResponse(status=204)
-        
+
         form.save()
         messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
