@@ -17,7 +17,7 @@ General information
 
 Opening an issue
 ****************
-When reproting an issue for ``django-bootstrap-modal-forms`` package, please prepare a publicly available repository having the issue you are reporting. The clear reproduce is the optimal way towards reoslution.
+When reporting an issue for ``django-bootstrap-modal-forms`` package, please prepare a publicly available repository having the issue you are reporting. The clear reproduce is the optimal way towards resolution.
 
 Contribute
 **********
