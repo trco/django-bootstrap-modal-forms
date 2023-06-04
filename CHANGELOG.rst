@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.0.2 (2023-05-02)
+==================
+
+- fix call to get_success_url method in FormValidationMixin
+
 3.0.1 (2023-05-02)
 ==================
 

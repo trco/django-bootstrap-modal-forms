@@ -82,6 +82,11 @@ class FormValidationMixin:
         if hasattr(self, 'success_message'):
             return self.success_message
 
+    def get_success_url(self):
+        if self.success_url:
+            return self.success_url
+        return super().get_success_url()
+
     def form_valid(self, form):
         isAjaxRequest = is_ajax(self.request.META)
         asyncUpdate = self.request.POST.get('asyncUpdate') == 'True'
