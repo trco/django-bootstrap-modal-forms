@@ -1,6 +1,6 @@
 /*
 django-bootstrap-modal-forms
-version : 3.0.2
+version : 3.0.3
 Copyright (c) 2023 Marcel Rupp
 */
 
