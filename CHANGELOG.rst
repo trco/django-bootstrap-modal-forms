@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.0.3 (2023-06-04)
+==================
+
+- add get_success_message method in FormValidationMixin
+
+
 3.0.2 (2023-05-02)
 ==================
 
