@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.0.4 (2023-06-18)
+==================
+
+- fix broken examples by bumping django-widget-tweaks dependency version
+
 3.0.3 (2023-06-04)
 ==================
 
