@@ -154,11 +154,10 @@ Define BookModelForm and inherit built-in form ``BSModalModelForm``.
 
 Define form's html and save it as Django template.
 
-- Bootstrap 4 modal elements are used in this example.
 - Form will POST to ``formURL`` defined in #6.
-- Add ``class="invalid"`` or custom ``errorClass`` (see paragraph **Options**) to the elements that wrap the fields.
+- Add ``class="invalid"`` or custom ``errorClass`` (see paragraph **Options**) to the elements that wrap the fields
 - ``class="invalid"`` acts as a flag for the fields having errors after the form has been POSTed.
-- IMPORTANT NOTE: ``class="invalid"`` is default setting for Bootstrap 4, while the default setting for Bootstrap 5 version of this package is ``class="is-invalid"``.
+- **IMPORTANT NOTE:** Bootstrap 4 modal elements are used in this example. ``class="invalid"`` is the default for Bootstrap 4. ``class="is-invalid"`` is the default for Bootstrap 5.
 
 .. code-block:: html
 
@@ -441,7 +440,7 @@ modalForm default settings object and it's structure
         modalForm: ".modal-content form",
         formURL: null,
         isDeleteForm: false,
-        // .invalid is default class for Bootstrap 4, while the default class for Bootstrap 5 version of this package is .is-invalid.
+        // ".invalid" is the default for Bootstrap 4. ".is-invalid" is the default for Bootstrap 5.
         errorClass: ".invalid",
         asyncUpdate: false,
         asyncSettings: {
