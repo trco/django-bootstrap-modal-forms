@@ -22,6 +22,14 @@ class BookModelForm(BSModalModelForm):
     class Meta:
         model = Book
         exclude = ['timestamp']
+        
+
+    def clean(self):
+        data = super(BookModelForm, self).clean()
+
+        if not all(value for value in data.values()):
+            raise forms.ValidationError("Form can't be empty.")
+        return data
 
 
 class CustomUserCreationForm(PopRequestMixin, CreateUpdateAjaxMixin, UserCreationForm):
