@@ -12,7 +12,7 @@
 
   <div class="modal-body">
 
-    <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+    <div class="{% if form.non_field_errors %}is-invalid{% endif %} mb-2">
       {% for error in form.non_field_errors %}
         {{ error }}
       {% endfor %}
@@ -22,7 +22,7 @@
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {% render_field field class="form-control" placeholder=field.label %}
-        <div class="{% if field.errors %} invalid{% endif %}">
+        <div class="{% if field.errors %}is-invalid{% endif %}">
           {% for error in field.errors %}
             <p class="help-block">{{ error }}</p>
           {% endfor %}
