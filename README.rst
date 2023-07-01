@@ -32,7 +32,11 @@ This is an Open Source project and any contribution is highly appreciated.
 Test and experiment on your machine
 ===================================
 
-This repository includes ``Dockerfile`` and ``docker-compose.yml`` files so you can easily setup and start to experiment with ``django-bootstrap-modal-forms`` running inside of a container on your local machine. Any changes you make in ``bootstrap_modal_forms``, ``examples`` and ``test`` folders are reflected in the container (see docker-compose.yml) and the data stored in sqlite3 database are persistent even if you remove stopped container. Follow the steps below to run the app::
+This repository includes ``Dockerfile`` and ``docker-compose.yml`` files so you can easily setup and start to experiment with ``django-bootstrap-modal-forms`` running inside of a container on your local machine. Any changes you make in ``bootstrap_modal_forms``, ``examples`` and ``test`` folders are reflected in the container (see docker-compose.yml) and the data stored in sqlite3 database are persistent even if you remove stopped container.
+
+Note that ``master branch`` contains Bootstrap 4 examples, while ``bootstrap5-examples branch`` contains Bootstrap 5 examples. To experiment with Bootstrap 5 examples simply switch the branch.
+
+Follow the steps below to run the app::
 
     $ clone repository
     $ cd django-bootstrap-modal-forms
