@@ -9,26 +9,6 @@ A Django plugin for creating AJAX driven forms in Bootstrap modal.
    :local:
    :backlinks: none
 
-Live Demo
-=========
-
-Demo_
-
-.. _Demo: http://trco.silkym.com/dbmf/
-
-
-General information
-===================
-
-Opening an issue
-****************
-When reporting an issue for ``django-bootstrap-modal-forms`` package, please prepare a publicly available repository having the issue you are reporting. The clear reproduce is the optimal way towards resolution.
-
-Contribute
-**********
-This is an Open Source project and any contribution is highly appreciated.
-
-
 Test and experiment on your machine
 ===================================
 
@@ -42,6 +22,17 @@ Follow the steps below to run the app::
     $ cd django-bootstrap-modal-forms
     $ docker compose up (use -d flag to run app in detached mode in the background)
     $ visit 0.0.0.0:8000
+
+General information
+===================
+
+Opening an issue
+****************
+When reporting an issue for ``django-bootstrap-modal-forms`` package, please prepare a publicly available repository having the issue you are reporting. The clear reproduce is the optimal way towards resolution.
+
+Contribute
+**********
+This is an Open Source project and any contribution is highly appreciated.
 
 Tests
 =====
