@@ -424,6 +424,40 @@ asyncSettings.dataKey
 asyncSettings.addModalFormFunction
   Sets the method needed for reinstantiation of event listeners on buttons (single or all CRUD buttons) after asynchronous update. ``Default: null``
 
+Fetch API parameters
+********************
+
+(@see `MDN Web DOCs - Using the Fetch API <https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch>`_).
+
+credentials:
+  Choices: omit, include, same-origin
+
+  ``Default: same-origin``
+method:
+  Choices: GET, POST, PUT, DELETE
+
+  ``Default: POST``
+mode:
+  Choices: no-cors, cors, same-origin
+
+  ``Default: cors``
+cache:
+  Choices: default, no-cache, reload, force-cache, only-if-cached
+
+  ``Default: no-cache``
+headers:
+  Choices: @see `MDN Web DOCs - HTTP headers <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers>`_
+
+  ``Default: { "Content-Type": "application/json" }``
+redirect:
+  Choices: manual, follow, error
+
+  ``Default: follow``
+referrerPolicy:
+  Choices: no-referrer, no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+
+  ``Default: no-referrer``
+
 modalForm default settings object and it's structure
 ****************************************************
 
@@ -445,7 +479,17 @@ modalForm default settings object and it's structure
             dataElementId: null,
             dataKey: null,
             addModalFormFunction: null
-        }
+        },
+        // At this point Fetch API parameters
+        credentials: 'same-origin',
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer'
     });
 
 Forms
