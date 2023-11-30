@@ -1,7 +1,7 @@
 'use strict';
 /*
 django-bootstrap-modal-forms
-version : 2.2.1
+version : 3.0.4
 Copyright (c) 2023 Marcel Rupp
 */
 
@@ -21,7 +21,7 @@ const modalFormCallback = function (settings) {
         })
     }
 
-    fetch(settings.formURL, {credentials: settings.credentials}).then(res => {
+    fetch(settings.formURL, {credentials: settings.credentials, method: settings.method, mode: settings.mode, cache: settings.cache, headers: settings.headers, redirect: settings.redirect, referrerPolicy: settings.referrerPolicy}).then(res => {
         // Get content from target URL
         return res.text();
     }).then(data => {
