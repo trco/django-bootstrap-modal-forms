@@ -187,7 +187,47 @@ Define form's html and save it as Django template.
 
     </form>
 
-3. Class-based view
+3. Function-based view
+*******************
+Whilst `django-boostrap-modal-forms` is primarily designed for class based usage (see below), there may be reasons you want
+to use its capabilities in classic function based views. To use them properly, you need to understand what exactly is going on
+and how you can adapt this mechanic into your own view.
+
+Your regular function based view might look like this
+
+.. code-block:: python
+
+    ...
+    if request.method == 'POST':
+        # do stuff
+    elif request.method == 'GET':
+        # do other stuff
+    else:
+        raise NotImplementedError('No stuff')
+    ...
+As you continue to develop your logic, you may see, that two POST requests are being send on your forms, even tho,
+the user only submitted it once:
+
+- The **first** request can be used to verify your form's validity, let's call it the `ajax request` (you will see why).
+- The **second** request can be used to save your form's data (depending on whether the validation was successful or not)
+
+But how do you differentiate between these two requests? Using this handy method: `is_ajax` (https://github.com/trco/django-bootstrap-modal-forms/blob/dddf22e78aead693fedcabe94961fb1ddebc6db7/bootstrap_modal_forms/utils.py#L1)
+So, your code may now look like this:
+
+.. code-block:: python
+    ...
+    if request.method == "POST":
+        if form.is_valid():
+            if not is_ajax(request.META):
+                form.save()
+                messages.success(
+                    request,
+                    msg_success
+                )
+            return HttpResponseRedirect(redirect_url)
+    ...
+
+4. Class-based view
 *******************
 
 Define a class-based view BookCreateView and inherit from built-in generic view ``BSModalCreateView``. BookCreateView processes the form defined in #1, uses the template defined in #2 and redirects to ``success_url`` showing ``success_message``.
@@ -207,7 +247,8 @@ Define a class-based view BookCreateView and inherit from built-in generic view 
         success_message = 'Success: Book was created.'
         success_url = reverse_lazy('index')
 
-4. URL for the view
+
+5. URL for the view
 *******************
 
 Define URL for the view in #3.
@@ -222,7 +263,7 @@ Define URL for the view in #3.
         path('create/', views.BookCreateView.as_view(), name='create_book'),
     ]
 
-5. Bootstrap modal and trigger element
+6. Bootstrap modal and trigger element
 **************************************
 
 Define the Bootstrap modal window and html element triggering modal opening.
@@ -246,7 +287,7 @@ Define the Bootstrap modal window and html element triggering modal opening.
     <!-- Create book button -->
     <button id="create-book" class="btn btn-primary" type="button" name="button">Create book</button>
 
-6. modalForm
+7. modalForm
 ************
 
 Add script to the template from #5 and bind the ``modalForm`` to the trigger element. Set BookCreateView URL defined in #4 as ``formURL`` property of ``modalForm``.
