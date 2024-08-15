@@ -212,9 +212,11 @@ the user only submitted it once:
 - The **second** request can be used to save your form's data (depending on whether the validation was successful or not)
 
 But how do you differentiate between these two requests? Using this handy method: `is_ajax` (https://github.com/trco/django-bootstrap-modal-forms/blob/dddf22e78aead693fedcabe94961fb1ddebc6db7/bootstrap_modal_forms/utils.py#L1)
-So, your code may now look like this:
+
+So, your code may now look like this and is capable of handling both POST requests:
 
 .. code-block:: python
+
     ...
     if request.method == "POST":
         if form.is_valid():
