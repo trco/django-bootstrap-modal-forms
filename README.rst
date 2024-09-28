@@ -188,7 +188,7 @@ Define form's html and save it as Django template.
     </form>
 
 3. Function-based view
-*******************
+**********************
 Whilst `django-boostrap-modal-forms` is primarily designed for class based usage (see below), there may be reasons you want
 to use its capabilities in classic function based views. To use them properly, you need to understand what exactly is going on
 and how you can adapt this mechanic into your own view.
