@@ -205,9 +205,8 @@ Your regular function based view might look like this
     else:
         raise NotImplementedError('No stuff')
     ...
-As you continue to develop your logic, you may see, that two POST requests are being send on your forms, even tho,
-the user only submitted it once:
 
+As you continue to develop your logic, you may see, that two POST requests are being send on your forms, even tho, the user only submitted it once:
 - The **first** request can be used to verify your form's validity, let's call it the `ajax request` (you will see why).
 - The **second** request can be used to save your form's data (depending on whether the validation was successful or not)
 
