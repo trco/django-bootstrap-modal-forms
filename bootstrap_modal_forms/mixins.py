@@ -93,10 +93,10 @@ class FormValidationMixin:
 
         if isAjaxRequest:
             if asyncUpdate:
-                form.save()
+                self.object = form.save()
             return HttpResponse(status=204)
 
-        form.save()
+        self.object = form.save()
         messages.success(self.request, self.get_success_message())
         return HttpResponseRedirect(self.get_success_url())
 
